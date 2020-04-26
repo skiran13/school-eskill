@@ -1,5 +1,5 @@
-import React from "react";
-import _ from "lodash";
+import React from 'react';
+import _ from 'lodash';
 import {
   Sidebar,
   Segment,
@@ -16,15 +16,15 @@ import {
   Grid,
   Dropdown,
   Pagination,
-  Modal
-} from "semantic-ui-react";
-import Answers from "./Answers";
-import Preview from "./Preview";
-import Select from "react-select";
-import Spinner from "react-spinkit";
-import makeAnimated from "react-select/lib/animated";
-import endpoint from "../enpoint";
-import { InlineTex } from "react-tex";
+  Modal,
+} from 'semantic-ui-react';
+import Answers from './Answers';
+import Preview from './Preview';
+import Select from 'react-select';
+import Spinner from 'react-spinkit';
+import makeAnimated from 'react-select/lib/animated';
+import endpoint from '../enpoint';
+import { InlineTex } from 'react-tex';
 
 class ChangeQuestion extends React.Component {
   constructor(props) {
@@ -33,20 +33,20 @@ class ChangeQuestion extends React.Component {
       categories: props.categories,
       selCat: null,
       selTopic: null,
-      previewData: "Question Description with an equation: $x^2 + 2x = 0$",
-      name: "Question Name",
-      value: "",
+      previewData: 'Question Description with an equation: $x^2 + 2x = 0$',
+      name: 'Question Name',
+      value: '',
       options: {
-        a: "Option A",
-        b: "Option B",
-        c: "Option C",
-        d: "Option D"
+        a: 'Option A',
+        b: 'Option B',
+        c: 'Option C',
+        d: 'Option D',
       },
       topics: [],
-      hints: "A hint for your question",
-      err: "",
+      hints: 'A hint for your question',
+      err: '',
       loading: true,
-      err: false
+      err: false,
     };
     this.catSelector = React.createRef();
     this.qname = React.createRef();
@@ -72,15 +72,16 @@ class ChangeQuestion extends React.Component {
   }
   componentDidMount() {
     let { category, n, topic } = this.props;
-    let cat = category.replace(/[+]/g, " ");
-    let top = topic.replace(/[+]/g, " ");
-    fetch(endpoint + "/api/question", {
+    let cat = category.replace(/[+]/g, ' ');
+    let top = topic.replace(/[+]/g, ' ');
+    //Changes for running local
+    fetch('http://localhost:5000' + endpoint + '/api/question', {
       body: JSON.stringify({ n: n, cat: cat, topic: top }),
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then(res => res.json())
-      .then(question => {
+      .then((res) => res.json())
+      .then((question) => {
         if (!question.err && question.question != null) {
           let { question: q } = question;
           this.setState({
@@ -93,7 +94,7 @@ class ChangeQuestion extends React.Component {
             oldCat: cat,
             oldtop: top,
             oldn: n,
-            loading: false
+            loading: false,
           });
         } else {
           this.setState({ loading: false, err: true });
@@ -112,26 +113,26 @@ class ChangeQuestion extends React.Component {
       options: this.state.options,
       answer: this.state.value,
       hints: this.state.hints,
-      topic: this.state.oldtop
+      topic: this.state.oldtop,
     };
     if (data.category == null) {
-      this.setState({ err: "cat" });
+      this.setState({ err: 'cat' });
       window.scrollTo(0, 0);
     } else if (
-      data.qdef == "Question Description with an equation: $x^2 + 2x = 0$" ||
+      data.qdef == 'Question Description with an equation: $x^2 + 2x = 0$' ||
       data.qdef.match(/[a-z]\w/gi) == null
     ) {
-      this.setState({ err: "def" });
+      this.setState({ err: 'def' });
       window.scrollTo(0, 0);
-    } else if (data.answer == "") {
-      this.setState({ err: "ans" });
+    } else if (data.answer == '') {
+      this.setState({ err: 'ans' });
       window.scrollTo(0, 0);
     } else {
-      emit("questionChange", {
+      emit('questionChange', {
         changed: data,
         cat: this.state.oldCat,
         n: this.state.oldn,
-        topic: this.state.oldtop
+        topic: this.state.oldtop,
       });
       if (afterEmit != undefined) {
         afterEmit(true);
@@ -155,7 +156,7 @@ class ChangeQuestion extends React.Component {
   handleCategoryChange(e) {
     this.setState({
       topics: e.topics,
-      selCat: { _id: e.value, name: e.label }
+      selCat: { _id: e.value, name: e.label },
     });
   }
   handleTopicChange(e) {
@@ -171,7 +172,7 @@ class ChangeQuestion extends React.Component {
     if (loading) {
       return (
         <Segment inverted={this.props.dark} basic>
-          <Spinner color="#3281ff" name="circle" />
+          <Spinner color='#3281ff' name='circle' />
         </Segment>
       );
     }
@@ -188,11 +189,11 @@ class ChangeQuestion extends React.Component {
           <Segment inverted={this.props.dark} basic={this.props.modal}>
             <Form
               inverted={this.props.dark}
-              id="addform"
+              id='addform'
               onSubmit={this.handleChange}
             >
               <Segment basic>
-                <Form.Group widths="equal">
+                <Form.Group widths='equal'>
                   <Form.Field>
                     <label>Category</label>
                     <Input fluid value={this.state.selCat.name} disabled />
@@ -202,12 +203,12 @@ class ChangeQuestion extends React.Component {
                     <Input fluid value={this.state.oldtop} disabled />
                   </Form.Field>
                 </Form.Group>
-                {this.state.err == "cat" ? (
+                {this.state.err == 'cat' ? (
                   <div
-                    className="ui error message"
+                    className='ui error message'
                     style={{
-                      display: "block",
-                      border: "none"
+                      display: 'block',
+                      border: 'none',
                     }}
                   >
                     Please select a category
@@ -221,8 +222,8 @@ class ChangeQuestion extends React.Component {
                     onChange={this.handleNameChange}
                     ref={this.qname}
                     fluid
-                    size="large"
-                    placeholder="Question Name"
+                    size='large'
+                    placeholder='Question Name'
                     value={this.state.name}
                     required
                   >
@@ -234,25 +235,25 @@ class ChangeQuestion extends React.Component {
               <Segment
                 basic
                 style={{
-                  display: "flex",
-                  flexDirection: "column"
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}
               >
                 <Form.Field>
                   <label>Question Description</label>
-                  <Input fluid size="large" required>
+                  <Input fluid size='large' required>
                     <textarea
                       onChange={this.handlePreviewChange}
                       value={this.state.previewData}
-                      placeholder="Question Description with an equation: $x^2 + 2x = 0$"
+                      placeholder='Question Description with an equation: $x^2 + 2x = 0$'
                     />
                   </Input>
-                  {this.state.err == "def" ? (
+                  {this.state.err == 'def' ? (
                     <div
-                      className="ui error message"
+                      className='ui error message'
                       style={{
-                        display: "block",
-                        border: "none"
+                        display: 'block',
+                        border: 'none',
                       }}
                     >
                       Please fill this field up
@@ -263,12 +264,12 @@ class ChangeQuestion extends React.Component {
                   fluid
                   basic
                   primary
-                  content="Latex Guide"
-                  style={{ alignSelf: "flex-end" }}
-                  onClick={e => {
+                  content='Latex Guide'
+                  style={{ alignSelf: 'flex-end' }}
+                  onClick={(e) => {
                     e.preventDefault();
                     window.location.href =
-                      "https://www.latex-tutorial.com/tutorials/";
+                      'https://www.latex-tutorial.com/tutorials/';
                   }}
                 />
               </Segment>
@@ -284,40 +285,40 @@ class ChangeQuestion extends React.Component {
                     <Grid.Row>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="a"
-                              checked={value == "a"}
+                              value='a'
+                              checked={value == 'a'}
                               onChange={this.handleRadio}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Input
                               required
-                              placeholder="Option A"
+                              placeholder='Option A'
                               value={this.state.options.a}
-                              size="small"
-                              onChange={e => this.handleAnswer(e, "a")}
+                              size='small'
+                              onChange={(e) => this.handleAnswer(e, 'a')}
                             />
                           </Grid.Column>
                         </Grid>
                       </Grid.Column>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="b"
-                              checked={value == "b"}
+                              value='b'
+                              checked={value == 'b'}
                               onChange={this.handleRadio}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Input
                               required
-                              placeholder="Option B"
+                              placeholder='Option B'
                               value={this.state.options.b}
-                              size="small"
-                              onChange={e => this.handleAnswer(e, "b")}
+                              size='small'
+                              onChange={(e) => this.handleAnswer(e, 'b')}
                             />
                           </Grid.Column>
                         </Grid>
@@ -326,52 +327,52 @@ class ChangeQuestion extends React.Component {
                     <Grid.Row>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="c"
-                              checked={value == "c"}
+                              value='c'
+                              checked={value == 'c'}
                               onChange={this.handleRadio}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Input
                               required
-                              placeholder="Option C"
+                              placeholder='Option C'
                               value={this.state.options.c}
-                              size="small"
-                              onChange={e => this.handleAnswer(e, "c")}
+                              size='small'
+                              onChange={(e) => this.handleAnswer(e, 'c')}
                             />
                           </Grid.Column>
                         </Grid>
                       </Grid.Column>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="d"
-                              checked={value == "d"}
+                              value='d'
+                              checked={value == 'd'}
                               onChange={this.handleRadio}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Input
                               required
-                              placeholder="Option D"
+                              placeholder='Option D'
                               value={this.state.options.d}
-                              size="small"
-                              onChange={e => this.handleAnswer(e, "d")}
+                              size='small'
+                              onChange={(e) => this.handleAnswer(e, 'd')}
                             />
                           </Grid.Column>
                         </Grid>
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
-                  {this.state.err == "ans" ? (
+                  {this.state.err == 'ans' ? (
                     <div
-                      className="ui error message"
+                      className='ui error message'
                       style={{
-                        display: "block",
-                        border: "none"
+                        display: 'block',
+                        border: 'none',
                       }}
                     >
                       Please choose the correct option
@@ -384,10 +385,10 @@ class ChangeQuestion extends React.Component {
                   options={this.state.options}
                 />
                 <Segment basic>
-                  <Form.Group widths="equal">
+                  <Form.Group widths='equal'>
                     <Form.Field>
-                      <Input fluid size="large">
-                        <input type="file" id="file" />
+                      <Input fluid size='large'>
+                        <input type='file' id='file' />
                       </Input>
                     </Form.Field>
                   </Form.Group>
@@ -396,63 +397,63 @@ class ChangeQuestion extends React.Component {
                 <Form.Field>
                   <label>Explanation</label>
                   <TextArea
-                    size="large"
-                    placeholder="Explanation for the question (will be shown once answered)"
+                    size='large'
+                    placeholder='Explanation for the question (will be shown once answered)'
                     onChange={this.handleHintsChange}
                     required
-                    type="textarea"
+                    type='textarea'
                     value={this.state.hints}
                   />
                 </Form.Field>
 
                 <Segment inverted={this.props.dark}>
-                  <b>Explanation:</b>{" "}
+                  <b>Explanation:</b>{' '}
                   <InlineTex
                     texContent={this.state.hints}
-                    texSeperator="${1}"
+                    texSeperator='${1}'
                   />
                 </Segment>
               </Segment>
             </Form>
-            <Segment basic style={{ margin: "0" }}>
+            <Segment basic style={{ margin: '0' }}>
               <Button
-                onClick={e => {
+                onClick={(e) => {
                   e.preventDefault();
                   this.handleChange();
                 }}
-                form="addform"
+                form='addform'
                 fluid
                 primary
-                className="addQButton"
+                className='addQButton'
               >
                 Change Question
               </Button>
             </Segment>
           </Segment>
-          {this.props.error != "" ? (
+          {this.props.error != '' ? (
             <Segment basic>
               <div
-                className="ui error message"
+                className='ui error message'
                 style={{
-                  display: "block",
-                  border: "none",
-                  height: "38px",
-                  fontSize: "1rem"
+                  display: 'block',
+                  border: 'none',
+                  height: '38px',
+                  fontSize: '1rem',
                 }}
               >
                 Error changing Question
               </div>
             </Segment>
           ) : null}
-          {this.props.success != "" ? (
+          {this.props.success != '' ? (
             <Segment basic>
               <div
-                className="ui success message"
+                className='ui success message'
                 style={{
-                  display: "block",
-                  border: "none",
-                  height: "38px",
-                  fontSize: "1rem"
+                  display: 'block',
+                  border: 'none',
+                  height: '38px',
+                  fontSize: '1rem',
                 }}
               >
                 Question successfully changed

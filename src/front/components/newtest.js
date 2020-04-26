@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Sidebar,
   Segment,
@@ -12,17 +12,17 @@ import {
   Pagination,
   Modal,
   Form,
-  GridRow
-} from "semantic-ui-react";
-import Spinner from "react-spinkit";
-import history from "./history";
-import Select from "react-select";
-import makeAnimated from "react-select/lib/animated";
-import History from "./history";
-import endpoint from "../enpoint";
-import _ from "lodash";
-import Preview from "./Preview";
-import { pubpath } from "../enpoint";
+  GridRow,
+} from 'semantic-ui-react';
+import Spinner from 'react-spinkit';
+import history from './history';
+import Select from 'react-select';
+import makeAnimated from 'react-select/lib/animated';
+import History from './history';
+import endpoint from '../enpoint';
+import _ from 'lodash';
+import Preview from './Preview';
+import { pubpath } from '../enpoint';
 class NewTest extends React.Component {
   constructor(props) {
     super(props);
@@ -37,9 +37,9 @@ class NewTest extends React.Component {
         props.q[props.cat] != undefined
           ? props.q[props.cat][props.topic] != undefined &&
             props.q[props.cat][props.topic].q[props.i] != undefined
-            ? props.q[props.cat][props.topic].q[props.i].v || ""
-            : ""
-          : "",
+            ? props.q[props.cat][props.topic].q[props.i].v || ''
+            : ''
+          : '',
       check:
         props.q[props.cat] != undefined
           ? props.q[props.cat][props.topic] != undefined &&
@@ -47,7 +47,7 @@ class NewTest extends React.Component {
             ? props.q[props.cat][props.topic].q[props.i].a != 0 &&
               props.q[props.cat][props.topic].q[props.i].a != 3
             : false
-          : false
+          : false,
     };
     this.logout = this.logout.bind(this);
     this.emit = this.emit.bind(this);
@@ -61,7 +61,7 @@ class NewTest extends React.Component {
   handleCategoryChange(e) {
     this.setState({
       topics: e.topics,
-      selCat: { _id: e.value, name: e.label }
+      selCat: { _id: e.value, name: e.label },
     });
   }
   handleTopicChange(e) {
@@ -80,8 +80,8 @@ class NewTest extends React.Component {
     } else {
       q[cat][topic].q[i].a = 1;
     }
-    emit("changeQuestion", [q[cat][topic], cat, topic]);
-    stateSet("qstate", q);
+    emit('changeQuestion', [q[cat][topic], cat, topic]);
+    stateSet('qstate', q);
     this.setState({ check: true });
   }
   logout() {
@@ -91,17 +91,18 @@ class NewTest extends React.Component {
     let { q, i, cat, topic } = this.props;
     let { props } = this;
     if (q[cat] !== undefined) {
-      fetch(endpoint + "/api/question", {
+      //Changes for running local
+      fetch('http://localhost:5000' + endpoint + '/api/question', {
         body: JSON.stringify({
           n: q[cat][topic].q[i].n,
           cat: cat,
-          topic: this.props.topic
+          topic: this.props.topic,
         }),
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
       })
-        .then(res => res.json())
-        .then(question => {
+        .then((res) => res.json())
+        .then((question) => {
           if (!question.err) {
             this.setState({
               question: question.question,
@@ -109,9 +110,9 @@ class NewTest extends React.Component {
                 props.q[props.cat] != undefined
                   ? props.q[props.cat][props.topic] != undefined &&
                     props.q[props.cat][props.topic].q[props.i] != undefined
-                    ? props.q[props.cat][props.topic].q[props.i].v || ""
-                    : ""
-                  : "",
+                    ? props.q[props.cat][props.topic].q[props.i].v || ''
+                    : ''
+                  : '',
               check:
                 props.q[props.cat] != undefined
                   ? props.q[props.cat][props.topic] != undefined &&
@@ -119,7 +120,7 @@ class NewTest extends React.Component {
                     ? props.q[props.cat][props.topic].q[props.i].a != 0 &&
                       props.q[props.cat][props.topic].q[props.i].a != 3
                     : false
-                  : false
+                  : false,
             });
           }
         });
@@ -139,16 +140,16 @@ class NewTest extends React.Component {
       this.setState({ value });
       q[cat][topic].q[i].a = 3;
       q[cat][topic].q[i].v = value;
-      emit("changeQuestion", [q[cat][topic], cat, topic]);
-      stateSet("qstate", q);
+      emit('changeQuestion', [q[cat][topic], cat, topic]);
+      stateSet('qstate', q);
     }
   }
   render() {
     let { topics, value, check, question: q } = this.state;
     let { categories, i, q: qall, cat, cid, topic } = this.props;
 
-    let ac = cat.replace(/ /g, "+"),
-      top = topic.replace(/ /g, "+");
+    let ac = cat.replace(/ /g, '+'),
+      top = topic.replace(/ /g, '+');
     let qa = qall[cat];
     if (qa != undefined && q == undefined) {
       this.fetchQuestion();
@@ -175,70 +176,74 @@ class NewTest extends React.Component {
                     <Grid.Row>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="a"
-                              checked={value == "a"}
+                              value='a'
+                              checked={value == 'a'}
                               onChange={this.handleRadio}
                               disabled={check}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Segment
-                              className="cursorpointer"
-                              onClick={e => this.handleRadio(e, { value: "a" })}
+                              className='cursorpointer'
+                              onClick={(e) =>
+                                this.handleRadio(e, { value: 'a' })
+                              }
                               inverted={
-                                value == "a" ||
-                                (check && q.answer == "a") ||
+                                value == 'a' ||
+                                (check && q.answer == 'a') ||
                                 this.props.dark
                               }
                               color={
-                                value == "a" && check && q.answer != "a"
-                                  ? "red"
-                                  : (!check && value == "a") ||
-                                    (check && q.answer == "a")
-                                  ? "green"
+                                value == 'a' && check && q.answer != 'a'
+                                  ? 'red'
+                                  : (!check && value == 'a') ||
+                                    (check && q.answer == 'a')
+                                  ? 'green'
                                   : this.props.dark
-                                  ? "grey"
+                                  ? 'grey'
                                   : null
                               }
                             >
-                              {q.options.a.split(") ").pop()}
+                              {q.options.a.split(') ').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
                       </Grid.Column>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="b"
-                              checked={value == "b"}
+                              value='b'
+                              checked={value == 'b'}
                               onChange={this.handleRadio}
                               disabled={check}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Segment
-                              className="cursorpointer"
-                              onClick={e => this.handleRadio(e, { value: "b" })}
+                              className='cursorpointer'
+                              onClick={(e) =>
+                                this.handleRadio(e, { value: 'b' })
+                              }
                               inverted={
-                                value == "b" ||
-                                (check && q.answer == "b") ||
+                                value == 'b' ||
+                                (check && q.answer == 'b') ||
                                 this.props.dark
                               }
                               color={
-                                value == "b" && check && q.answer != "b"
-                                  ? "red"
-                                  : (!check && value == "b") ||
-                                    (check && q.answer == "b")
-                                  ? "green"
+                                value == 'b' && check && q.answer != 'b'
+                                  ? 'red'
+                                  : (!check && value == 'b') ||
+                                    (check && q.answer == 'b')
+                                  ? 'green'
                                   : this.props.dark
-                                  ? "grey"
+                                  ? 'grey'
                                   : null
                               }
                             >
-                              {q.options.b.split(") ").pop()}
+                              {q.options.b.split(') ').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -247,70 +252,74 @@ class NewTest extends React.Component {
                     <Grid.Row>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="c"
-                              checked={value == "c"}
+                              value='c'
+                              checked={value == 'c'}
                               onChange={this.handleRadio}
                               disabled={check}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Segment
-                              className="cursorpointer"
-                              onClick={e => this.handleRadio(e, { value: "c" })}
+                              className='cursorpointer'
+                              onClick={(e) =>
+                                this.handleRadio(e, { value: 'c' })
+                              }
                               inverted={
-                                value == "c" ||
-                                (check && q.answer == "c") ||
+                                value == 'c' ||
+                                (check && q.answer == 'c') ||
                                 this.props.dark
                               }
                               color={
-                                value == "c" && check && q.answer != "c"
-                                  ? "red"
-                                  : (!check && value == "c") ||
-                                    (check && q.answer == "c")
-                                  ? "green"
+                                value == 'c' && check && q.answer != 'c'
+                                  ? 'red'
+                                  : (!check && value == 'c') ||
+                                    (check && q.answer == 'c')
+                                  ? 'green'
                                   : this.props.dark
-                                  ? "grey"
+                                  ? 'grey'
                                   : null
                               }
                             >
-                              {q.options.c.split(") ").pop()}
+                              {q.options.c.split(') ').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
                       </Grid.Column>
                       <Grid.Column>
                         <Grid column={2}>
-                          <Grid.Column className="radio-column">
+                          <Grid.Column className='radio-column'>
                             <Form.Radio
-                              value="d"
-                              checked={value == "d"}
+                              value='d'
+                              checked={value == 'd'}
                               onChange={this.handleRadio}
                               disabled={check}
                             />
                           </Grid.Column>
-                          <Grid.Column className="input-column">
+                          <Grid.Column className='input-column'>
                             <Segment
-                              className="cursorpointer"
-                              onClick={e => this.handleRadio(e, { value: "d" })}
+                              className='cursorpointer'
+                              onClick={(e) =>
+                                this.handleRadio(e, { value: 'd' })
+                              }
                               inverted={
-                                value == "d" ||
-                                (check && q.answer == "d") ||
+                                value == 'd' ||
+                                (check && q.answer == 'd') ||
                                 this.props.dark
                               }
                               color={
-                                value == "d" && check && q.answer != "d"
-                                  ? "red"
-                                  : (!check && value == "d") ||
-                                    (check && q.answer == "d")
-                                  ? "green"
+                                value == 'd' && check && q.answer != 'd'
+                                  ? 'red'
+                                  : (!check && value == 'd') ||
+                                    (check && q.answer == 'd')
+                                  ? 'green'
                                   : this.props.dark
-                                  ? "grey"
+                                  ? 'grey'
                                   : null
                               }
                             >
-                              {q.options.d.split(") ").pop()}
+                              {q.options.d.split(') ').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -320,9 +329,9 @@ class NewTest extends React.Component {
                 </Segment>
                 <Form
                   inverted={this.props.dark}
-                  onSubmit={e => {
+                  onSubmit={(e) => {
                     e.preventDefault();
-                    if (![null, ""].includes(this.state.value)) {
+                    if (![null, ''].includes(this.state.value)) {
                       this.handleSub();
                     }
                   }}
@@ -331,7 +340,7 @@ class NewTest extends React.Component {
                     <Button
                       primary
                       fluid
-                      disabled={check || [null, ""].includes(this.state.value)}
+                      disabled={check || [null, ''].includes(this.state.value)}
                     >
                       Submit
                     </Button>
@@ -343,8 +352,8 @@ class NewTest extends React.Component {
               </Segment>
             ) : (
               <Segment padded inverted={this.props.dark}>
-                <Grid centered style={{ minHeight: "500px" }}>
-                  <Spinner color="#3281ff" name="circle" />{" "}
+                <Grid centered style={{ minHeight: '500px' }}>
+                  <Spinner color='#3281ff' name='circle' />{' '}
                 </Grid>
               </Segment>
             )}
@@ -355,12 +364,14 @@ class NewTest extends React.Component {
                     <Button
                       primary
                       fluid
-                      onClick={e => {
+                      onClick={(e) => {
                         if (i > 0) {
-                          history.push(
-                            `${pubpath}/question/${ac}/${top}/${i - 1}`
-                          );
                           this.reset();
+                          history.push(
+                            `${pubpath}/question/${ac}/${top}/${
+                              parseInt(i) - 1
+                            }`
+                          );
                         }
                       }}
                       disabled={!(i > 0)}
@@ -372,7 +383,7 @@ class NewTest extends React.Component {
                     <Button
                       primary
                       fluid
-                      onClick={e => {
+                      onClick={(e) => {
                         history.push(`${pubpath}/question/${ac}/${top}`);
                       }}
                     >
@@ -383,12 +394,13 @@ class NewTest extends React.Component {
                     <Button
                       primary
                       fluid
-                      onClick={e => {
+                      onClick={(e) => {
                         if (i < 99) {
                           this.reset();
                           history.push(
-                            `${pubpath}/question/${ac}/${top}/${parseInt(i) +
-                              1}`
+                            `${pubpath}/question/${ac}/${top}/${
+                              parseInt(i) + 1
+                            }`
                           );
                         }
                       }}

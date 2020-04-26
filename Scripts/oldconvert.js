@@ -36,7 +36,7 @@ const fs = require('fs');
 
 db.on('open', () => {
   console.log('connected to database');
-  fs.readdir('./questions', (err, files) => {
+  fs.readdir('./upload', (err, files) => {
     files.map((file) => {
       let filename = file;
       let name = file.replace(/_/g, ' ').split('+');
@@ -49,10 +49,9 @@ db.on('open', () => {
       let tname = name[2].split('.').shift();
       console.log(cid, cname, tid, tname);
       csv()
-        .fromFile('./questions/' + filename)
+        .fromFile('./upload/' + filename)
         .then((jsonObj) => {
           jsonObj.map((k, i) => {
-            console.log(i);
             let que = k.Question;
             que = que.split('. ');
             que.shift();
@@ -63,7 +62,7 @@ db.on('open', () => {
               newdef = newdef.split('\t');
             }
             newdef.shift();
-            console.log(newdef, que);
+            // console.log(newdef, que);
             let obj = {
               category: {
                 _id: cid,
@@ -75,7 +74,7 @@ db.on('open', () => {
                 name: tname,
               },
               number: i,
-              answer: k.Answer,
+              answer: k.Answer.slice(1, 2),
               options: {
                 a: k['Option A'],
                 b: k['Option B'],
@@ -88,6 +87,7 @@ db.on('open', () => {
             };
             let q = new Questions(obj);
             q.save();
+            console.log('Done');
           });
         });
     });

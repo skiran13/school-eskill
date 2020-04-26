@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Form,
   Input,
@@ -11,80 +11,47 @@ import {
   Container,
   Icon,
   Grid,
+  Dropdown,
   Modal,
-  Header
-} from "semantic-ui-react";
-import history from "./history";
-import _ from "lodash";
-import { pubpath } from "../enpoint";
+  Header,
+} from 'semantic-ui-react';
+import history from './history';
+import _ from 'lodash';
+import { pubpath } from '../enpoint';
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      passError: ""
+      passError: '',
+      value: [],
     };
     this.submit = this.submit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
+  handleChange = (e, { value }) => this.setState({ value });
   submit(e) {
-    this.setState({ passError: "" });
-    let regNo = document.querySelector("#reg").value;
-    let getCurrentYear = () => {
-      if (new Date().getMonth() + 1 <= 7) {
-        let currentYear;
-        switch (
-          parseInt(new Date().getFullYear()) -
-            parseInt(`20${regNo.slice(2, 4)}`)
-        ) {
-          case 1:
-            currentYear = "First Year";
-            break;
-          case 2:
-            currentYear = "Second Year";
-            break;
-          case 3:
-            currentYear = "Third Year";
-            break;
-          case 4:
-            currentYear = "Fourth Year";
-        }
-        return currentYear;
-      } else {
-        let currentYear;
-        switch (
-          parseInt(new Date().getFullYear()) -
-            parseInt(`20${regNo.slice(2, 4)}`)
-        ) {
-          case 0:
-            currentYear = "First Year";
-            break;
-          case 1:
-            currentYear = "Second Year";
-            break;
-          case 2:
-            currentYear = "Third Year";
-            break;
-          case 3:
-            currentYear = "Fourth Year";
-        }
-        return currentYear;
-      }
-    };
+    this.setState({ passError: '' });
+    let regNo = document.querySelector('#reg').value;
+
     function getBranch() {
       let branch;
 
       return branch;
     }
     let obj = {
-      name: document.querySelector("#name").value,
-      regNo: document.querySelector("#reg").value,
-      branch: document.querySelector("#branch").innerText,
-      cbranch: document.querySelector("#collegebranch").innerText,
-      password: document.querySelector("#password").value,
-      confirm: document.querySelector("#confirm").value,
-      email: document.querySelector("#email").value
+      name: document.querySelector('#name').value,
+      regNo: document.querySelector('#reg').value,
+      branch: this.props.mode
+        ? 'Faculty'
+        : document.querySelector('#branch').innerText,
+      classes: this.state.value,
+      cbranch: document.querySelector('#schoolbranch').innerText,
+      password: document.querySelector('#password').value,
+      confirm: document.querySelector('#confirm').value,
+      email: document.querySelector('#email').value,
     };
     if (obj.password == obj.confirm) {
-      this.props.emit("reg", obj);
+      this.props.emit('reg', obj);
       history.push(pubpath);
     } else {
       this.setState({ passError: "Passwords don't match! " });
@@ -93,231 +60,156 @@ class RegisterPage extends Component {
 
   render() {
     const options = [
-      { key: "m", text: "Male", value: "male" },
-      { key: "f", text: "Female", value: "female" }
+      { key: 'm', text: 'Male', value: 'male' },
+      { key: 'f', text: 'Female', value: 'female' },
     ];
+    let { value } = this.state;
     const branches = [
-      { key: "b", text: "BioTechnology", value: "biotech" },
-      { key: "a", text: "Automobile Engineering", value: "auto" },
-      { key: "i", text: "Information Technology", value: "it" },
-      { key: "cheme", text: "Chemical Engineering", value: "cheme" },
-      {
-        key: "ee",
-        text: "Electrical and Electronics Engineering",
-        value: "eee"
-      },
-      { key: "ce", text: "Civil Engineering", value: "ce" },
-      { key: "me", text: "Mechanical Engineering", value: "me" },
-      { key: "cs", text: "Computer Science and Engineering", value: "cse" },
-      {
-        key: "ec",
-        text: "Electronics and Communications Engineering",
-        value: "ece"
-      },
-      {
-        key: "se",
-        text: "Software Engineering",
-        value: "se"
-      },
-      {
-        key: "ae",
-        text: "Aerospace Engineering",
-        value: "ae"
-      },
-      {
-        key: "bin",
-        text: "Bioinformatics",
-        value: "bin"
-      },
-      {
-        key: "bme",
-        text: "Biomedical Engineering",
-        value: "bme"
-      },
-      {
-        key: "mche",
-        text: "Mechatronics Engineering",
-        value: "mche"
-      },
-      {
-        key: "som",
-        text: "School of Management",
-        value: "som"
-      },
-      {
-        key: "agre",
-        text: "Agricultural Engineering",
-        value: "agre"
-      },
-      {
-        key: "eai",
-        text: "Electronics and Instrumentation",
-        value: "eai"
-      },
-      {
-        key: "gen",
-        text: "Genetic Engineering",
-        value: "gen"
-      },
-      {
-        key: "fpe",
-        text: "Food Processing Engineering",
-        value: "fpe"
-      },
-      {
-        key: "care",
-        text: "SRM CARE",
-        value: "care"
-      },
-      {
-        key: "eng",
-        text: "English",
-        value: "eng"
-      },
-      {
-        key: "phy",
-        text: "Physics",
-        value: "phy"
-      },
-      {
-        key: "chem",
-        text: "Chemistry",
-        value: "chem"
-      },
-      {
-        key: "math",
-        text: "Mathematics",
-        value: "math"
-      }
+      { key: 'c1', text: 'Class 1', value: 'Class 1' },
+      { key: 'c2', text: 'Class 2', value: 'Class 2' },
+      { key: 'c3', text: 'Class 3', value: 'Class 3' },
+      { key: 'c4', text: 'Class 4', value: 'Class 4' },
+      { key: 'c5', text: 'Class 5', value: 'Class 5' },
+      { key: 'c6', text: 'Class 6', value: 'Class 6' },
+      { key: 'c7', text: 'Class 7', value: 'Class 7' },
+      { key: 'c8', text: 'Class 8', value: 'Class 8' },
+      { key: 'c9', text: 'Class 9', value: 'Class 9' },
+      { key: 'c10', text: 'Class 10', value: 'Class 10' },
+      { key: 'c11', text: 'Class 11', value: 'Class 11' },
+      { key: 'c12', text: 'Class 12', value: 'Class 12' },
     ];
-    const collegebranches = [
-      { key: "srmktr", text: "SRM Kattankulathur", value: "srmktr" },
-      { key: "srmrmp", text: "SRM Ramapuram", value: "srmrmp" },
-      { key: "srmvdp", text: "SRM Vadapalani", value: "srmvdp" },
-      { key: "srmamr", text: "SRM Amaravathi", value: "srmamr" },
-      { key: "srmncr", text: "SRM NCR", value: "srmncr" },
-      {
-        key: "valengc",
-        text: "Valliammai Engineering College",
-        value: "valengc"
-      },
-      { key: "trp", text: "TRP Engineering College", value: "trp" },
-      { key: "easw", text: "Easwari Engineering College", value: "easw" }
+    const schoolbranchs = [
+      { key: 'srmpub', text: 'SRM Public School', value: 'srmpub' },
     ];
     return (
       <Grid
         centered
-        verticalAlign="middle"
+        verticalAlign='middle'
         style={{
-          height: "100vh",
-          paddingTop: "14px",
-          width: "100vw",
-          backgroundColor: this.props.dark ? "#222" : "#fff"
+          height: '100vh',
+          paddingTop: '14px',
+          width: '100vw',
+          backgroundColor: this.props.dark ? '#222' : '#fff',
         }}
       >
-        <Grid.Row verticalAlign="middle">
-          <Grid.Column width={13} textAlign="center">
-            <Segment padded size="big" inverted={this.props.dark}>
+        <Grid.Row verticalAlign='middle'>
+          <Grid.Column width={13} textAlign='center'>
+            <Segment padded size='big' inverted={this.props.dark}>
               <Header
-                as="h2"
+                as='h2'
                 style={{
-                  marginBottom: "0"
+                  marginBottom: '0',
                 }}
               >
-                eSkill {this.props.mode ? "Faculty" : "Student"} Registration
+                eSkill {this.props.mode ? 'Faculty' : 'Student'} Registration
               </Header>
               <p
                 style={{
-                  fontSize: "14px"
+                  fontSize: '14px',
                 }}
               >
-                {" "}
+                {' '}
                 Please fill in the details in order to continue
               </p>
               <Form
                 inverted={this.props.dark}
-                onSubmit={e => {
+                onSubmit={(e) => {
                   e.preventDefault();
                   this.submit(e);
                 }}
               >
                 <Form.Field>
                   <label>Full Name</label>
-                  <input id="name" required placeholder="Name" />
+                  <input id='name' required placeholder='Name' />
                 </Form.Field>
                 <Form.Field>
                   <label>Reg Number</label>
                   <input
-                    id="reg"
+                    id='reg'
                     required
-                    placeholder={this.props.mode ? "Id" : "Reg No."}
+                    placeholder={this.props.mode ? 'Id' : 'Reg No.'}
                   />
                 </Form.Field>
-                <Form.Group widths="equal">
+                <Form.Group widths='equal'>
                   <Form.Field
                     control={Select}
                     required
-                    label="College"
-                    options={collegebranches}
-                    placeholder="College"
-                    id="collegebranch"
+                    label='School'
+                    options={schoolbranchs}
+                    placeholder='School'
+                    id='schoolbranch'
                   />
-                  <Form.Field
-                    control={Select}
-                    required
-                    label="Field"
-                    options={_.orderBy(branches, ["text"], ["asc"])}
-                    placeholder="Field"
-                    id="branch"
-                  />
+                  {this.props.mode ? (
+                    <Form.Field
+                      control={Dropdown}
+                      required
+                      multiple
+                      selection
+                      value={value}
+                      onChange={this.handleChange}
+                      placeholder='Classes'
+                      label='Classes'
+                      options={branches}
+                      id='classes'
+                    />
+                  ) : (
+                    <Form.Field
+                      control={Select}
+                      required
+                      label='Class'
+                      options={branches}
+                      placeholder='Class'
+                      id='branch'
+                    />
+                  )}
                 </Form.Group>
-                <Form.Group widths="equal">
+                <Form.Group widths='equal'>
                   <Form.Input
                     required
                     fluid
-                    id="email"
-                    label="Email"
-                    placeholder="Email ID"
+                    id='email'
+                    label='Email'
+                    placeholder='Email ID'
                   />
                   <Form.Input
-                    type="password"
+                    type='password'
                     required
                     fluid
-                    id="password"
-                    label="Password"
-                    placeholder="Password"
+                    id='password'
+                    label='Password'
+                    placeholder='Password'
                   />
                   <Form.Input
-                    type="password"
+                    type='password'
                     required
                     fluid
-                    id="confirm"
-                    label="Confirm Password"
-                    placeholder="Confirm Password"
+                    id='confirm'
+                    label='Confirm Password'
+                    placeholder='Confirm Password'
                   />
                 </Form.Group>
 
                 <Button
-                  type="cancel"
-                  onClick={e => {
+                  type='cancel'
+                  onClick={(e) => {
                     e.preventDefault();
                     history.push(pubpath);
                   }}
                 >
                   Cancel
                 </Button>
-                <Button positive type="submit">
+                <Button positive type='submit'>
                   Register
                 </Button>
               </Form>
-              {this.state.passError !== "" ? (
+              {this.state.passError !== '' ? (
                 <div
-                  className="ui error message"
+                  className='ui error message'
                   style={{
-                    display: "block",
-                    border: "none",
-                    height: "38px",
-                    fontSize: "1rem"
+                    display: 'block',
+                    border: 'none',
+                    height: '38px',
+                    fontSize: '1rem',
                   }}
                 >
                   {this.state.passError}
@@ -336,7 +228,7 @@ class CustomInput extends React.Component {
       <Button
         primary
         fluid
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           this.props.onClick(e);
         }}

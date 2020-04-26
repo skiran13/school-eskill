@@ -1,5 +1,5 @@
-$primarycolor: #3281ff;
-
+//$primarycolor: #3281ff;
+$primarycolor: #798162;
 $red: rgb(255, 34, 34);
 $orange: rgb(124, 103, 95);
 $yellow: #ffd700;
@@ -11,7 +11,7 @@ $violet: rgb(141, 29, 141);
 $purple: rgb(126, 26, 240);
 $pink: #ff1493;
 $brown: rgb(102, 51, 27);
-$gray: #e3eafa;
+$gray: #cccfc4;
 $secondarycolor: $gray;
 $black: #000000;
 body,
@@ -21,12 +21,14 @@ html,
   min-height: 100vh;
 
   background-color: #fff;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 #root > div {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAAG0lEQVQYV2OsaEoxZsABGEGSHXVzzmKTH3SSAEysGZnYa0dFAAAAAElFTkSuQmCC)
+    repeat;
 }
 .brand-menu:hover {
   cursor: pointer;
@@ -59,16 +61,16 @@ html,
 }
 .ui.header.login-heading {
   letter-spacing: 1.5px;
-  font-size: 22px;
+  font-size: xx-large;
   font-weight: bold;
   color: #444;
   font-weight: 600;
-  font-family: "Titillium Web";
+  font-family: 'Turret Road', sans-serif;
 }
 .ui.segment.minimal {
   border: 1px solid $gray;
   letter-spacing: 2px !important;
-  background-color: #ffffff;
+  background-color: #eeefeb;
   border-radius: 4px;
   box-shadow: none;
 }
@@ -82,6 +84,11 @@ textarea {
   font-size: 16px;
   letter-spacing: 1.5px;
 }
+textarea::placeholder {
+  color: rgba(87, 85, 85, 0.671) !important;
+  font-size: 16px;
+  letter-spacing: 1.5px;
+}
 .ui.segment.cursorpointer:hover {
   cursor: pointer;
 }
@@ -89,7 +96,7 @@ textarea {
   background-color: $primarycolor !important;
 }
 .ui.input input::placeholder {
-  color: rgba(191, 191, 191, 0.87) !important;
+  color: rgba(87, 85, 85, 0.671) !important;
   font-size: 16px;
   letter-spacing: 1.5px;
 }
@@ -117,6 +124,7 @@ textarea {
 .ui.segment .ui.primary.button {
   background-color: $primarycolor;
   text-transform: uppercase;
+  margin-bottom: 1em;
   height: 50px;
   & a {
     color: #fff;
@@ -162,6 +170,7 @@ textarea {
     }
   }
 }
+
 .pushable {
 }
 .ui.segment .ui.primary.basic.button {
@@ -174,6 +183,9 @@ textarea {
   border: 1px solid $gray !important;
   box-shadow: none !important;
   background-color: $gray;
+  & a {
+    color: black;
+  }
 }
 .ui.secondary.menu .item,
 .ui.secondary.menu.inverted .item,
@@ -223,10 +235,13 @@ textarea {
 }
 .ui.segment {
 }
+
 .ui.header.brand {
   color: $primarycolor;
+  font-family: 'Turret Road', sans-serif;
+  font-size: xx-large;
 }
-.ui[class*="vertically divided"].grid > .row:before {
+.ui[class*='vertically divided'].grid > .row:before {
   box-shadow: none;
 }
 .ui.toggle.checkbox input:checked ~ .box:before,
@@ -407,7 +422,7 @@ code {
   border-radius: 10px;
   background: #fff;
   animation: active-anim 2s cubic-bezier(0.25, 1, 0.6, 1) infinite;
-  content: "";
+  content: '';
   opacity: 0;
 }
 

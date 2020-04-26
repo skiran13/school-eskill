@@ -1,67 +1,69 @@
-const os = require("os");
-require("sticky-cluster")(
-  callback => {
-    const express = require("express");
+const os = require('os');
+require('sticky-cluster')(
+  (callback) => {
+    const express = require('express');
     const app = express();
-    const http = require("http");
+    const http = require('http');
     const server = http.createServer(app);
     server.setTimeout(180000);
     server.setMaxListeners(0);
-    let config = require("./config.json");
+    let config = require('./config.json');
     let { dburl, email: emailid, password, reset: resetURL, pubpath } = config;
-    const path = require("path");
-    const debug = process.env.NODE_ENV !== "production";
-    const io = require("socket.io")(server, {
-      path: pubpath + "/socket.io",
+    const path = require('path');
+    const debug = process.env.NODE_ENV !== 'production';
+    const io = require('socket.io')(server, {
+      path: pubpath + '/socket.io',
       pingTimeout: 360000,
-      transports: ['polling', 'xhr-polling']
+      transports: ['polling', 'xhr-polling'],
     });
-    const os = require("os");
+    const os = require('os');
     io.sockets.setMaxListeners(0);
-    const bcrypt = require("bcrypt");
-    const cookieParser = require("cookie-parser");
-    const bodyParser = require("body-parser");
-    const mongoose = require("mongoose");
-    const EventEmitter = require("events");
-    const nodemailer = require("nodemailer");
-    var redis = require("socket.io-redis");
-    var cluster = require("cluster");
-    let sticky = require("sticky-session");
-    io.adapter(redis({ host: "localhost", port: 6379 }));
+    const bcrypt = require('bcrypt');
+    const cookieParser = require('cookie-parser');
+    const bodyParser = require('body-parser');
+    const mongoose = require('mongoose');
+    const EventEmitter = require('events');
+    const nodemailer = require('nodemailer');
+    var redis = require('socket.io-redis');
+    var cluster = require('cluster');
+    let sticky = require('sticky-session');
+    io.adapter(redis({ host: 'localhost', port: 6379 }));
     const Schema = mongoose.Schema;
-    const _ = require("lodash");
+    const _ = require('lodash');
     class Event extends EventEmitter {}
-    let mode = false;
-    var redis = require("redis-eventemitter");
+    let mode = true;
+    var redis = require('redis-eventemitter');
     var pubsub = redis({
-      url: "redis://redis@localhost:6379/"
+      url: 'redis://redis@localhost:6379/',
     });
     pubsub.setMaxListeners(0);
     let concurrentUsers = 0;
     const dbCheck = new Event();
     dbCheck.setMaxListeners(8000000);
     function makeid() {
-      var text = "";
+      var text = '';
       var possible =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
       for (var i = 0; i < 16; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
 
       return text;
     }
-    let validateEmail = email => {
+    let validateEmail = (email) => {
       var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     };
     let getAcademicYear = () => {
       let academicYear;
       if (new Date().getMonth + 1 < 7) {
-        academicYear = `${new Date().getFullYear() -
-          1} - ${new Date().getFullYear()}`;
+        academicYear = `${
+          new Date().getFullYear() - 1
+        } - ${new Date().getFullYear()}`;
       } else {
-        academicYear = `${new Date().getFullYear()} - ${new Date().getFullYear() +
-          1}`;
+        academicYear = `${new Date().getFullYear()} - ${
+          new Date().getFullYear() + 1
+        }`;
       }
       return academicYear;
     };
@@ -72,59 +74,56 @@ require("sticky-cluster")(
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use((req, res, next) => {
-      res.append("Access-Control-Allow-Origin", ["*"]);
-      res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+      res.append('Access-Control-Allow-Origin', ['*']);
+      res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
       res.append(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
       );
       next();
     });
-    app.use(pubpath, express.static(path.resolve(__dirname, "dist")));
+    app.use(pubpath, express.static(path.resolve(__dirname, 'dist')));
 
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
         user: emailid,
-        pass: password
-      }
+        pass: password,
+      },
     });
-    mongoose.connect(
-      dburl,
-      { useNewUrlParser: true }
-    );
+    mongoose.connect(dburl, { useNewUrlParser: true });
 
     let db = mongoose.connection;
 
     let Users = mongoose.model(
-      "Users",
+      'Users',
       new Schema({
         _id: String,
         email: String,
         password: String,
         type: String,
         level: Number,
-        questions: Object
+        questions: Object,
       }),
-      "Users"
+      'Users'
     );
     let Label = mongoose.model(
-      "Label",
+      'Label',
       new Schema({
         _id: String,
-        name: String
+        name: String,
       })
     );
     let Tags = mongoose.model(
-      "Tags",
+      'Tags',
       new Schema({
         group: String,
-        name: String
+        name: String,
       }),
-      "Tags"
+      'Tags'
     );
     let Questions = mongoose.model(
-      "Questions",
+      'Questions',
       new Schema({
         category: Object,
         label: Array,
@@ -134,12 +133,12 @@ require("sticky-cluster")(
         qname: String,
         qdef: String,
         hints: String,
-        number: Number
+        number: Number,
       }),
-      "Questions"
+      'Questions'
     );
     let UserDetails = mongoose.model(
-      "UserDetails",
+      'UserDetails',
       new Schema({
         _id: String,
         level: Number,
@@ -152,26 +151,28 @@ require("sticky-cluster")(
           department: String,
           students: Array,
           problems: Array,
-          branch: String
-        }
+          branch: String,
+          classes: Array,
+        },
       }),
-      "UserDetails"
+      'UserDetails'
     );
     let Category = mongoose.model(
-      "Category",
+      'Category',
       new Schema({
         _id: Number,
         name: String,
+        class: String,
         topics: Array,
-        notified: Boolean
+        notified: Boolean,
       }),
-      "Category"
+      'Category'
     );
 
-    dbCheck.on("notify", name => {
+    dbCheck.on('notify', (name) => {
       try {
         UserDetails.find((err, accounts) => {
-          accounts.map(account => {
+          accounts.map((account) => {
             if ([0, 4].includes(account.level)) {
               if (
                 account.notifications == undefined ||
@@ -185,10 +186,10 @@ require("sticky-cluster")(
               if (_.find(notifications, { name: name }) == undefined) {
                 notifications.push({ name: name, unread: true });
               }
-              account.markModified("notifications");
-              account.save(err => {
+              account.markModified('notifications');
+              account.save((err) => {
                 if (!err) {
-                  pubsub.emit("change", [account._id]);
+                  pubsub.emit('change', [account._id]);
                 }
               });
             }
@@ -196,7 +197,7 @@ require("sticky-cluster")(
         });
       } catch (e) {}
     });
-    dbCheck.on("singlenotify", ({ name, id: sid }) => {
+    dbCheck.on('singlenotify', ({ name, id: sid }) => {
       try {
         UserDetails.findById(sid, (err, account) => {
           if (
@@ -208,10 +209,10 @@ require("sticky-cluster")(
           if (_.find(account.notifications, { name: name }) == undefined) {
             account.notifications.push({ name: name, unread: true });
           }
-          account.markModified("notifications");
-          account.save(err => {
+          account.markModified('notifications');
+          account.save((err) => {
             if (!err) {
-              pubsub.emit("change", [account._id]);
+              pubsub.emit('change', [account._id]);
             }
           });
         });
@@ -219,18 +220,18 @@ require("sticky-cluster")(
     });
     let validateLogin = (acc, content, e) => {
       if (acc != null) {
-        bcrypt.compare(content.pass, acc.password, function(err, res) {
+        bcrypt.compare(content.pass, acc.password, function (err, res) {
           if (res) {
-            e.emit("success", acc);
+            e.emit('success', acc);
           } else {
-            e.emit("fail", "np");
+            e.emit('fail', 'np');
           }
         });
       } else {
-        e.emit("fail", "nu");
+        e.emit('fail', 'nu');
       }
     };
-    db.on("open", () => {
+    db.on('open', () => {
       dbconnect = true;
       // DO NOT UNCOMMENT IF YOU DONT NEED TO NUKE ---------------WARNING-------------
       // UserDetails.find({ level: 4 }, (err, faculties) => {
@@ -253,36 +254,36 @@ require("sticky-cluster")(
     });
     let canReg = true;
     let resetArray = [];
-    io.on("connection", socket => {
-      socket.on("error", err => {
+    io.on('connection', (socket) => {
+      socket.on('error', (err) => {
         console.log(err);
       });
 
       let loggedIn = false,
         level = -1,
-        account = { _id: "" };
-      socket.emit("mode", mode);
-      socket.emit("canReg", canReg);
-      socket.on("logout", () => {
+        account = { _id: '' };
+      socket.emit('mode', mode);
+      socket.emit('canReg', canReg);
+      socket.on('logout', () => {
         loggedIn = false;
         level = -1;
-        account = { _id: "" };
+        account = { _id: '' };
       });
 
-      console.log("user connected");
+      console.log('user connected');
       concurrentUsers++;
       const loginCheck = new Event();
       socket.setMaxListeners(0);
-      pubsub.on("change", (channel, idlist) => {
+      pubsub.on('change', (channel, idlist) => {
         if (idlist.includes(account._id)) {
           UserDetails.findById(account._id, (err, details) => {
-            socket.emit("changeDetails", {
-              details: details
+            socket.emit('changeDetails', {
+              details: details,
             });
             if (level == 0) {
               Users.findById(account._id, (err, newacc) => {
                 try {
-                  socket.emit("q", newacc.questions);
+                  socket.emit('q', newacc.questions);
                 } catch (e) {
                   console.log(newacc);
                 }
@@ -291,7 +292,7 @@ require("sticky-cluster")(
           });
         }
       });
-      socket.on("det", content => {
+      socket.on('det', (content) => {
         if (validateEmail(content.email)) {
           Users.findOne({ email: content.email }, (err, acc) => {
             validateLogin(acc, content, loginCheck);
@@ -302,139 +303,140 @@ require("sticky-cluster")(
           });
         }
       });
-      pubsub.on("count", () => {
+      pubsub.on('count', () => {
         if (loggedIn && [1, 2].includes(level)) {
           Users.countDocuments({ level: 0 }, (err, c) => {
             Users.countDocuments({ level: 4 }, (err, c2) => {
-              socket.emit("count", [c, c2]);
+              socket.emit('count', [c, c2]);
             });
           });
         }
       });
-      loginCheck.on("success", acc => {
+      loginCheck.on('success', (acc) => {
         account._id = acc._id;
-        pubsub.emit("count");
+        pubsub.emit('count');
         loggedIn = true;
         level = acc.level;
         UserDetails.findById(acc._id, (err, details) => {
-          socket.emit("validateLogin", {
+          socket.emit('validateLogin', {
             validate: true,
             details: details,
             level: acc.level,
-            type: acc.type
+            type: acc.type,
           });
-          pubsub.emit("count");
+          pubsub.emit('count');
           Questions.countDocuments((err, c) => {
-            socket.emit("questionnumber", c);
+            socket.emit('questionnumber', c);
           });
           if ([1, 2].includes(level)) {
-            pubsub.emit("count");
+            pubsub.emit('count');
           }
           Category.find()
             .sort({ $natural: 1 })
             .exec((err, cats) => {
-              socket.emit("categories", cats);
+              socket.emit('categories', cats);
             });
 
           if (level == 0) {
-            socket.emit("q", acc.questions);
+            socket.emit('q', acc.questions);
           }
         });
       });
-      loginCheck.on("fail", reason => {
-        socket.emit("fail", reason);
+      loginCheck.on('fail', (reason) => {
+        socket.emit('fail', reason);
       });
 
-      socket.on("disconnect", () => {
+      socket.on('disconnect', () => {
         concurrentUsers--;
-        console.log("user disconnected");
+        console.log('user disconnected');
       });
 
       // -------------------------- ADMIN START -----------------------
-      socket.on("addTag", info => {
+      socket.on('addTag', (info) => {
         if (loggedIn && level == 2) {
           Tags.findOne(
             {
               name: {
-                $regex: new RegExp(`(${info.name})\\b`, "gi")
-              }
+                $regex: new RegExp(`(${info.name})\\b`, 'gi'),
+              },
             },
             (err, presentTag) => {
               if (presentTag == null) {
-                socket.emit("tagError", "");
+                socket.emit('tagError', '');
                 let tag = new Tags({
                   name: info.name,
-                  group: info.group
+                  group: info.group,
                 });
-                tag.save(err => {
+                tag.save((err) => {
                   if (err == null) {
-                    socket.emit("success", "tag");
+                    socket.emit('success', 'tag');
                     Tags.find().exec((err, tags) => {
-                      socket.emit("tags", tags);
+                      socket.emit('tags', tags);
                     });
                   }
                 });
               } else {
-                socket.emit("tagError", "Tag already Exists!");
+                socket.emit('tagError', 'Tag already Exists!');
               }
             }
           );
         }
       });
-      socket.on("addTopic", info => {
+      socket.on('addTopic', (info) => {
         if (loggedIn && level == 2) {
           Category.findOne(
             {
               name: {
-                $regex: new RegExp(`(${info.category})\\b`, "gi")
-              }
+                $regex: new RegExp(`(${info.category})\\b`, 'gi'),
+              },
             },
             (err, cat) => {
               if (_.findIndex(cat.topics, { name: info.topic }) == -1) {
                 cat.topics.push({
                   id: `${cat._id * 100 + cat.topics.length + 1}`,
                   name: info.topic,
-                  notified: false
+                  notified: false,
                 });
-                cat.markModified("topics");
+                cat.markModified('topics');
                 cat.save((err, sct) => {
-                  socket.emit("success", "topic");
+                  socket.emit('success', 'topic');
                   Category.find()
                     .sort({ $natural: 1 })
                     .exec((err, cats) => {
-                      socket.emit("categories", cats);
+                      socket.emit('categories', cats);
                     });
                 });
               } else {
-                socket.emit("topError", "Course already exists!");
+                socket.emit('topError', 'Course already exists!');
               }
             }
           );
         }
       });
-      socket.on("toggleReg", () => {
+      socket.on('toggleReg', () => {
         if (loggedIn && level == 2) {
           canReg = !canReg;
-          socket.emit("canReg", canReg);
+          socket.emit('canReg', canReg);
         }
       });
-      socket.on("changeMode", checked => {
+      socket.on('changeMode', (checked) => {
         if (loggedIn && level == 2) {
           mode = !mode;
-          socket.emit("mode", mode);
+          socket.emit('mode', mode);
         }
       });
-      socket.on("addCategory", cat => {
+      socket.on('addCategory', (cat) => {
         if (loggedIn && level == 2) {
           Category.findOne(
             {
               name: {
-                $regex: new RegExp(`(${cat})\\b`, "gi")
-              }
+                $regex: new RegExp(`(${cat.category})\\b`, 'gi'),
+              },
+              class: `${cat.classes}`,
             },
             (err, presentCat) => {
               if (presentCat == null) {
-                socket.emit("catError", "");
+                socket.emit('catError', '');
                 Category.find()
                   .sort({ $natural: -1 })
                   .limit(1)
@@ -442,17 +444,18 @@ require("sticky-cluster")(
                     if (el.length == 0) {
                       let newCat = new Category({
                         _id: 1,
-                        name: `${cat}`,
+                        name: `${cat.category}`,
+                        class: `${cat.classes}`,
                         topics: [],
-                        notified: false
+                        notified: false,
                       });
-                      newCat.save(err => {
+                      newCat.save((err) => {
                         if (err == null) {
-                          socket.emit("success", "category");
+                          socket.emit('success', 'category');
                           Category.find()
                             .sort({ $natural: 1 })
                             .exec((err, cats) => {
-                              io.emit("categories", cats);
+                              io.emit('categories', cats);
                             });
                         } else {
                         }
@@ -462,17 +465,18 @@ require("sticky-cluster")(
                       id++;
                       let newCat = new Category({
                         _id: id,
-                        name: `${cat}`,
+                        name: `${cat.category}`,
+                        class: `${cat.classes}`,
                         topics: [],
-                        notified: false
+                        notified: false,
                       });
-                      newCat.save(err => {
+                      newCat.save((err) => {
                         if (err == null) {
-                          socket.emit("success", "category");
+                          socket.emit('success', 'category');
                           Category.find()
                             .sort({ $natural: 1 })
                             .exec((err, cats) => {
-                              io.emit("categories", cats);
+                              io.emit('categories', cats);
                             });
                         } else {
                         }
@@ -480,40 +484,56 @@ require("sticky-cluster")(
                     }
                   });
               } else {
-                socket.emit("catError", "Branch already exists!");
+                socket.emit('catError', 'Subject already exists!');
               }
             }
           );
         }
       });
-      socket.on("removeTop", t => {
+      socket.on('removeTop', (t) => {
         if (loggedIn && level == 2) {
           Category.findById(t.cid, (err, cate) => {
-            cate.topics = _.reject(cate.topics, top => top.id == t.tid);
-            cate.markModified("topics");
-            cate.save(err => {
+            cate.topics = _.reject(cate.topics, (top) => top.id == t.tid);
+            cate.markModified('topics');
+            cate.save((err) => {
               Category.find()
                 .sort({ $natural: 1 })
                 .exec((err, cats) => {
-                  io.emit("categories", cats);
+                  io.emit('categories', cats);
                 });
             });
           });
         }
       });
-      socket.on("categoryNotify", c => {
+      socket.on('removeCat', (t) => {
+        console.log(t, 'delete');
+        if (loggedIn && level == 2) {
+          Category.findOneAndDelete(
+            { _id: t._id, name: t.name, class: t.class },
+            {},
+            (e, r) => {
+              Category.find()
+                .sort({ $natural: 1 })
+                .exec((err, cats) => {
+                  io.emit('categories', cats);
+                });
+            }
+          );
+        }
+      });
+      socket.on('categoryNotify', (c) => {
         if (loggedIn && level == 2) {
           Category.findById(c.cid, (err, cate) => {
             let index = _.findIndex(cate.topics, { name: c.name });
             cate.topics[index].notified = true;
-            cate.markModified("topics");
-            cate.save(err => {
+            cate.markModified('topics');
+            cate.save((err) => {
               Category.find()
                 .sort({ $natural: 1 })
                 .exec((err, cats) => {
-                  io.emit("categories", cats);
+                  io.emit('categories', cats);
                   dbCheck.emit(
-                    "notify",
+                    'notify',
                     `${c.name} has been added to ${cate.name}`
                   );
                 });
@@ -525,7 +545,7 @@ require("sticky-cluster")(
 
       // -------------------------- STUDENT START-------------------------------------
 
-      socket.on("reset", ({ topic, cat }) => {
+      socket.on('reset', ({ topic, cat }) => {
         if (loggedIn && level == 0) {
           Users.findById(account._id, (err, acc) => {
             if (acc.questions[cat][topic].qo == undefined) {
@@ -533,7 +553,7 @@ require("sticky-cluster")(
             }
             acc.questions[cat][topic].qo.concat(acc.questions[cat][topic].q);
             Questions.countDocuments(
-              { "category.name": cat, "topic.name": topic },
+              { 'category.name': cat, 'topic.name': topic },
               (err, c) => {
                 count = parseInt(c);
                 let q = [];
@@ -542,7 +562,7 @@ require("sticky-cluster")(
                   count > 100 &&
                   count - acc.questions[cat][topic].qo.length > 100
                 ) {
-                  console.log("looping");
+                  console.log('looping');
                   while (q.length < 100) {
                     var r = Math.floor(Math.random() * count);
                     if (
@@ -553,15 +573,15 @@ require("sticky-cluster")(
                   }
                 }
 
-                acc.questions[cat][topic].q = q.map(k => {
+                acc.questions[cat][topic].q = q.map((k) => {
                   return { n: k, a: 0 };
                 });
-                console.log("resetr");
-                acc.markModified("questions");
-                acc.save(err => {
+                console.log('resetr');
+                acc.markModified('questions');
+                acc.save((err) => {
                   if (err) {
                   } else {
-                    pubsub.emit("change", [acc._id]);
+                    pubsub.emit('change', [acc._id]);
                   }
                 });
               }
@@ -569,7 +589,7 @@ require("sticky-cluster")(
           });
         }
       });
-      socket.on("requestCourse", det => {
+      socket.on('requestCourse', (det) => {
         if (loggedIn && level == 0) {
           let { cat, faculty: pid, student: sid, cid, topic } = det;
           Users.findById(account._id, (err, stacc) => {
@@ -579,7 +599,7 @@ require("sticky-cluster")(
                   _.find(fac.details.students, {
                     _id: sid,
                     cat: cat,
-                    topic: topic
+                    topic: topic,
                   }) == undefined
                 ) {
                   fac.details.students.push({
@@ -587,11 +607,11 @@ require("sticky-cluster")(
                     topic: topic,
                     _id: sid,
                     a: true,
-                    name: details.details.name
+                    name: details.details.name,
                   });
-                  fac.markModified("details");
-                  fac.save(err => {
-                    pubsub.emit('change', [pid])
+                  fac.markModified('details');
+                  fac.save((err) => {
+                    pubsub.emit('change', [pid]);
                     if (stacc.questions == undefined) {
                       stacc.questions = {};
                       stacc.questions[cat] = {};
@@ -604,12 +624,12 @@ require("sticky-cluster")(
                       q: [],
                       cat: cat,
                       pid: fac._id,
-                      topic: topic
+                      topic: topic,
                     };
                     let q = [],
                       count = 0;
                     Questions.countDocuments(
-                      { "category.name": cat, "topic.name": topic },
+                      { 'category.name': cat, 'topic.name': topic },
                       (err, c) => {
                         count = c;
                         if (count >= 100) {
@@ -624,13 +644,13 @@ require("sticky-cluster")(
                           }
                         }
 
-                        stacc.questions[cat][topic].q = q.map(k => {
+                        stacc.questions[cat][topic].q = q.map((k) => {
                           return { n: k, a: 0 };
                         });
-                        stacc.markModified("questions");
-                        stacc.save(err => {
-                          socket.emit("q", account.questions);
-                          pubsub.emit("change", [stacc._id]);
+                        stacc.markModified('questions');
+                        stacc.save((err) => {
+                          socket.emit('q', account.questions);
+                          pubsub.emit('change', [stacc._id]);
                         });
                       }
                     );
@@ -641,22 +661,22 @@ require("sticky-cluster")(
           });
         }
       });
-      socket.on("changeQuestion", opts => {
+      socket.on('changeQuestion', (opts) => {
         if (loggedIn && level == 0) {
           Users.findById(account._id, (err, acc) => {
             let [q, cat, topic] = opts;
             acc.questions[cat][topic] = q;
-            acc.markModified("questions");
-            acc.save(err => {
+            acc.markModified('questions');
+            acc.save((err) => {
               if (!err) {
-                socket.emit("q", acc.questions);
-                pubsub.emit("change", [acc.questions[cat][topic].pid]);
+                socket.emit('q', acc.questions);
+                pubsub.emit('change', [acc.questions[cat][topic].pid]);
               }
             });
           });
         }
       });
-      socket.on("addProblem", report => {
+      socket.on('addProblem', (report) => {
         if (loggedIn && level == 0) {
           let { pid } = report;
           UserDetails.findById(pid, (err, fac) => {
@@ -665,19 +685,19 @@ require("sticky-cluster")(
               fac.details.problems = [];
             }
             fac.details.problems.push(report);
-            fac.markModified("details");
-            fac.save(err => {
+            fac.markModified('details');
+            fac.save((err) => {
               if (!err) {
-                pubsub.emit("change", [pid]);
+                pubsub.emit('change', [pid]);
                 UserDetails.findOne({ level: 1 }, (err, coord) => {
                   if (coord.details.problems == undefined) {
                     coord.details.problems = [];
                   }
                   coord.details.problems.push(report);
-                  coord.markModified("details");
-                  coord.save(err => {
+                  coord.markModified('details');
+                  coord.save((err) => {
                     if (!err) {
-                      pubsub.emit("change", [coord._id]);
+                      pubsub.emit('change', [coord._id]);
                     }
                   });
                 });
@@ -689,30 +709,31 @@ require("sticky-cluster")(
       // --------------------------------------STUDENT FINISH -------------------------------
 
       // --------------------------------------COORDINATOR START -------------------------------
-      socket.on("resolve", ({ problem, action }) => {
+      socket.on('resolve', ({ problem, action }) => {
         if (loggedIn && level == 1) {
           UserDetails.findById(account._id, (err, details) => {
             let ind = _.findIndex(details.details.problems, problem);
             if (ind != -1) {
               details.details.problems[ind].resolution = action
                 ? true
-                : "rejected";
-              details.markModified("details");
-              details.save(err => {
+                : 'rejected';
+              details.markModified('details');
+              details.save((err) => {
                 UserDetails.findById(problem.pid, (err, prof) => {
                   let inde = _.findIndex(prof.details.problems, problem);
                   if (inde != -1) {
                     prof.details.problems[inde] = details.details.problems[ind];
-                    prof.markModified("details");
-                    prof.save(err => {
-                      dbCheck.emit("singlenotify", {
-                        name: `Your reported problem with ${problem.sqname ||
-                          "a Question"} in ${problem.topic.name} has been ${
-                          action ? "Resolved" : "Rejected"
+                    prof.markModified('details');
+                    prof.save((err) => {
+                      dbCheck.emit('singlenotify', {
+                        name: `Your reported problem with ${
+                          problem.sqname || 'a Question'
+                        } in ${problem.topic.name} has been ${
+                          action ? 'Resolved' : 'Rejected'
                         }`,
-                        id: problem.sid
+                        id: problem.sid,
                       });
-                      pubsub.emit("change", [problem.pid, account._id]);
+                      pubsub.emit('change', [problem.pid, account._id]);
                     });
                   }
                 });
@@ -721,32 +742,32 @@ require("sticky-cluster")(
           });
         }
       });
-      socket.on("questionChange", ({ changed, cat, n, topic }) => {
+      socket.on('questionChange', ({ changed, cat, n, topic }) => {
         if (loggedIn && level == 1) {
           Questions.findOne(
-            { "category.name": cat, "topic.name": topic, number: n },
+            { 'category.name': cat, 'topic.name': topic, number: n },
             (err, question) => {
               question.qname = changed.qname;
-              question.markModified("qname");
+              question.markModified('qname');
               question.qdef = changed.qdef;
-              question.markModified("qdef");
+              question.markModified('qdef');
               question.options = changed.options;
-              question.markModified("options");
+              question.markModified('options');
               question.answer = changed.answer;
-              question.markModified("answer");
+              question.markModified('answer');
               question.hints = changed.hints;
-              question.markModified("hints");
+              question.markModified('hints');
 
-              question.save(err => {
+              question.save((err) => {
                 if (!err) {
-                  socket.emit("changeResponse", {
+                  socket.emit('changeResponse', {
                     fail: false,
-                    message: "success"
+                    message: 'success',
                   });
                 } else {
-                  socket.emit("changeResponse", {
+                  socket.emit('changeResponse', {
                     fail: true,
-                    message: "error"
+                    message: 'error',
                   });
                 }
               });
@@ -754,7 +775,7 @@ require("sticky-cluster")(
           );
         }
       });
-      socket.on("addQuestion", q => {
+      socket.on('addQuestion', (q) => {
         if (loggedIn && level == 1) {
           Questions.countDocuments(
             { category: q.category, topic: q.topic },
@@ -767,18 +788,18 @@ require("sticky-cluster")(
                 answer: q.answer,
                 hints: q.hints,
                 topic: q.topic,
-                number: count
+                number: count,
               });
-              question.save(err => {
+              question.save((err) => {
                 if (!err) {
-                  socket.emit("addResponse", {
+                  socket.emit('addResponse', {
                     fail: false,
-                    message: "success"
+                    message: 'success',
                   });
                 } else {
-                  socket.emit("addResponse", {
+                  socket.emit('addResponse', {
                     fail: true,
-                    message: "error"
+                    message: 'error',
                   });
                 }
               });
@@ -789,12 +810,12 @@ require("sticky-cluster")(
       // ------------------------------------COORDINATOR END -----------------------------------------
       // -------------------------------------- FACULTY START -----------------------------------------
 
-      socket.on("acceptCourse", ([user, cat, action, d, topic]) => {
+      socket.on('acceptCourse', ([user, cat, action, d, topic]) => {
         if (loggedIn && level == 4) {
           UserDetails.findById(account._id, (err, details) => {
-            details.details.students = d.details.students.map(s => ({
+            details.details.students = d.details.students.map((s) => ({
               ...s,
-              loading: false
+              loading: false,
             }));
 
             Users.findOne({ _id: user }, (err, student) => {
@@ -803,7 +824,7 @@ require("sticky-cluster")(
                 let q = [],
                   count = 0;
                 Questions.countDocuments(
-                  { "category.name": cat, "topic.name": topic },
+                  { 'category.name': cat, 'topic.name': topic },
                   (err, c) => {
                     count = c;
                     if (count > 100) {
@@ -813,16 +834,16 @@ require("sticky-cluster")(
                       }
                     }
 
-                    student.questions[cat][topic].q = q.map(k => {
+                    student.questions[cat][topic].q = q.map((k) => {
                       return { n: k, a: 0 };
                     });
-                    student.markModified("questions");
-                    student.save(err => {
+                    student.markModified('questions');
+                    student.save((err) => {
                       if (err) {
                       } else {
-                        details.markModified("details");
-                        details.save(err2 => {
-                          pubsub.emit("change", [student._id, account._id]);
+                        details.markModified('details');
+                        details.save((err2) => {
+                          pubsub.emit('change', [student._id, account._id]);
                         });
                       }
                     });
@@ -831,14 +852,14 @@ require("sticky-cluster")(
               } else if (!err && student != null) {
                 try {
                   delete student.questions[cat][topic];
-                  student.markModified("questions");
-                  student.save(err => {
+                  student.markModified('questions');
+                  student.save((err) => {
                     if (err) {
                     } else {
-                      console.log("rejected and deleted");
-                      details.markModified("details");
-                      details.save(err2 => {
-                        pubsub.emit("change", [student._id, account._id]);
+                      console.log('rejected and deleted');
+                      details.markModified('details');
+                      details.save((err2) => {
+                        pubsub.emit('change', [student._id, account._id]);
                       });
                     }
                   });
@@ -852,7 +873,7 @@ require("sticky-cluster")(
       //------------------------------- FACULTY END ------------------------------------------
 
       // ---------------------------- COMMON -------------------------------------------
-      socket.on("reg", r => {
+      socket.on('reg', (r) => {
         if (canReg) {
           Users.find(
             { $or: [{ _id: r.regNo }, { email: r.email }] },
@@ -862,37 +883,37 @@ require("sticky-cluster")(
                   { $or: [{ _id: r.regNo }, { email: r.email }] },
                   (err, accid) => {
                     if (accid == undefined || accid.length == 0) {
-                      loginCheck.emit("canRegister", r);
+                      loginCheck.emit('canRegister', r);
                     } else {
-                      socket.emit("registerResponse", {
+                      socket.emit('registerResponse', {
                         fail: true,
-                        message: "Registration Failed"
+                        message: 'Registration Failed',
                       });
                     }
                   }
                 );
               } else {
-                socket.emit("registerResponse", {
+                socket.emit('registerResponse', {
                   fail: true,
-                  message: "Registration Failed"
+                  message: 'Registration Failed',
                 });
               }
             }
           );
         }
       });
-      loginCheck.on("canRegister", r => {
+      loginCheck.on('canRegister', (r) => {
         let user, details;
-        bcrypt.hash(r.password, 10, function(err, hash) {
+        bcrypt.hash(r.password, 10, function (err, hash) {
           try {
             if (!mode) {
               user = new Users({
                 _id: r.regNo,
                 email: r.email,
                 password: hash,
-                type: "Student",
+                type: 'Student',
                 questions: {},
-                level: 0
+                level: 0,
               });
               details = new UserDetails({
                 _id: r.regNo,
@@ -901,16 +922,16 @@ require("sticky-cluster")(
                   name: r.name,
                   regNo: r.regNo,
                   department: r.branch,
-                  branch: r.cbranch
-                }
+                  branch: r.cbranch,
+                },
               });
             } else {
               user = new Users({
                 _id: r.regNo,
                 email: r.email,
                 password: hash,
-                type: "Faculty",
-                level: 4
+                type: 'Faculty',
+                level: 4,
               });
               details = new UserDetails({
                 _id: r.regNo,
@@ -920,40 +941,41 @@ require("sticky-cluster")(
                   regNo: r.regNo,
                   department: r.branch,
                   branch: r.cbranch,
-                  students: []
-                }
+                  students: [],
+                  classes: r.classes,
+                },
               });
             }
             details.save();
-            user.save(err => {
-              socket.emit("registerResponse", {
+            user.save((err) => {
+              socket.emit('registerResponse', {
                 fail: false,
-                message: "Registration Successful"
+                message: 'Registration Successful',
               });
-              pubsub.emit("count");
+              pubsub.emit('count');
             });
           } catch (e) {
-            socket.emit("registerResponse", {
+            socket.emit('registerResponse', {
               fail: true,
-              message: "Registration Failed"
+              message: 'Registration Failed',
             });
           }
         });
       });
 
-      socket.on("updateNoti", det => {
+      socket.on('updateNoti', (det) => {
         if (loggedIn && [4, 0].includes(level)) {
           UserDetails.findById(account._id, (err, details) => {
             details.notifications = det.notifications;
-            details.markModified("notifications");
-            details.save(err => {
-              pubsub.emit("change", account._id);
+            details.markModified('notifications');
+            details.save((err) => {
+              pubsub.emit('change', account._id);
             });
           });
         }
       });
-      socket.on("forgot", details => {
-        let fid = pubpath + "/reset/" + makeid();
+      socket.on('forgot', (details) => {
+        let fid = pubpath + '/reset/' + makeid();
         resetArray.push(fid);
         let email = details.email;
         Users.find({ email: email }, (err, user) => {
@@ -962,21 +984,21 @@ require("sticky-cluster")(
               transporter.sendMail({
                 from: emailid,
                 to: email,
-                subject: "eSkill Password Reset",
-                html: `<p>In Order to reset the password, please click the link below: </p><p><a href="${resetURL}${fid}">Reset Password</a></p><p>This link is valid for 30 minutes from the time of generation</p>`
+                subject: 'eSkill Password Reset',
+                html: `<p>In Order to reset the password, please click the link below: </p><p><a href="${resetURL}${fid}">Reset Password</a></p><p>This link is valid for 30 minutes from the time of generation</p>`,
               });
               setTimeout(() => {
-                resetArray = resetArray.filter(k => k != fid);
+                resetArray = resetArray.filter((k) => k != fid);
               }, 1800000);
 
               app.get(fid, (req, res) => {
-                res.sendFile(path.resolve(__dirname, "forgot", "index.html"));
+                res.sendFile(path.resolve(__dirname, 'forgot', 'index.html'));
               });
               app.post(fid, (req, res) => {
                 Users.findOne({ email: email }, (err, resetacc) => {
-                  bcrypt.hash(req.body.p, 10, function(err, hash) {
+                  bcrypt.hash(req.body.p, 10, function (err, hash) {
                     resetacc.password = hash;
-                    resetArray = resetArray.filter(k => k != fid);
+                    resetArray = resetArray.filter((k) => k != fid);
                     resetacc.save();
                   });
                 });
@@ -991,10 +1013,10 @@ require("sticky-cluster")(
       });
     });
     app.use(
-      pubpath + "/reset",
-      express.static(path.resolve(__dirname, "forgot"))
+      pubpath + '/reset',
+      express.static(path.resolve(__dirname, 'forgot'))
     );
-    app.post(pubpath + "/api/student", (req, res) => {
+    app.post(pubpath + '/api/student', (req, res) => {
       let { sid, cat, topic } = req.body;
       Users.findById(sid, (err, student) => {
         try {
@@ -1004,7 +1026,7 @@ require("sticky-cluster")(
           let at = 0,
             cm = 0;
           correct = 0;
-          questions[cat][topic].q.map(qa => {
+          questions[cat][topic].q.map((qa) => {
             if (qa.a > 0) {
               at++;
               if (qa.a < 3) {
@@ -1020,17 +1042,17 @@ require("sticky-cluster")(
           q.cor = correct;
           res.json(q);
         } catch (e) {
-          res.json({ err: "no student" });
+          res.json({ err: 'no student' });
         }
       });
     });
 
-    app.post(pubpath + "/api/question", (req, res) => {
+    app.post(pubpath + '/api/question', (req, res) => {
       let { n, cat, topic } = req.body;
       if (dbconnect) {
         try {
           Questions.findOne(
-            { "category.name": cat, number: n, "topic.name": topic },
+            { 'category.name': cat, number: n, 'topic.name': topic },
             (err, q) => {
               if (!err) {
                 res.json({ question: q, err: false });
@@ -1043,14 +1065,15 @@ require("sticky-cluster")(
       }
     });
 
-    app.post(pubpath + "/api/faculty", (req, res) => {
+    app.post(pubpath + '/api/faculty', (req, res) => {
       let { branch, cbranch } = req.body;
       try {
         UserDetails.find(
           {
-            "details.department": `${branch}`,
-            "details.branch": `${cbranch}`,
-            level: 4
+            'details.department': 'Faculty',
+            'details.branch': `${cbranch}`,
+            'details.classes': `${branch}`,
+            level: 4,
           },
           (err, fac) => {
             res.json({ faculty: fac, err: false });
@@ -1061,11 +1084,11 @@ require("sticky-cluster")(
         res.json({ err: true });
       }
     });
-    app.get("*", (req, res, next) => {
+    app.get('*', (req, res, next) => {
       if (resetArray.includes(req.url)) {
         next();
       } else {
-        res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+        res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
       }
     });
     callback(server);
@@ -1074,8 +1097,8 @@ require("sticky-cluster")(
     concurrency: os.cpus().length,
     port: 5000,
     debug: true,
-    env: function(index) {
+    env: function (index) {
       return { stickycluster_worker_index: index };
-    }
+    },
   }
 );

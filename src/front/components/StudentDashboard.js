@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import History from "./history";
-import Queries from "./queries";
-import Attempted from "./attempted";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import History from './history';
+import Queries from './queries';
+import Attempted from './attempted';
 import {
   Sidebar,
   Segment,
@@ -13,13 +13,13 @@ import {
   Header,
   Grid,
   Progress,
-  Card
-} from "semantic-ui-react";
-import history from "./history";
-import "react-circular-progressbar/dist/styles.css";
-import CircularProgressbar from "react-circular-progressbar";
-import { pubpath } from "../enpoint";
-import _ from "lodash";
+  Card,
+} from 'semantic-ui-react';
+import history from './history';
+import 'react-circular-progressbar/dist/styles.css';
+import CircularProgressbar from 'react-circular-progressbar';
+import { pubpath } from '../enpoint';
+import _ from 'lodash';
 
 class StudentDashboard extends React.Component {
   constructor(props) {
@@ -28,7 +28,7 @@ class StudentDashboard extends React.Component {
       visible: false,
       modalVisible: false,
       filter: props.categories,
-      searchContent: ""
+      searchContent: '',
     };
     this.logout = this.logout.bind(this);
     this.emit = this.emit.bind(this);
@@ -58,19 +58,19 @@ class StudentDashboard extends React.Component {
       chunkedquestions = _.chunk(
         _.compact(
           _.flatten([
-            "first",
-            ...questions.map(x => {
-              return Object.keys(qstate[x]).map(key => {
+            'first',
+            ...questions.map((x) => {
+              return Object.keys(qstate[x]).map((key) => {
                 if (
-                  x.match(new RegExp(this.state.searchContent, "gi")) ||
-                  key.match(new RegExp(this.state.searchContent, "gi"))
+                  x.match(new RegExp(this.state.searchContent, 'gi')) ||
+                  key.match(new RegExp(this.state.searchContent, 'gi'))
                 ) {
                   return {
-                    ...qstate[x][key]
+                    ...qstate[x][key],
                   };
                 } else return null;
               });
-            })
+            }),
           ])
         ),
         4
@@ -79,14 +79,14 @@ class StudentDashboard extends React.Component {
     return (
       <div>
         <Segment inverted={this.props.dark}>
-          <Header as="h3">Assigned Courses</Header>
+          <Header as='h3'>Assigned Courses</Header>
         </Segment>
         <Segment basic>
-          <Grid centered className="centered">
+          <Grid centered className='centered'>
             <Grid.Column width={14}>
               <Input
                 fluid
-                placeholder="Search"
+                placeholder='Search'
                 value={this.state.searchContent}
                 onChange={(e, syn) => this.updateSearch(syn)}
               />
@@ -96,18 +96,18 @@ class StudentDashboard extends React.Component {
         <Segment
           basic
           style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center"
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
-          <Grid stackable container columns={4} style={{ flexGrow: "1" }}>
+          <Grid stackable container columns={4} style={{ flexGrow: '1' }}>
             {chunkedquestions.map((q, qi) => {
               return (
-                <Grid.Row key={"row-" + qi}>
+                <Grid.Row key={'row-' + qi}>
                   {q.map((qu, i) => {
-                    if (qu != "first") {
+                    if (qu != 'first') {
                       let qd = qu;
                       let attempted = 0;
 
@@ -115,7 +115,7 @@ class StudentDashboard extends React.Component {
 
                       let complete = 0;
                       if (qd.a === true) {
-                        qd.q.map(x => {
+                        qd.q.map((x) => {
                           if (x.a > 0) {
                             attempted++;
                             if (x.a < 3) {
@@ -129,55 +129,55 @@ class StudentDashboard extends React.Component {
                       }
                       return (
                         <Grid.Column
-                          style={{ display: "flex", justifyContent: "center" }}
+                          style={{ display: 'flex', justifyContent: 'center' }}
                           width={4}
-                          key={"col-" + qi + "-" + i}
+                          key={'col-' + qi + '-' + i}
                         >
                           <Card
-                            className="courseCard"
+                            className='courseCard'
                             style={{
                               backgroundColor: this.props.dark
-                                ? "#1b1c1d"
-                                : "#fff",
-                              borderColor: this.props.dark ? "#1b1c1d" : "#fff",
-                              boxShadow: this.props.dark ? "none" : null
+                                ? '#1b1c1d'
+                                : '#fff',
+                              borderColor: this.props.dark ? '#1b1c1d' : '#fff',
+                              boxShadow: this.props.dark ? 'none' : null,
                             }}
-                            onClick={e => {
+                            onClick={(e) => {
                               if (qd.a === true) {
                                 history.push(
                                   `${pubpath}/question/${qd.cat.replace(
                                     / /g,
-                                    "+"
-                                  )}/${qd.topic.replace(/ /g, "+")}`
+                                    '+'
+                                  )}/${qd.topic.replace(/ /g, '+')}`
                                 );
-                                this.props.stateSet("selcatname", qu);
+                                this.props.stateSet('selcatname', qu);
                               }
                             }}
                           >
                             <Card.Content>
-                              <Card.Header style={{ color: "#3281ff" }}>
+                              <Card.Header style={{ color: '#676d2d' }}>
                                 {qd.topic}
                               </Card.Header>
                               <Card.Description>
                                 {qd.a === false ? (
-                                  <Header as="h3">Awaiting Approval</Header>
-                                ) : qd.a == "rejected" ? (
-                                  <Header as="h3">Rejected</Header>
+                                  <Header as='h3'>Awaiting Approval</Header>
+                                ) : qd.a == 'rejected' ? (
+                                  <Header as='h3'>Rejected</Header>
                                 ) : (
                                   <CircularProgressbar
                                     percentage={complete}
                                     text={`${complete}% Complete`}
                                     styles={{
-                                      path: { stroke: `#3281ff` },
+                                      path: { stroke: `#676d2d` },
                                       text: {
-                                        fill: "#3281ff",
-                                        fontSize: "8px",
-                                        fontFamily: "Lato, sans-serif"
+                                        fill: '#676d2d',
+                                        fontSize: '8px',
+                                        fontFamily: 'Lato, sans-serif',
                                       },
                                       root: {
-                                        minWidth: "150px",
-                                        minHeight: "150px"
-                                      }
+                                        minWidth: '150px',
+                                        minHeight: '150px',
+                                      },
                                     }}
                                   />
                                 )}
@@ -188,12 +188,12 @@ class StudentDashboard extends React.Component {
                                 extra
                                 style={{
                                   borderTopColor: this.props.dark
-                                    ? "#666 !important"
+                                    ? '#666 !important'
                                     : null,
-                                  color: this.props.dark ? "#fff" : null
+                                  color: this.props.dark ? '#fff' : null,
                                 }}
                               >
-                                <Icon name="tasks" />
+                                <Icon name='tasks' />
                                 {attempted} Questions Attempted
                               </Card.Content>
                             ) : null}
@@ -202,12 +202,12 @@ class StudentDashboard extends React.Component {
                                 extra
                                 style={{
                                   borderTopColor: this.props.dark
-                                    ? "#666 !important"
+                                    ? '#666 !important'
                                     : null,
-                                  color: this.props.dark ? "#fff" : null
+                                  color: this.props.dark ? '#fff' : null,
                                 }}
                               >
-                                <Icon name="checkmark" />
+                                <Icon name='checkmark' />
                                 {correct} Answered Correctly
                               </Card.Content>
                             ) : null}
@@ -217,37 +217,37 @@ class StudentDashboard extends React.Component {
                     } else {
                       return (
                         <Grid.Column
-                          style={{ display: "flex", justifyContent: "center" }}
+                          style={{ display: 'flex', justifyContent: 'center' }}
                         >
                           <Card
                             style={{
-                              height: "100%",
+                              height: '100%',
                               backgroundColor: this.props.dark
-                                ? "#1b1c1d"
-                                : "#fff"
+                                ? '#1b1c1d'
+                                : '#fff',
                             }}
-                            className="courseCard request-course"
-                            onClick={e => {
-                              history.push(pubpath + "/request");
+                            className='courseCard request-course'
+                            onClick={(e) => {
+                              history.push(pubpath + '/request');
                             }}
                           >
                             <Card.Content
                               style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                textAlign: "center"
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                textAlign: 'center',
                               }}
                             >
                               <Icon
-                                name="add"
-                                size="huge"
+                                name='add'
+                                size='huge'
                                 style={{
-                                  alignSelf: "center",
-                                  color: "#3281ff"
+                                  alignSelf: 'center',
+                                  color: '#676d2d',
                                 }}
                               />
-                              <Header as="h4">Request Course</Header>
+                              <Header as='h4'>Request Topic</Header>
                             </Card.Content>
                           </Card>
                         </Grid.Column>
@@ -260,32 +260,32 @@ class StudentDashboard extends React.Component {
             {chunkedquestions.length == 0 ? (
               <Grid.Row>
                 <Grid.Column
-                  style={{ display: "flex", justifyContent: "center" }}
+                  style={{ display: 'flex', justifyContent: 'center' }}
                 >
                   <Card
                     style={{
-                      height: "100%",
-                      backgroundColor: this.props.dark ? "#1b1c1d" : "#fff"
+                      height: '100%',
+                      backgroundColor: this.props.dark ? '#1b1c1d' : '#fff',
                     }}
-                    className="courseCard request-course"
-                    onClick={e => {
-                      history.push(pubpath + "/request");
+                    className='courseCard request-course'
+                    onClick={(e) => {
+                      history.push(pubpath + '/request');
                     }}
                   >
                     <Card.Content
                       style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        textAlign: "center"
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        textAlign: 'center',
                       }}
                     >
                       <Icon
-                        name="add"
-                        size="huge"
-                        style={{ alignSelf: "center", color: "#3281ff" }}
+                        name='add'
+                        size='huge'
+                        style={{ alignSelf: 'center', color: '#798162' }}
                       />
-                      <Header as="h4">Request Course</Header>
+                      <Header as='h4'>Request Topic</Header>
                     </Card.Content>
                   </Card>
                 </Grid.Column>

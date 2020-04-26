@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import History from "./history";
-import Queries from "./queries";
-import Attempted from "./attempted";
-import endpoint from "../enpoint";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import History from './history';
+import Queries from './queries';
+import Attempted from './attempted';
+import endpoint from '../enpoint';
 import {
   Sidebar,
   Segment,
@@ -14,14 +14,14 @@ import {
   Header,
   Grid,
   Progress,
-  Card
-} from "semantic-ui-react";
-import history from "./history";
-import "react-circular-progressbar/dist/styles.css";
-import CircularProgressbar from "react-circular-progressbar";
-import Select from "react-select";
-import _ from "lodash";
-import { pubpath } from "../enpoint";
+  Card,
+} from 'semantic-ui-react';
+import history from './history';
+import 'react-circular-progressbar/dist/styles.css';
+import CircularProgressbar from 'react-circular-progressbar';
+import Select from 'react-select';
+import _ from 'lodash';
+import { pubpath } from '../enpoint';
 class RequestCourse extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +32,7 @@ class RequestCourse extends React.Component {
       faculty: [],
       selfac: null,
       selcat: null,
-      seltop: null
+      seltop: null,
     };
     this.logout = this.logout.bind(this);
     this.emit = this.emit.bind(this);
@@ -51,18 +51,19 @@ class RequestCourse extends React.Component {
   }
   fetchFaculty() {
     let { details } = this.props.details;
-    fetch(endpoint + "/api/faculty", {
+    fetch('http://localhost:5000' + endpoint + '/api/faculty', {
+      //Changes for running local
       body: JSON.stringify({
         branch: details.department,
-        cbranch: details.branch
+        cbranch: details.branch,
       }),
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     })
-      .then(res => res.json())
-      .then(res => {
+      .then((res) => res.json())
+      .then((res) => {
         if (!res.err) {
-          let faculty = res.faculty.map(f => {
+          let faculty = res.faculty.map((f) => {
             return { label: `${f._id} - ${f.details.name}`, value: `${f._id}` };
           });
           this.setState({ faculty: faculty });
@@ -88,12 +89,12 @@ class RequestCourse extends React.Component {
     let { selcat, selfac, seltop } = this.state;
     let { details } = this.props;
     if (![selcat, selfac].includes(null)) {
-      this.props.emit("requestCourse", {
+      this.props.emit('requestCourse', {
         cat: selcat.label,
         faculty: selfac.value,
         student: details._id,
         cid: selcat.value,
-        topic: seltop.label
+        topic: seltop.label,
       });
       history.push(pubpath);
     }
@@ -102,21 +103,21 @@ class RequestCourse extends React.Component {
     let { faculty, selcat } = this.state;
     let { categories, topics } = this.props;
     if (selcat != null) {
-      topics = topics.filter(t => t.cid == selcat.value);
+      topics = topics.filter((t) => t.cid == selcat.value);
     } else {
       topics = [];
     }
     return (
       <div>
-        <Segment basic style={{ flexGrow: "1" }}>
+        <Segment basic style={{ flexGrow: '1' }}>
           <Segment inverted={this.props.dark}>
             <Segment basic>
-              <Header inverted={this.props.dark} as={"h3"}>
-                Request Course
+              <Header inverted={this.props.dark} as={'h3'}>
+                Request Topic
               </Header>
               <Form inverted={this.props.dark} onSubmit={this.handleSubmit}>
                 <Form.Field inline>
-                  <Form.Field label="Choose Branch" />
+                  <Form.Field label='Choose Subject' />
                   <Form.Group>
                     <Select
                       value={this.state.selcat}
@@ -124,48 +125,54 @@ class RequestCourse extends React.Component {
                       options={
                         categories == null
                           ? []
-                          : categories.map(c => ({
-                              label: c.name,
-                              value: c._id
-                            }))
+                          : categories
+                              .filter(
+                                (c) =>
+                                  c.class ==
+                                  this.props.details.details.department
+                              )
+                              .map((c) => ({
+                                label: c.name,
+                                value: c._id,
+                              }))
                       }
                       styles={{
-                        container: style => ({ ...style, width: "100%" })
+                        container: (style) => ({ ...style, width: '100%' }),
                       }}
                     />
                   </Form.Group>
-                  <Form.Field label="Choose Course" />
+                  <Form.Field label='Choose Topic' />
                   <Form.Group>
                     <Select
                       value={this.state.seltop}
-                      onChange={e => this.topchange(e)}
-                      options={topics.map(c => ({
+                      onChange={(e) => this.topchange(e)}
+                      options={topics.map((c) => ({
                         label: c.name,
-                        value: c.tid
+                        value: c.tid,
                       }))}
                       styles={{
-                        container: style => ({ ...style, width: "100%" })
+                        container: (style) => ({ ...style, width: '100%' }),
                       }}
                     />
                   </Form.Group>
                 </Form.Field>
-                <Form.Field label="Choose Faculty" />
+                <Form.Field label='Choose Faculty' />
                 <Form.Group>
                   <Select
                     options={faculty}
                     value={this.state.selfac}
                     onChange={this.handleFacChange}
                     styles={{
-                      container: style => ({ ...style, width: "100%" })
+                      container: (style) => ({ ...style, width: '100%' }),
                     }}
                   />
                 </Form.Group>
                 <Segment basic>
-                  <Form.Group widths="equal">
+                  <Form.Group widths='equal'>
                     <Form.Button
                       fluid
-                      type="cancel"
-                      onClick={e => {
+                      type='cancel'
+                      onClick={(e) => {
                         e.preventDefault();
                         history.push(pubpath);
                       }}
@@ -173,10 +180,10 @@ class RequestCourse extends React.Component {
                       Cancel
                     </Form.Button>
                     <Form.Button
-                      style={{ height: "36px" }}
+                      style={{ height: '36px' }}
                       fluid
                       primary
-                      type="submit"
+                      type='submit'
                     >
                       Request
                     </Form.Button>
