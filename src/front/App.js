@@ -90,9 +90,9 @@ class Root extends React.Component {
     this.setState({ visible: !this.state.visible });
   }
   handleDarkSwitch() {
-    const { cookies } = this.props;
-    cookies.set('dark', !this.state.dark);
-    this.setState({ dark: !this.state.dark });
+    // const { cookies } = this.props;
+    // cookies.set('dark', !this.state.dark);
+    // this.setState({ dark: !this.state.dark });
   }
   logout(props) {
     const { cookies } = this.props;
@@ -437,7 +437,7 @@ class Root extends React.Component {
                       ) : null}
                     </Dropdown>
                   ) : null}
-
+                  {/* 
                   {width >= 768 ? (
                     <Menu.Item onClick={(e) => this.handleDarkSwitch()}>
                       <Icon
@@ -447,7 +447,7 @@ class Root extends React.Component {
                         size='large'
                       />
                     </Menu.Item>
-                  ) : null}
+                  ) : null} */}
 
                   {width >= 768 ? (
                     <Menu.Item
@@ -482,12 +482,12 @@ class Root extends React.Component {
                   <Icon name="user" />
                   Edit Profile
                 </Menu.Item> */}
-                <Menu.Item onClick={(e) => this.handleDarkSwitch()}>
+                {/* <Menu.Item onClick={(e) => this.handleDarkSwitch()}>
                   <Icon
                     name={this.state.dark ? 'lightbulb outline' : 'lightbulb'}
                   />
                   {this.state.dark ? 'Light Mode' : 'Dark Mode'}
-                </Menu.Item>
+                </Menu.Item> */}
                 <Menu.Item
                   name='logout'
                   onClick={(e) => {

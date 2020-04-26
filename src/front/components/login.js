@@ -50,7 +50,7 @@ class Login extends React.Component {
             <form
               className='ui large form'
               style={{
-                boxShadow: '0px 0px 3px',
+                boxShadow: '1px 1px 6px',
               }}
               onSubmit={(e) => {
                 e.preventDefault();
