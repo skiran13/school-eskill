@@ -18,7 +18,6 @@ import {
 import history from './history';
 import 'react-circular-progressbar/dist/styles.css';
 import CircularProgressbar from 'react-circular-progressbar';
-import { pubpath } from '../enpoint';
 import _ from 'lodash';
 
 class StudentDashboard extends React.Component {
@@ -145,7 +144,7 @@ class StudentDashboard extends React.Component {
                             onClick={(e) => {
                               if (qd.a === true) {
                                 history.push(
-                                  `${pubpath}/question/${qd.cat.replace(
+                                  `/question/${qd.cat.replace(
                                     / /g,
                                     '+'
                                   )}/${qd.topic.replace(/ /g, '+')}`
@@ -228,7 +227,7 @@ class StudentDashboard extends React.Component {
                             }}
                             className='courseCard request-course'
                             onClick={(e) => {
-                              history.push(pubpath + '/request');
+                              history.push('/request');
                             }}
                           >
                             <Card.Content
@@ -269,7 +268,7 @@ class StudentDashboard extends React.Component {
                     }}
                     className='courseCard request-course'
                     onClick={(e) => {
-                      history.push(pubpath + '/request');
+                      history.push('/request');
                     }}
                   >
                     <Card.Content

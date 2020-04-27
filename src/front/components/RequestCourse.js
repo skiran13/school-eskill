@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import History from './history';
 import Queries from './queries';
 import Attempted from './attempted';
-import endpoint from '../enpoint';
 import {
   Sidebar,
   Segment,
@@ -21,7 +20,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import CircularProgressbar from 'react-circular-progressbar';
 import Select from 'react-select';
 import _ from 'lodash';
-import { pubpath } from '../enpoint';
+import { server } from '../enpoint';
 class RequestCourse extends React.Component {
   constructor(props) {
     super(props);
@@ -51,7 +50,7 @@ class RequestCourse extends React.Component {
   }
   fetchFaculty() {
     let { details } = this.props.details;
-    fetch('http://localhost:5000' + endpoint + '/api/faculty', {
+    fetch(server + '/api/faculty', {
       //Changes for running local
       body: JSON.stringify({
         branch: details.department,
@@ -96,7 +95,7 @@ class RequestCourse extends React.Component {
         cid: selcat.value,
         topic: seltop.label,
       });
-      history.push(pubpath);
+      history.push('/');
     }
   }
   render() {
@@ -174,7 +173,7 @@ class RequestCourse extends React.Component {
                       type='cancel'
                       onClick={(e) => {
                         e.preventDefault();
-                        history.push(pubpath);
+                        history.push('/');
                       }}
                     >
                       Cancel

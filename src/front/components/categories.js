@@ -133,6 +133,7 @@ class Categories extends React.Component {
                     style={{
                       borderTopRightRadius: '0px',
                       borderBottomRightRadius: '0px',
+                      height: '50px',
                     }}
                   />
                   <input
@@ -240,6 +241,7 @@ class Categories extends React.Component {
                     style={{
                       borderTopRightRadius: '0px',
                       borderBottomRightRadius: '0px',
+                      height: '50px',
                     }}
                   />
                   <input

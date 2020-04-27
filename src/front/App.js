@@ -15,12 +15,12 @@ import CoordinatorDashboard from './components/CoordinatorDashboard';
 import FacultyDashboard from './components/FacultyDashboard';
 import QuestionPage from './components/QuestionPage';
 import ChangeQuestion from './components/ChangeQuestion';
-import { pubpath } from './enpoint';
+import { server } from './enpoint';
 let socket = io.connect(
   //window.location.origin, changes for running local
-  'http://localhost:5000',
+  server,
   {
-    path: `${pubpath}/socket.io/`,
+    path: `/socket.io/`,
     transports: ['polling', 'xhr-polling'],
     rejectUnauthorized: false,
     reconnect: true,
@@ -303,7 +303,7 @@ class Root extends React.Component {
     };
   }
   handleHomeClick() {
-    history.push(`${pubpath}`);
+    history.push(`/`);
     this.setState({ visible: false });
   }
   notificationSeen() {
@@ -366,7 +366,7 @@ class Root extends React.Component {
                 ) : null}
                 <Menu.Item
                   onClick={(e) => {
-                    history.push(`${pubpath}`);
+                    history.push(`/`);
                   }}
                   className='brand-menu'
                 >
@@ -380,7 +380,7 @@ class Root extends React.Component {
                     <Menu.Item
                       onClick={(e) => {
                         e.preventDefault();
-                        history.push(`${pubpath}`);
+                        history.push(`/`);
                       }}
                     >
                       <Icon name='home' size='large' />
@@ -454,7 +454,7 @@ class Root extends React.Component {
                       onClick={(e) => {
                         e.preventDefault();
                         this.logout();
-                        window.location.href = pubpath;
+                        window.location.href = '/';
                       }}
                     >
                       <Icon name='sign out' size='large' />
@@ -493,7 +493,7 @@ class Root extends React.Component {
                   onClick={(e) => {
                     e.preventDefault();
                     this.logout();
-                    window.location.href = pubpath;
+                    window.location.href = '/';
                   }}
                 >
                   <Icon name='sign out' />
@@ -515,7 +515,7 @@ class Root extends React.Component {
                       <div>
                         {this.state.level == 1 ? (
                           <Route
-                            path={`${pubpath}/change/:category/:topic/:number`}
+                            path={`/change/:category/:topic/:number`}
                             exact
                             render={(props) => (
                               <ChangeQuestion
@@ -533,7 +533,7 @@ class Root extends React.Component {
                         ) : null}
                         {this.state.level == 0 ? (
                           <Route
-                            path={`${pubpath}/question/:category/:topic/:id`}
+                            path={`/question/:category/:topic/:id`}
                             exact
                             render={(props) => (
                               <NewTest
@@ -562,7 +562,7 @@ class Root extends React.Component {
                         ) : null}
                         {this.state.level == 0 || this.state.level == 1 ? (
                           <Route
-                            path={`${pubpath}/request`}
+                            path={`/request`}
                             render={(props) => (
                               <RequestCourse
                                 stateSet={this.stateSet}
@@ -580,7 +580,7 @@ class Root extends React.Component {
                         {this.state.level == 0 ? (
                           <Route
                             exact
-                            path={`${pubpath}/question/:category/:topic`}
+                            path={`/question/:category/:topic`}
                             render={(props) => (
                               <QuestionPage
                                 dark={this.state.dark}
@@ -612,7 +612,7 @@ class Root extends React.Component {
                           />
                         ) : null}
                         <Route
-                          path={`${pubpath}`}
+                          path={`/`}
                           exact
                           render={() =>
                             this.state.level == 2 ? (
@@ -736,7 +736,7 @@ class Root extends React.Component {
           <Switch>
             {this.state.canReg ? (
               <Route
-                path={`${pubpath}/register`}
+                path={`/register`}
                 render={() => (
                   <RegisterPage
                     dark={this.state.dark}
@@ -747,13 +747,13 @@ class Root extends React.Component {
               />
             ) : null}
             <Route
-              path={`${pubpath}/forgot`}
+              path={`/forgot`}
               render={() => (
                 <ForgotPage dark={this.state.dark} emit={this.emit} />
               )}
             />
             <Route
-              path={`${pubpath}`}
+              path={`/`}
               render={() => (
                 <Login
                   dark={this.state.dark}

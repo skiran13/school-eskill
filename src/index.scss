@@ -95,6 +95,9 @@ textarea::placeholder {
 .ui.indicating.progress .bar {
   background-color: $primarycolor !important;
 }
+.default.text {
+  color: rgba(87, 85, 85, 0.671) !important;
+}
 .ui.input input::placeholder {
   color: rgba(87, 85, 85, 0.671) !important;
   font-size: 16px;

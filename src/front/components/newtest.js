@@ -19,10 +19,9 @@ import history from './history';
 import Select from 'react-select';
 import makeAnimated from 'react-select/lib/animated';
 import History from './history';
-import endpoint from '../enpoint';
 import _ from 'lodash';
 import Preview from './Preview';
-import { pubpath } from '../enpoint';
+import { server } from '../enpoint';
 class NewTest extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +91,7 @@ class NewTest extends React.Component {
     let { props } = this;
     if (q[cat] !== undefined) {
       //Changes for running local
-      fetch('http://localhost:5000' + endpoint + '/api/question', {
+      fetch(server + '/api/question', {
         body: JSON.stringify({
           n: q[cat][topic].q[i].n,
           cat: cat,
@@ -368,9 +367,7 @@ class NewTest extends React.Component {
                         if (i > 0) {
                           this.reset();
                           history.push(
-                            `${pubpath}/question/${ac}/${top}/${
-                              parseInt(i) - 1
-                            }`
+                            `/question/${ac}/${top}/${parseInt(i) - 1}`
                           );
                         }
                       }}
@@ -384,7 +381,7 @@ class NewTest extends React.Component {
                       primary
                       fluid
                       onClick={(e) => {
-                        history.push(`${pubpath}/question/${ac}/${top}`);
+                        history.push(`/question/${ac}/${top}`);
                       }}
                     >
                       Back
@@ -398,9 +395,7 @@ class NewTest extends React.Component {
                         if (i < 99) {
                           this.reset();
                           history.push(
-                            `${pubpath}/question/${ac}/${top}/${
-                              parseInt(i) + 1
-                            }`
+                            `/question/${ac}/${top}/${parseInt(i) + 1}`
                           );
                         }
                       }}

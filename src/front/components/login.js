@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@aragon/ui';
 import { Link } from 'react-router-dom';
 import { Image, Form, Segment, Header } from 'semantic-ui-react';
-import { pubpath } from '../enpoint';
 
 class Login extends React.Component {
   constructor(props) {
@@ -111,12 +110,12 @@ class Login extends React.Component {
 
             {this.props.canReg ? (
               <div className='ui message'>
-                <Link to={pubpath + '/register'}>Register</Link>
+                <Link to={'/register'}>Register</Link>
               </div>
             ) : null}
 
             <div className='ui message'>
-              <Link to={pubpath + '/forgot'}>Forgot Password</Link>
+              <Link to={'/forgot'}>Forgot Password</Link>
             </div>
           </div>
         </div>

@@ -23,8 +23,8 @@ import Preview from './Preview';
 import Select from 'react-select';
 import Spinner from 'react-spinkit';
 import makeAnimated from 'react-select/lib/animated';
-import endpoint from '../enpoint';
 import { InlineTex } from 'react-tex';
+import { server } from '../enpoint';
 
 class ChangeQuestion extends React.Component {
   constructor(props) {
@@ -75,7 +75,7 @@ class ChangeQuestion extends React.Component {
     let cat = category.replace(/[+]/g, ' ');
     let top = topic.replace(/[+]/g, ' ');
     //Changes for running local
-    fetch('http://localhost:5000' + endpoint + '/api/question', {
+    fetch(server + '/api/question', {
       body: JSON.stringify({ n: n, cat: cat, topic: top }),
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

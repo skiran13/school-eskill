@@ -1,31 +1,30 @@
-import React, { Component } from "react";
-import History from "./history";
-import { Sidebar, Segment, Menu, Icon, Header } from "semantic-ui-react";
-import history from "./history";
-import { Pie } from "@vx/shape";
-import { Group } from "@vx/group";
+import React, { Component } from 'react';
+import History from './history';
+import { Sidebar, Segment, Menu, Icon, Header } from 'semantic-ui-react';
+import history from './history';
+import { Pie } from '@vx/shape';
+import { Group } from '@vx/group';
 
-import { withTooltip, Tooltip } from "@vx/tooltip";
-import _ from "lodash";
-import { localPoint } from "@vx/event";
-import { scaleLinear } from "@vx/scale";
-import { RectClipPath } from "@vx/clip-path";
-import { pubpath } from "../enpoint";
-import { voronoi, VoronoiPolygon } from "@vx/voronoi";
+import { withTooltip, Tooltip } from '@vx/tooltip';
+import _ from 'lodash';
+import { localPoint } from '@vx/event';
+import { scaleLinear } from '@vx/scale';
+import { RectClipPath } from '@vx/clip-path';
+import { voronoi, VoronoiPolygon } from '@vx/voronoi';
 import {
   GradientOrangeRed,
   GradientPinkBlue,
   GradientTealBlue,
   GradientDarkgreenGreen,
-  LinearGradient
-} from "@vx/gradient";
+  LinearGradient,
+} from '@vx/gradient';
 
-const usage = d => d.usage;
+const usage = (d) => d.usage;
 const neighborRadius = 75;
 
 const extent = (data, value) => [
   Math.min(...data.map(value)),
-  Math.max(...data.map(value))
+  Math.max(...data.map(value)),
 ];
 
 class StudentDashboard extends React.Component {
@@ -42,7 +41,7 @@ class StudentDashboard extends React.Component {
         ind: i,
         x: k.x,
         y: k.y,
-        id: k.mid
+        id: k.mid,
       };
     });
     let margin = { top: 0, bottom: 0, right: 0, left: 0 };
@@ -50,20 +49,20 @@ class StudentDashboard extends React.Component {
     const innerHeight = height - margin.top - margin.bottom;
 
     const xScale = scaleLinear({
-      domain: extent(data, d => d.x),
-      range: [0, innerWidth]
+      domain: extent(data, (d) => d.x),
+      range: [0, innerWidth],
     });
 
     const yScale = scaleLinear({
-      domain: extent(data, d => d.y),
-      range: [innerHeight, 0]
+      domain: extent(data, (d) => d.y),
+      range: [innerHeight, 0],
     });
 
     const voronoiDiagram = voronoi({
-      x: d => xScale(d.x),
-      y: d => yScale(d.y),
+      x: (d) => xScale(d.x),
+      y: (d) => yScale(d.y),
       width: innerWidth,
-      height: innerHeight
+      height: innerHeight,
     })(data);
 
     return {
@@ -73,7 +72,7 @@ class StudentDashboard extends React.Component {
       yScale,
       voronoiDiagram,
       innerWidth,
-      innerHeight
+      innerHeight,
     };
   }
   constructor(props) {
@@ -84,7 +83,7 @@ class StudentDashboard extends React.Component {
       visible: false,
       modalVisible: false,
       filter: props.categories,
-      ...StudentDashboard.getUpdatedState(props)
+      ...StudentDashboard.getUpdatedState(props),
     };
     this.logout = this.logout.bind(this);
     this.emit = this.emit.bind(this);
@@ -102,7 +101,7 @@ class StudentDashboard extends React.Component {
     if (closest) {
       const neighbors = {};
       const cell = voronoiDiagram.cells[closest.index];
-      cell.halfedges.forEach(index => {
+      cell.halfedges.forEach((index) => {
         const edge = voronoiDiagram.edges[index];
         const { left, right } = edge;
         if (left && left !== closest) neighbors[left.data.id] = true;
@@ -119,7 +118,7 @@ class StudentDashboard extends React.Component {
     showTooltip({
       tooltipData: { ...da },
       tooltipLeft: x,
-      tooltipTop: y
+      tooltipTop: y,
     });
   }
   handleClick() {
@@ -155,7 +154,7 @@ class StudentDashboard extends React.Component {
       tooltipTop,
       tooltipLeft,
       events,
-      q
+      q,
     } = this.props;
     const {
       voronoiDiagram,
@@ -164,7 +163,7 @@ class StudentDashboard extends React.Component {
       xScale,
       yScale,
       selected,
-      neighbors
+      neighbors,
     } = this.state;
 
     const polygons = voronoiDiagram.polygons();
@@ -180,36 +179,36 @@ class StudentDashboard extends React.Component {
       <div>
         <Segment
           style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center"
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           <svg
             width={width}
             height={height}
-            ref={ref => {
+            ref={(ref) => {
               this.svg = ref;
             }}
           >
-            <GradientOrangeRed id="voronoi_orange_red" />
-            <LinearGradient from="#00ff21" to="#358937" id="voronoi_green" />
-            <LinearGradient from="#ffc1c1" to="#ff0000" id="voronoi_red" />
-            <LinearGradient from="#007bff" to="#2c00bc" id="voronoi_purple" />
+            <GradientOrangeRed id='voronoi_orange_red' />
+            <LinearGradient from='#00ff21' to='#358937' id='voronoi_green' />
+            <LinearGradient from='#ffc1c1' to='#ff0000' id='voronoi_red' />
+            <LinearGradient from='#007bff' to='#2c00bc' id='voronoi_purple' />
             <LinearGradient
-              from="rgba(255,255,255,0.5)"
-              to="rgba(255,255,255,0.1)"
-              id="voronoi_pink_red"
+              from='rgba(255,255,255,0.5)'
+              to='rgba(255,255,255,0.1)'
+              id='voronoi_pink_red'
             />
             <rect
-              fill="url(#voronoi_purple)"
+              fill='url(#voronoi_purple)'
               width={innerWidth}
               height={innerHeight}
               rx={14}
             />
             <RectClipPath
-              id="voronoi_clip"
+              id='voronoi_clip'
               width={innerWidth}
               height={innerHeight}
               rx={14}
@@ -217,7 +216,7 @@ class StudentDashboard extends React.Component {
             <Group
               top={margin.top}
               left={margin.left}
-              clipPath="url(#voronoi_clip)"
+              clipPath='url(#voronoi_clip)'
               onMouseMove={this.handleMouseMove}
               onMouseLeave={() => {
                 this.setState({ selected: null, neighbors: null });
@@ -227,25 +226,25 @@ class StudentDashboard extends React.Component {
                 <a
                   href={`/question/${polygon.data.ind}`}
                   key={`polygon-${ind}`}
-                  onClick={e => {
+                  onClick={(e) => {
                     e.preventDefault();
-                    history.push(`${pubpath}/question/${polygon.data.ind}`);
+                    history.push(`/question/${polygon.data.ind}`);
                   }}
                 >
                   <VoronoiPolygon
                     polygon={polygon}
-                    stroke="#ffffff"
+                    stroke='#ffffff'
                     strokeWidth={1}
                     fill={
                       selected && polygon.data.id === selected.data.id
-                        ? "url(#voronoi_pink_red)"
+                        ? 'url(#voronoi_pink_red)'
                         : polygon.data.state == 0
-                        ? "url(#voronoi_purple)"
+                        ? 'url(#voronoi_purple)'
                         : polygon.data.state == 1
-                        ? "url(#voronoi_red)"
+                        ? 'url(#voronoi_red)'
                         : polygon.data.state == 2
-                        ? "url(#voronoi_green)"
-                        : "url(#voronoi_orange_red)"
+                        ? 'url(#voronoi_green)'
+                        : 'url(#voronoi_orange_red)'
                     }
                     fillOpacity={1}
                   />
@@ -260,7 +259,7 @@ class StudentDashboard extends React.Component {
                 left={tooltipLeft + 12}
                 style={{
                   backgroundColor: tooltipData.bgc,
-                  color: tooltipData.color
+                  color: tooltipData.color,
                 }}
               >
                 {`${tooltipData.content}`}

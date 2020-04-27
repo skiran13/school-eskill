@@ -26,7 +26,6 @@ import history from './history';
 import { localPoint } from '@vx/event';
 import { Pie } from '@vx/shape';
 import { Group } from '@vx/group';
-import { pubpath } from '../enpoint';
 import { withTooltip, Tooltip } from '@vx/tooltip';
 import _ from 'lodash';
 
@@ -146,7 +145,7 @@ class QuestionPage extends React.Component {
                             onClick={(e) => {
                               e.preventDefault();
                               history.push(
-                                `${pubpath}/question/${this.props.cat}/${this.props.topic}/${arc.data.ind}`
+                                `/question/${this.props.cat}/${this.props.topic}/${arc.data.ind}`
                               );
                             }}
                           >
@@ -236,9 +235,7 @@ class QuestionPage extends React.Component {
                 inverted={this.props.dark}
                 onClick={(e) => {
                   e.preventDefault();
-                  history.push(
-                    `${pubpath}/question/${this.props.cat}/${topic}/${k.ind}`
-                  );
+                  history.push(`/question/${this.props.cat}/${topic}/${k.ind}`);
                 }}
                 style={{
                   color:

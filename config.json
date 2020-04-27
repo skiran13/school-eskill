@@ -3,6 +3,5 @@
   "stagingurl": "mongodb://test:test@ds135537.mlab.com:35537/eapproval",
   "password": "srmeskillnoreply",
   "email": "noreplysrmeskill@gmail.com",
-  "reset": "http://care.srmuniv.ac.in",
-  "pubpath": "/eskill"
+  "reset": "http://care.srmuniv.ac.in"
 }

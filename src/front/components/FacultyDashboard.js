@@ -23,10 +23,10 @@ import {
 import Categories from './categories';
 import AddQuestion from './AddQuestion';
 import _ from 'lodash';
-import endpoint from '../enpoint';
 import CompletionTable from './CompletionTable';
 import ReportProblem from './ReportProblem';
 import StudentTable from './StudentTable';
+import { server } from '../enpoint';
 class FacultyDashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +50,7 @@ class FacultyDashboard extends React.Component {
     students.map((s) => {
       if (s.a === true) {
         //Changes for running local
-        fetch('http://localhost:5000' + endpoint + '/api/student', {
+        fetch(server + '/api/student', {
           method: 'POST',
           body: JSON.stringify({ sid: s._id, cat: s.cat, topic: s.topic }),
           headers: { 'Content-Type': 'application/json' },
@@ -81,7 +81,7 @@ class FacultyDashboard extends React.Component {
     students.map((s) => {
       if (s.a === true) {
         //Changes for running local
-        fetch('http://localhost:5000' + endpoint + '/api/student', {
+        fetch(server + '/api/student', {
           method: 'POST',
           body: JSON.stringify({ sid: s._id, cat: s.cat, topic: s.topic }),
           headers: { 'Content-Type': 'application/json' },

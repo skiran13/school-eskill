@@ -17,7 +17,6 @@ import {
 } from 'semantic-ui-react';
 import history from './history';
 import _ from 'lodash';
-import { pubpath } from '../enpoint';
 class RegisterPage extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +51,7 @@ class RegisterPage extends Component {
     };
     if (obj.password == obj.confirm) {
       this.props.emit('reg', obj);
-      history.push(pubpath);
+      history.push('/');
     } else {
       this.setState({ passError: "Passwords don't match! " });
     }
@@ -193,7 +192,7 @@ class RegisterPage extends Component {
                   type='cancel'
                   onClick={(e) => {
                     e.preventDefault();
-                    history.push(pubpath);
+                    history.push('/');
                   }}
                 >
                   Cancel

@@ -8,11 +8,11 @@ require('sticky-cluster')(
     server.setTimeout(180000);
     server.setMaxListeners(0);
     let config = require('./config.json');
-    let { dburl, email: emailid, password, reset: resetURL, pubpath } = config;
+    let { dburl, email: emailid, password, reset: resetURL } = config;
     const path = require('path');
     const debug = process.env.NODE_ENV !== 'production';
     const io = require('socket.io')(server, {
-      path: pubpath + '/socket.io',
+      path: '/socket.io',
       pingTimeout: 360000,
       transports: ['polling', 'xhr-polling'],
     });
@@ -82,7 +82,7 @@ require('sticky-cluster')(
       );
       next();
     });
-    app.use(pubpath, express.static(path.resolve(__dirname, 'dist')));
+    app.use(express.static(path.resolve(__dirname, 'dist')));
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -975,7 +975,7 @@ require('sticky-cluster')(
         }
       });
       socket.on('forgot', (details) => {
-        let fid = pubpath + '/reset/' + makeid();
+        let fid = '/reset/' + makeid();
         resetArray.push(fid);
         let email = details.email;
         Users.find({ email: email }, (err, user) => {
@@ -1012,11 +1012,8 @@ require('sticky-cluster')(
         });
       });
     });
-    app.use(
-      pubpath + '/reset',
-      express.static(path.resolve(__dirname, 'forgot'))
-    );
-    app.post(pubpath + '/api/student', (req, res) => {
+    app.use('/reset', express.static(path.resolve(__dirname, 'forgot')));
+    app.post('/api/student', (req, res) => {
       let { sid, cat, topic } = req.body;
       Users.findById(sid, (err, student) => {
         try {
@@ -1047,7 +1044,7 @@ require('sticky-cluster')(
       });
     });
 
-    app.post(pubpath + '/api/question', (req, res) => {
+    app.post('/api/question', (req, res) => {
       let { n, cat, topic } = req.body;
       if (dbconnect) {
         try {
@@ -1065,7 +1062,7 @@ require('sticky-cluster')(
       }
     });
 
-    app.post(pubpath + '/api/faculty', (req, res) => {
+    app.post('/api/faculty', (req, res) => {
       let { branch, cbranch } = req.body;
       try {
         UserDetails.find(
