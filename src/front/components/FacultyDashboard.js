@@ -1,27 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import History from './history';
-import Stats from './stats';
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
-  Input,
-  Grid,
-  Dropdown,
-  Pagination,
-  Tab,
-  Modal,
-  GridRow,
-} from 'semantic-ui-react';
-import Categories from './categories';
-import AddQuestion from './AddQuestion';
+import React from 'react';
+import { Segment, Grid, Tab } from 'semantic-ui-react';
 import _ from 'lodash';
 import CompletionTable from './CompletionTable';
 import ReportProblem from './ReportProblem';

@@ -1,11 +1,7 @@
-import React from "react";
+import React from 'react';
 import {
-  Sidebar,
   Segment,
   Button,
-  Menu,
-  Image,
-  Container,
   Table,
   Icon,
   Header,
@@ -13,16 +9,14 @@ import {
   Form,
   Grid,
   Dropdown,
-  Pagination,
-  Modal
-} from "semantic-ui-react";
+} from 'semantic-ui-react';
 class Tag extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropVal: "",
-      inputVal: "",
-      tagError: ""
+      dropVal: '',
+      inputVal: '',
+      tagError: '',
     };
     this.handleDropdown = this.handleDropdown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,13 +24,13 @@ class Tag extends React.Component {
   }
   handleSubmit() {
     let { dropVal, inputVal } = this.state;
-    if (dropVal == "") {
-      this.setState({ tagError: "Please choose a group!" });
-    } else if (inputVal == "" || inputVal.match(/[a-z]\w/gi) == null) {
-      this.setState({ tagError: "Invalid Tag Name!" });
+    if (dropVal == '') {
+      this.setState({ tagError: 'Please choose a group!' });
+    } else if (inputVal == '' || inputVal.match(/[a-z]\w/gi) == null) {
+      this.setState({ tagError: 'Invalid Tag Name!' });
     } else {
-      this.setState({ tagError: "" });
-      this.props.emit("addTag", { group: dropVal, name: inputVal });
+      this.setState({ tagError: '' });
+      this.props.emit('addTag', { group: dropVal, name: inputVal });
     }
   }
   handleInput(e) {
@@ -61,80 +55,80 @@ class Tag extends React.Component {
         <Segment>
           <Form onSubmit={this.handleSubmit}>
             <Segment basic>
-              <Header size="large" textAlign="center">
+              <Header size='large' textAlign='center'>
                 Add New Tag
               </Header>
-              <Input fluid size="large" placeholder="Tag Name">
+              <Input fluid size='large' placeholder='Tag Name'>
                 <Dropdown
                   onChange={this.handleDropdown}
-                  placeholder="Choose Group"
+                  placeholder='Choose Group'
                   selection
-                  className="category-select"
+                  className='category-select'
                   options={[
                     {
-                      text: "Company",
-                      value: "company"
+                      text: 'Company',
+                      value: 'company',
                     },
                     {
-                      text: "Exam",
-                      value: "exam"
+                      text: 'Exam',
+                      value: 'exam',
                     },
                     {
-                      text: "Subject",
-                      value: "subject"
+                      text: 'Subject',
+                      value: 'subject',
                     },
                     {
-                      text: "Topic",
-                      value: "topic"
-                    }
+                      text: 'Topic',
+                      value: 'topic',
+                    },
                   ]}
                   style={{
-                    borderTopRightRadius: "0px",
-                    borderBottomRightRadius: "0px"
+                    borderTopRightRadius: '0px',
+                    borderBottomRightRadius: '0px',
                   }}
                 />
                 <input
                   onChange={this.handleInput}
                   style={{
-                    borderRadius: "0px"
+                    borderRadius: '0px',
                   }}
                 />
                 <Button
                   primary
                   style={{
-                    borderTopLeftRadius: "0px",
-                    borderBottomLeftRadius: "0px"
+                    borderTopLeftRadius: '0px',
+                    borderBottomLeftRadius: '0px',
                   }}
                 >
                   <Icon
-                    name="add"
+                    name='add'
                     style={{
-                      margin: "0",
-                      opacity: "1"
+                      margin: '0',
+                      opacity: '1',
                     }}
                   />
                 </Button>
               </Input>
             </Segment>
-            {tagSuccess == "success" ? (
+            {tagSuccess == 'success' ? (
               <div
-                className="ui success message"
+                className='ui success message'
                 style={{
-                  display: "block",
-                  border: "none",
-                  margin: "0 3.5%"
+                  display: 'block',
+                  border: 'none',
+                  margin: '0 3.5%',
                 }}
               >
                 Tag Successfully Added!
               </div>
             ) : null}
-            {tagError !== "" ? (
+            {tagError !== '' ? (
               <div
-                className="ui error message"
+                className='ui error message'
                 style={{
-                  display: "block",
-                  border: "none",
-                  margin: "0 3.5%"
+                  display: 'block',
+                  border: 'none',
+                  margin: '0 3.5%',
                 }}
               >
                 {tagError}
@@ -150,12 +144,12 @@ class Tag extends React.Component {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    {tags.map(t => (
+                    {tags.map((t) => (
                       <Table.Row>
                         <Table.Cell>{t.name}</Table.Cell>
                         <Table.Cell
                           style={{
-                            textTransform: "capitalize"
+                            textTransform: 'capitalize',
                           }}
                         >
                           {t.group}

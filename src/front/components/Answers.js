@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { Form, Grid, Segment, Input } from "semantic-ui-react";
-import Latex from "react-latex";
+import React, { Component } from 'react';
+import { Grid, Segment } from 'semantic-ui-react';
+import Latex from 'react-latex';
 class Answers extends Component {
   state = {};
   render() {
@@ -13,16 +13,16 @@ class Answers extends Component {
               <Grid column={2}>
                 <Grid.Column>
                   <Segment
-                    inverted={correct === "a" || this.props.dark}
+                    inverted={correct === 'a' || this.props.dark}
                     color={
-                      correct === "a"
-                        ? "green"
+                      correct === 'a'
+                        ? 'green'
                         : this.props.dark
-                        ? "grey"
+                        ? 'grey'
                         : null
                     }
                   >
-                    {" "}
+                    {' '}
                     <Latex>{options.a}</Latex>
                   </Segment>
                 </Grid.Column>
@@ -32,12 +32,12 @@ class Answers extends Component {
               <Grid column={2}>
                 <Grid.Column>
                   <Segment
-                    inverted={correct === "b" || this.props.dark}
+                    inverted={correct === 'b' || this.props.dark}
                     color={
-                      correct === "b"
-                        ? "green"
+                      correct === 'b'
+                        ? 'green'
                         : this.props.dark
-                        ? "grey"
+                        ? 'grey'
                         : null
                     }
                   >
@@ -52,12 +52,12 @@ class Answers extends Component {
               <Grid column={2}>
                 <Grid.Column>
                   <Segment
-                    inverted={correct === "c" || this.props.dark}
+                    inverted={correct === 'c' || this.props.dark}
                     color={
-                      correct === "c"
-                        ? "green"
+                      correct === 'c'
+                        ? 'green'
                         : this.props.dark
-                        ? "grey"
+                        ? 'grey'
                         : null
                     }
                   >
@@ -70,12 +70,12 @@ class Answers extends Component {
               <Grid column={2}>
                 <Grid.Column>
                   <Segment
-                    inverted={correct === "d" || this.props.dark}
+                    inverted={correct === 'd' || this.props.dark}
                     color={
-                      correct === "d"
-                        ? "green"
+                      correct === 'd'
+                        ? 'green'
                         : this.props.dark
-                        ? "grey"
+                        ? 'grey'
                         : null
                     }
                   >

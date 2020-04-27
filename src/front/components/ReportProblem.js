@@ -1,29 +1,21 @@
-import {
-  Table,
-  Pagination,
-  Grid,
-  Button,
-  Segment,
-  Input
-} from 'semantic-ui-react'
-import { Progress } from 'react-sweet-progress'
-import React from 'react'
+import { Table, Pagination, Input } from 'semantic-ui-react';
+import React from 'react';
 export default class RequestProblem extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { searchValue: '', activePage: 1 }
+  constructor(props) {
+    super(props);
+    this.state = { searchValue: '', activePage: 1 };
   }
-  componentDidMount () {}
-  updateSearch (e) {
-    this.setState({ searchValue: e.value })
+  componentDidMount() {}
+  updateSearch(e) {
+    this.setState({ searchValue: e.value });
   }
-  handlePaginationChange = (e, { activePage }) => this.setState({ activePage })
-  render () {
-    let { details } = this.props.details
-    let { width } = this.props
-    let problems = []
+  handlePaginationChange = (e, { activePage }) => this.setState({ activePage });
+  render() {
+    let { details } = this.props.details;
+    let { width } = this.props;
+    let problems = [];
     if (details.problems != undefined) {
-      problems = details.problems
+      problems = details.problems;
     }
     return (
       <Table inverted={this.props.dark}>
@@ -52,15 +44,15 @@ export default class RequestProblem extends React.Component {
         <Table.Body>
           {[...problems]
             .reverse()
-            .filter(s => {
+            .filter((s) => {
               return (
-                Object.values(s).find(a => {
+                Object.values(s).find((a) => {
                   if (typeof a === 'string') {
-                    let reg = new RegExp(this.state.searchValue, 'gi')
-                    return a.match(reg)
+                    let reg = new RegExp(this.state.searchValue, 'gi');
+                    return a.match(reg);
                   }
                 }) != undefined
-              )
+              );
             })
             .map((s, index) => {
               if (
@@ -80,11 +72,11 @@ export default class RequestProblem extends React.Component {
                       {s.resolution === false
                         ? 'Pending Resolution'
                         : s.resolution === true
-                          ? 'Resolved'
-                          : 'Rejected'}
+                        ? 'Resolved'
+                        : 'Rejected'}
                     </Table.Cell>
                   </Table.Row>
-                )
+                );
               }
             })}
           <Table.Row>
@@ -93,7 +85,7 @@ export default class RequestProblem extends React.Component {
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  width: '100%'
+                  width: '100%',
                 }}
               >
                 <Pagination
@@ -117,6 +109,6 @@ export default class RequestProblem extends React.Component {
           </Table.Row>
         </Table.Body>
       </Table>
-    )
+    );
   }
 }

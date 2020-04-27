@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import {
   Form,
-  Input,
-  TextArea,
   Button,
   Select,
   Segment,
-  Image,
-  Container,
-  Icon,
   Grid,
   Dropdown,
-  Modal,
   Header,
 } from 'semantic-ui-react';
 import history from './history';

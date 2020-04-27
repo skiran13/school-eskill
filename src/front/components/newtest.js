@@ -1,24 +1,7 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Grid,
-  Dropdown,
-  Pagination,
-  Modal,
-  Form,
-  GridRow,
-} from 'semantic-ui-react';
+import React from 'react';
+import { Segment, Button, Grid, Form } from 'semantic-ui-react';
 import Spinner from 'react-spinkit';
 import history from './history';
-import Select from 'react-select';
-import makeAnimated from 'react-select/lib/animated';
-import History from './history';
 import _ from 'lodash';
 import Preview from './Preview';
 import { server } from '../enpoint';

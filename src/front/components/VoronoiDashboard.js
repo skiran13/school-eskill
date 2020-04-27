@@ -1,8 +1,6 @@
-import React, { Component } from 'react';
-import History from './history';
-import { Sidebar, Segment, Menu, Icon, Header } from 'semantic-ui-react';
+import React from 'react';
+import { Segment } from 'semantic-ui-react';
 import history from './history';
-import { Pie } from '@vx/shape';
 import { Group } from '@vx/group';
 
 import { withTooltip, Tooltip } from '@vx/tooltip';
@@ -11,13 +9,7 @@ import { localPoint } from '@vx/event';
 import { scaleLinear } from '@vx/scale';
 import { RectClipPath } from '@vx/clip-path';
 import { voronoi, VoronoiPolygon } from '@vx/voronoi';
-import {
-  GradientOrangeRed,
-  GradientPinkBlue,
-  GradientTealBlue,
-  GradientDarkgreenGreen,
-  LinearGradient,
-} from '@vx/gradient';
+import { GradientOrangeRed, LinearGradient } from '@vx/gradient';
 
 const usage = (d) => d.usage;
 const neighborRadius = 75;

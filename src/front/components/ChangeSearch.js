@@ -1,5 +1,4 @@
-import { Header, Form, Grid, Button, Segment, Input } from 'semantic-ui-react';
-import { Progress } from 'react-sweet-progress';
+import { Header, Form, Segment } from 'semantic-ui-react';
 import Select from 'react-select';
 import React from 'react';
 import history from './history';

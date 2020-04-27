@@ -1,30 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import History from "./history";
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
-  Input,
-  Grid,
-  Dropdown,
-  Pagination,
-  Modal
-} from "semantic-ui-react";
-import { timeFormat } from "d3-time-format";
-import Categories from "./categories";
-import Department from "./departments";
-import Stats from "./stats";
-import Tag from "./tag";
-import Configuration from "./configuration";
-import _ from "lodash";
-let formatTime = timeFormat("%B %d, %Y");
+import React from 'react';
+import { Grid } from 'semantic-ui-react';
+import { timeFormat } from 'd3-time-format';
+import Categories from './categories';
+import Stats from './stats';
+import Configuration from './configuration';
+import _ from 'lodash';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -32,7 +12,7 @@ class Dashboard extends React.Component {
     this.state = {
       visible: false,
       modalVisible: false,
-      filter: props.categories
+      filter: props.categories,
     };
     this.logout = this.logout.bind(this);
     this.emit = this.emit.bind(this);
@@ -56,7 +36,7 @@ class Dashboard extends React.Component {
       cl = _.toArray(categories).length;
     return (
       <div>
-        <Grid padded stackable relaxed doubling divided="vertically">
+        <Grid padded stackable relaxed doubling divided='vertically'>
           <Grid.Row>
             <Stats
               categories={cl}

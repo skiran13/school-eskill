@@ -1,20 +1,5 @@
 import React from 'react';
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
-  Input,
-  Grid,
-  Dropdown,
-  Pagination,
-  Modal,
-} from 'semantic-ui-react';
+import { Segment, Header, Grid } from 'semantic-ui-react';
 class Categories extends React.Component {
   render() {
     return (

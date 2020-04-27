@@ -1,28 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
 import {
-  Sidebar,
   Segment,
   Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
   Input,
   Form,
   TextArea,
   Grid,
-  Dropdown,
-  Pagination,
-  Modal,
 } from 'semantic-ui-react';
 import Answers from './Answers';
 import Preview from './Preview';
-import Select from 'react-select';
 import Spinner from 'react-spinkit';
-import makeAnimated from 'react-select/lib/animated';
 import { InlineTex } from 'react-tex';
 import { server } from '../enpoint';
 

@@ -1,58 +1,39 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import History from './history'
-import Stats from './stats'
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
-  Input,
-  Grid,
-  Dropdown,
-  Pagination,
-  Tab,
-  Modal,
-  GridRow
-} from 'semantic-ui-react'
-import CoordinatorProblems from './CoordinatorProblems'
-import ChangeSearch from './ChangeSearch'
-import AddQuestion from './AddQuestion'
-import _ from 'lodash'
+import React from 'react';
+import Stats from './stats';
+import { Grid, Tab } from 'semantic-ui-react';
+import CoordinatorProblems from './CoordinatorProblems';
+import ChangeSearch from './ChangeSearch';
+import AddQuestion from './AddQuestion';
+import _ from 'lodash';
 
 class CoordinatorDashboard extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       visible: false,
       modalVisible: false,
-      filter: props.categories
-    }
-    this.logout = this.logout.bind(this)
-    this.emit = this.emit.bind(this)
-    this.handleClick = this.handleClick.bind(this)
+      filter: props.categories,
+    };
+    this.logout = this.logout.bind(this);
+    this.emit = this.emit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
-  handleClick () {
-    this.setState({ visible: !this.state.visible })
+  handleClick() {
+    this.setState({ visible: !this.state.visible });
   }
 
-  logout () {
-    this.props.logout()
+  logout() {
+    this.props.logout();
   }
-  componentDidMount () {}
-  emit (name, obj) {
-    this.props.emit(name, obj)
+  componentDidMount() {}
+  emit(name, obj) {
+    this.props.emit(name, obj);
   }
-  render () {
-    let { md: det, topics, categories } = this.props
-    let tl = _.toArray(topics).length
+  render() {
+    let { md: det, topics, categories } = this.props;
+    let tl = _.toArray(topics).length;
 
-    let cl = _.toArray(categories).length
+    let cl = _.toArray(categories).length;
     return (
       <div>
         <Grid padded stackable relaxed centered doubling divided='vertically'>
@@ -72,7 +53,7 @@ class CoordinatorDashboard extends React.Component {
                 menu={{
                   pointing: this.props.width > 768,
                   inverted: this.props.dark,
-                  stackable: true
+                  stackable: true,
                 }}
                 panes={[
                   {
@@ -89,7 +70,7 @@ class CoordinatorDashboard extends React.Component {
                           chError={this.props.chSuccess}
                         />
                       </Tab.Pane>
-                    )
+                    ),
                   },
                   {
                     menuItem: 'Add Question',
@@ -106,7 +87,7 @@ class CoordinatorDashboard extends React.Component {
                           dark={this.props.dark}
                         />
                       </Tab.Pane>
-                    )
+                    ),
                   },
                   {
                     menuItem: 'Change Question',
@@ -119,16 +100,16 @@ class CoordinatorDashboard extends React.Component {
                           dark={this.props.dark}
                         />
                       </Tab.Pane>
-                    )
-                  }
+                    ),
+                  },
                 ]}
               />
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </div>
-    )
+    );
   }
 }
 
-export default CoordinatorDashboard
+export default CoordinatorDashboard;

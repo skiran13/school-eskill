@@ -1,36 +1,11 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import History from './history';
-import Queries from './queries';
-import Attempted from './attempted';
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
-  Input,
-  Grid,
-  Dropdown,
-  Pagination,
-  Modal,
-  GridRow,
-  Card,
-  GridColumn,
-} from 'semantic-ui-react';
+import React from 'react';
+import { Segment, Icon, Header } from 'semantic-ui-react';
 import history from './history';
 import { localPoint } from '@vx/event';
 import { Pie } from '@vx/shape';
 import { Group } from '@vx/group';
-import { withTooltip, Tooltip } from '@vx/tooltip';
+import { withTooltip } from '@vx/tooltip';
 import _ from 'lodash';
-
-const white = '#888888';
-const black = '#000000';
 
 const usage = (d) => d.usage;
 

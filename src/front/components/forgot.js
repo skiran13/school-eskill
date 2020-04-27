@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Form,
-  Message,
-  Segment,
-  Container,
-  Grid,
-  Header,
-} from 'semantic-ui-react';
+import { Button, Form, Segment, Header } from 'semantic-ui-react';
 import history from './history';
 import { Link } from 'react-router-dom';
 class ForgotPage extends React.Component {

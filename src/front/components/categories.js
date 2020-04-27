@@ -1,12 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import {
-  Sidebar,
   Segment,
   Button,
-  Menu,
-  Image,
-  Container,
   Table,
   Icon,
   Header,
@@ -14,8 +10,6 @@ import {
   Form,
   Grid,
   Dropdown,
-  Pagination,
-  Modal,
 } from 'semantic-ui-react';
 import Spinner from 'react-spinkit';
 class Categories extends React.Component {

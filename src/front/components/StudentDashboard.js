@@ -1,20 +1,5 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import History from './history';
-import Queries from './queries';
-import Attempted from './attempted';
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Input,
-  Icon,
-  Header,
-  Grid,
-  Progress,
-  Card,
-} from 'semantic-ui-react';
+import React from 'react';
+import { Segment, Input, Icon, Header, Grid, Card } from 'semantic-ui-react';
 import history from './history';
 import 'react-circular-progressbar/dist/styles.css';
 import CircularProgressbar from 'react-circular-progressbar';

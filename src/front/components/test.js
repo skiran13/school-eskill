@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   Sidebar,
   Segment,
@@ -7,7 +7,6 @@ import {
   Image,
   Icon,
   Header,
-  Input,
 } from 'semantic-ui-react';
 class XYZ extends React.Component {
   constructor(props) {

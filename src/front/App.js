@@ -358,7 +358,7 @@ class Root extends React.Component {
                       name='bars'
                       size='large'
                       style={{
-                        color: '#3281ff',
+                        color: '#798162',
                       }}
                     />
                   </Menu.Item>
@@ -467,11 +467,10 @@ class Root extends React.Component {
               <Sidebar
                 as={Menu}
                 animation='push'
-                width='wide'
+                width='thin'
                 visible={this.state.visible}
                 icon='labeled'
                 vertical
-                inverted
               >
                 <Menu.Item name='home' onClick={(e) => this.handleHomeClick()}>
                   <Icon name='home' />
@@ -724,9 +723,19 @@ class Root extends React.Component {
                     textAlign: 'center',
                     width: '100%',
                     alignSelf: 'flex-end',
+                    fontSize: '1.3em',
                   }}
                 >
-                  eSkill - SRM Center for Applied Research in Education
+                  eSkill - Developed by{' '}
+                  <a href='https://www.linkedin.com/in/skiran13'>Surya Kiran</a>
+                  ,{' '}
+                  <a href='https://www.linkedin.com/in/vonesix'>
+                    Vignesh Shankar
+                  </a>{' '}
+                  and{' '}
+                  <a href='https://www.linkedin.com/in/abhishekchandar'>
+                    Abhishek Chandar
+                  </a>
                 </Header>
               </Sidebar.Pusher>
             </Sidebar.Pushable>

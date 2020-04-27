@@ -1,31 +1,15 @@
-import React from 'react'
-import {
-  Sidebar,
-  Segment,
-  Button,
-  Menu,
-  Image,
-  Container,
-  Table,
-  Icon,
-  Header,
-  Input,
-  Grid,
-  Dropdown,
-  Pagination,
-  Modal
-} from 'semantic-ui-react'
+import React from 'react';
+import { Segment, Header, Grid } from 'semantic-ui-react';
 class Attempted extends React.Component {
-  render () {
+  render() {
     return (
-      <Grid.Column className="attempted">
-      
+      <Grid.Column className='attempted'>
         <Segment
           basic
           style={{
             minHeight: '100%',
             alignSelf: 'flex-start',
-            width: '100%'
+            width: '100%',
           }}
         >
           <Grid stackable>
@@ -34,23 +18,20 @@ class Attempted extends React.Component {
                 raised
                 style={{
                   minHeight: '100%',
-                  width: '100%'
+                  width: '100%',
                 }}
               >
-               
-                  <Grid.Column width={10}>
-                    <Header size='medium' textAlign='left'>
-                      Topics Attempted
-                    </Header>
-                  </Grid.Column>
-                  <Grid.Column width={5}>
-                    <Header size='medium' textAlign='right'>
-                      {this.props.categories}
-                    </Header>
-                  </Grid.Column>
-               
+                <Grid.Column width={10}>
+                  <Header size='medium' textAlign='left'>
+                    Topics Attempted
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width={5}>
+                  <Header size='medium' textAlign='right'>
+                    {this.props.categories}
+                  </Header>
+                </Grid.Column>
               </Segment>
-
             </Grid.Column>
 
             <Grid.Column width={15}>
@@ -58,30 +39,26 @@ class Attempted extends React.Component {
                 raised
                 style={{
                   minHeight: '100%',
-                  width: '100%'
+                  width: '100%',
                 }}
               >
-                
-                  <Grid.Column width={15}>
-                    <Header size='medium' textAlign='left'>Topics Not attempted</Header>
-                  </Grid.Column>
-                  <Grid.Column width={5} floated='right'>
-                    <Header size='medium' textAlign='right'>
-                      {this.props.topics}
-                    </Header>
-                  </Grid.Column>
-               
+                <Grid.Column width={15}>
+                  <Header size='medium' textAlign='left'>
+                    Topics Not attempted
+                  </Header>
+                </Grid.Column>
+                <Grid.Column width={5} floated='right'>
+                  <Header size='medium' textAlign='right'>
+                    {this.props.topics}
+                  </Header>
+                </Grid.Column>
               </Segment>
-
             </Grid.Column>
-
-           
-         </Grid>
+          </Grid>
         </Segment>
-        
       </Grid.Column>
-    )
+    );
   }
 }
 
-export default Attempted
+export default Attempted;

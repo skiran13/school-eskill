@@ -190,6 +190,10 @@ textarea::placeholder {
     color: black;
   }
 }
+
+.ui.sidebar.menu .item {
+  color: $primarycolor !important;
+}
 .ui.secondary.menu .item,
 .ui.secondary.menu.inverted .item,
 .ui.secondary.inverted.menu a.item {

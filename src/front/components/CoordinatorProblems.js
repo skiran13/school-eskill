@@ -1,69 +1,60 @@
-import {
-  Table,
-  Grid,
-  Button,
-  Modal,
-  Segment,
-  Input,
-  Pagination
-} from 'semantic-ui-react'
-import { Progress } from 'react-sweet-progress'
-import React from 'react'
-import ChangeModal from './ChangeModal'
+import { Table, Grid, Button, Input, Pagination } from 'semantic-ui-react';
+import React from 'react';
+import ChangeModal from './ChangeModal';
 export default class CoordinatorProblems extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       searchValue: '',
       visible: false,
       cat: '',
       n: '',
       topic: '',
-      activePage: 1
-    }
-    this.resolve = this.resolve.bind(this)
-    this.handleClick = this.handleClick.bind(this)
+      activePage: 1,
+    };
+    this.resolve = this.resolve.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
-  componentDidMount () {}
-  updateSearch (e) {
-    this.setState({ searchValue: e.value })
+  componentDidMount() {}
+  updateSearch(e) {
+    this.setState({ searchValue: e.value });
   }
-  handlePaginationChange = (e, { activePage }) => this.setState({ activePage })
-  setProblem (p) {
+  handlePaginationChange = (e, { activePage }) => this.setState({ activePage });
+  setProblem(p) {
     this.setState({ problem: p }, () => {
-      this.resolve(false)
-    })
+      this.resolve(false);
+    });
   }
-  handleClick (e, n, cat, p, topic) {
+  handleClick(e, n, cat, p, topic) {
     this.setState({
       n: n || '',
       cat: cat || '',
       topic: topic || '',
       visible: !this.state.visible,
-      problem: p
-    })
+      problem: p,
+    });
   }
-  resolve (action) {
-    let { emit } = this.props
-    emit('resolve', { problem: this.state.problem, action: action })
-    this.setState({ visible: false })
+  resolve(action) {
+    let { emit } = this.props;
+    emit('resolve', { problem: this.state.problem, action: action });
+    this.setState({ visible: false });
   }
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     if (
       this.props.details.details.problems !=
         nextProps.details.details.problems ||
       nextState != this.state
     ) {
-      return true
+      return true;
     }
-    return false
+    return false;
   }
-  render () {
-    let { details } = this.props.details
-    let { width } = this.props
-    let problems = []
+  render() {
+    let { details } = this.props.details;
+    let { width } = this.props;
+    let problems = [];
     if (details.problems != undefined) {
-      problems = details.problems
+      problems = details.problems;
     }
     return (
       <Table stackable inverted={this.props.dark}>
@@ -92,15 +83,15 @@ export default class CoordinatorProblems extends React.Component {
         <Table.Body>
           {[...problems]
             .reverse()
-            .filter(s => {
+            .filter((s) => {
               return (
-                Object.values(s).find(a => {
+                Object.values(s).find((a) => {
                   if (typeof a === 'string') {
-                    let reg = new RegExp(this.state.searchValue, 'gi')
-                    return a.match(reg)
+                    let reg = new RegExp(this.state.searchValue, 'gi');
+                    return a.match(reg);
                   }
                 }) != undefined
-              )
+              );
             })
             .map((s, index) => {
               if (
@@ -137,7 +128,7 @@ export default class CoordinatorProblems extends React.Component {
                               fluid
                               negative
                               icon='close'
-                              onClick={e => this.setProblem(s)}
+                              onClick={(e) => this.setProblem(s)}
                             />
                           </Grid.Column>
                           <Grid.Column style={{ padding: '5px' }}>
@@ -145,7 +136,7 @@ export default class CoordinatorProblems extends React.Component {
                               fluid
                               icon='check'
                               positive
-                              onClick={e =>
+                              onClick={(e) =>
                                 this.handleClick(
                                   e,
                                   s.n,
@@ -164,7 +155,7 @@ export default class CoordinatorProblems extends React.Component {
                       )}
                     </Table.Cell>
                   </Table.Row>
-                )
+                );
               }
             })}
           <Table.Row>
@@ -173,7 +164,7 @@ export default class CoordinatorProblems extends React.Component {
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  width: '100%'
+                  width: '100%',
                 }}
               >
                 <Pagination
@@ -197,6 +188,6 @@ export default class CoordinatorProblems extends React.Component {
           </Table.Row>
         </Table.Body>
       </Table>
-    )
+    );
   }
 }
