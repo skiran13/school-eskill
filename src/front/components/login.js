@@ -118,26 +118,7 @@ class Login extends React.Component {
             </div>
           </div>
         </div>
-        <Header
-          size='tiny'
-          style={{
-            position: 'fixed',
-            textAlign: 'center',
-            width: '100%',
-            alignSelf: 'flex-end',
-            fontSize: '1.3em',
-            bottom: '0',
-            marginBottom: '20px',
-          }}
-        >
-          eSkill - Developed by{' '}
-          <a href='https://www.linkedin.com/in/skiran13'>Surya Kiran</a>,{' '}
-          <a href='https://www.linkedin.com/in/vonesix'>Vignesh Shankar</a> and{' '}
-          <a href='https://www.linkedin.com/in/abhishekchandar'>
-            Abhishek Chandar
-          </a>
-        </Header>
-      </div>
+     </div>
     );
   }
 }
