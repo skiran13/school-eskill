@@ -14,7 +14,6 @@ require('sticky-cluster')(
     const io = require('socket.io')(server, {
       path: '/socket.io',
       pingTimeout: 360000,
-      transports: ['polling', 'xhr-polling'],
     });
     const os = require('os');
     io.sockets.setMaxListeners(0);
