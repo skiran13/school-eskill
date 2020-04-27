@@ -1,0 +1,53 @@
+sudo apt update
+sudo apt install nginx
+
+go to node source distrubutions on google and download node v12
+
+clone eskill
+
+sudo npm i -g yarn serve pm2
+
+run yarn in directory
+
+sudo apt install redis-server
+
+run yarn build to build in dist folder which will be served using pm2
+
+inside eskill directory create serve.sh using vim (ie)
+vim serve.sh
+contents are : serve -s dist -l 1234
+
+pm2 start serve
+pm2 start server.js
+
+"pm2 logs server" for logs
+
+edit the conf file in /etc/nginx/sites-available/default
+replace the contents from location:
+
+location / {
+proxy_pass http://localhost:1234;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_cache_bypass $http_upgrade;}
+
+location /api/ {
+proxy_pass http://localhost:5000;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_cache_bypass $http_upgrade;}
+
+location /socket.io/ {
+proxy_pass http://localhost:5000;
+proxy_http_version 1.1;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection 'upgrade';
+proxy_set_header Host $host;
+proxy_cache_bypass $http_upgrade;}
+
+
+sudo systemctl restart nginx
