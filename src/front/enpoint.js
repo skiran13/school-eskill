@@ -1,3 +1,3 @@
-export default '/';
-let server = '/';
+export default '';
+let server = '';
 export { server };
