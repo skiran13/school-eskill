@@ -13,6 +13,7 @@ class AddQuestion extends React.Component {
       categories: props.categories,
       selCat: null,
       selTopic: null,
+      selectedClass: '',
       previewData: 'Question Description with an equation: $x^2 + 2x = 0$',
       name: 'Question Name',
       value: '',
@@ -23,7 +24,7 @@ class AddQuestion extends React.Component {
         d: 'Option D',
       },
       topics: [],
-      hints: 'A hint for your question',
+      hints: '',
       err: '',
     };
     this.catSelector = React.createRef();
@@ -39,6 +40,7 @@ class AddQuestion extends React.Component {
     this.handleRadio = this.handleRadio.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
     this.handleCategoryChange = this.handleCategoryChange.bind(this);
+    this.handleClassChange = this.handleClassChange.bind(this);
     this.handleTopicChange = this.handleTopicChange.bind(this);
     this.handleHintsChange = this.handleHintsChange.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
@@ -79,12 +81,12 @@ class AddQuestion extends React.Component {
       this.setState({ err: 'ans' });
       window.scrollTo(0, 0);
     } else {
-      let imageData = new FormData();
-      imageData.append(
-        'file',
-        document.getElementById('file').files[0],
-        'image'
-      );
+      // let imageData = new FormData();
+      // imageData.append(
+      //   'file',
+      //   document.getElementById('file').files[0],
+      //   'image'
+      // );
       emit('addQuestion', data);
     }
   }
@@ -105,19 +107,35 @@ class AddQuestion extends React.Component {
   handleCategoryChange(e) {
     this.setState({
       topics: e.topics,
-      selCat: { _id: e.value, name: e.label },
+      selCat: { _id: e.value, name: e.label, class: e.class },
     });
   }
   handleTopicChange(e) {
     this.setState({ selTopic: { _id: e.value, name: e.label } });
   }
-
+  handleClassChange(e) {
+    this.setState({ selectedClass: e.value });
+  }
   handleHintsChange(e) {
     this.setState({ hints: e.target.value });
   }
   render() {
     let { value, topics } = this.state;
     let { categories, grouped } = this.props;
+    const classes = [
+      { key: 'c1', label: 'Class 1', value: 'Class 1' },
+      { key: 'c2', label: 'Class 2', value: 'Class 2' },
+      { key: 'c3', label: 'Class 3', value: 'Class 3' },
+      { key: 'c4', label: 'Class 4', value: 'Class 4' },
+      { key: 'c5', label: 'Class 5', value: 'Class 5' },
+      { key: 'c6', label: 'Class 6', value: 'Class 6' },
+      { key: 'c7', label: 'Class 7', value: 'Class 7' },
+      { key: 'c8', label: 'Class 8', value: 'Class 8' },
+      { key: 'c9', label: 'Class 9', value: 'Class 9' },
+      { key: 'c10', label: 'Class 10', value: 'Class 10' },
+      { key: 'c11', label: 'Class 11', value: 'Class 11' },
+      { key: 'c12', label: 'Class 12', value: 'Class 12' },
+    ];
     return (
       <div>
         <Form
@@ -128,23 +146,35 @@ class AddQuestion extends React.Component {
           <Segment basic>
             <Form.Group widths='equal'>
               <Form.Field>
-                <label>Select Branch</label>
+                <label>Select Class</label>
+                <Select
+                  className='class-select'
+                  ref={this.catSelector}
+                  components={makeAnimated()}
+                  options={classes}
+                  onChange={this.handleClassChange}
+                />
+              </Form.Field>
+              <Form.Field>
+                <label>Select Subject</label>
                 <Select
                   className='category-select'
                   ref={this.catSelector}
                   components={makeAnimated()}
-                  options={_.map(categories, (k) => {
-                    return {
+                  isDisabled={this.state.selectedClass == ''}
+                  options={categories
+                    .filter((c) => c.class == this.state.selectedClass)
+                    .map((k) => ({
                       value: k._id,
                       label: k.name,
+                      class: k.class,
                       topics: k.topics,
-                    };
-                  })}
+                    }))}
                   onChange={this.handleCategoryChange}
                 />
               </Form.Field>
               <Form.Field>
-                <label>Select Course</label>
+                <label>Select Topic</label>
                 <Select
                   className='category-select'
                   ref={this.catSelector}
@@ -343,7 +373,7 @@ class AddQuestion extends React.Component {
               correct={value}
               options={this.state.options}
             />
-            <Segment basic>
+            {/* <Segment basic>
               <Form.Group widths='equal'>
                 <Form.Field>
                   <Input fluid size='large'>
@@ -351,7 +381,7 @@ class AddQuestion extends React.Component {
                   </Input>
                 </Form.Field>
               </Form.Group>
-            </Segment>
+            </Segment> */}
 
             <Form.Field>
               <label>Explanation</label>
@@ -360,7 +390,6 @@ class AddQuestion extends React.Component {
                 size='large'
                 placeholder='Explanation for the question (will be shown once answered)'
                 onChange={this.handleHintsChange}
-                required
               >
                 <input />
               </Input>
@@ -374,7 +403,7 @@ class AddQuestion extends React.Component {
         </Form>
         <Segment basic style={{ margin: '0' }}>
           <Button
-            onClick={(e) => {
+            onSubmit={(e) => {
               this.handleChange(e);
             }}
             form='addform'

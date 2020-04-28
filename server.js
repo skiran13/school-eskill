@@ -511,6 +511,10 @@ require('sticky-cluster')(
             { _id: t._id, name: t.name, class: t.class },
             {},
             (e, r) => {
+              Questions.deleteMany(
+                { category: { _id: t._id, name: t.name, class: t.class } },
+                (e, r) => {}
+              );
               Category.find()
                 .sort({ $natural: 1 })
                 .exec((err, cats) => {

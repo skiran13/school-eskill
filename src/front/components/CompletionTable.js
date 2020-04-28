@@ -82,7 +82,7 @@ export default class CompletionTable extends React.Component {
                         status='success'
                         theme={{
                           success: {
-                            color: '#3281ff',
+                            color: '#798162',
                             symbol: s.c + '%',
                             trailColor: this.props.dark ? '#fff' : '#efefef',
                           },

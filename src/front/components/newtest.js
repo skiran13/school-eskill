@@ -188,7 +188,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.a.split(') ').pop()}
+                              {q.options.a.split(')').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -225,7 +225,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.b.split(') ').pop()}
+                              {q.options.b.split(')').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -264,7 +264,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.c.split(') ').pop()}
+                              {q.options.c.split(')').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -301,7 +301,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.d.split(') ').pop()}
+                              {q.options.d.split(')').pop()}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -335,7 +335,7 @@ class NewTest extends React.Component {
             ) : (
               <Segment padded inverted={this.props.dark}>
                 <Grid centered style={{ minHeight: '500px' }}>
-                  <Spinner color='#3281ff' name='circle' />{' '}
+                  <Spinner color='#798162' name='circle' />{' '}
                 </Grid>
               </Segment>
             )}

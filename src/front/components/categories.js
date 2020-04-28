@@ -164,7 +164,7 @@ class Categories extends React.Component {
                 justifyContent: 'center',
               }}
             >
-              <Spinner color='#3281ff' name='circle' />
+              <Spinner color='#798162' name='circle' />
             </div>
           }
           {catSuccess == 'success' ? (
@@ -195,6 +195,7 @@ class Categories extends React.Component {
                 <Table.Row>
                   <Table.HeaderCell>Subject ID</Table.HeaderCell>
                   <Table.HeaderCell>Subject Name</Table.HeaderCell>
+                  <Table.HeaderCell>Class</Table.HeaderCell>
                   <Table.HeaderCell>Remove</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -204,6 +205,7 @@ class Categories extends React.Component {
                     <Table.Row key={i}>
                       <Table.Cell>{t._id}</Table.Cell>
                       <Table.Cell>{t.name}</Table.Cell>
+                      <Table.Cell>{t.class}</Table.Cell>
                       <Table.Cell>
                         <Button negative onClick={(e) => this.removeCat(t)}>
                           Remove
@@ -270,7 +272,7 @@ class Categories extends React.Component {
                 justifyContent: 'center',
               }}
             >
-              <Spinner color='#3281ff' name='circle' />
+              <Spinner color='#798162' name='circle' />
             </div>
           }
           {topSuccess == 'success' ? (
