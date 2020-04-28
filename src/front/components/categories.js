@@ -1,5 +1,5 @@
-import React from 'react';
-import _ from 'lodash';
+import React from 'react'
+import _ from 'lodash'
 import {
   Segment,
   Button,
@@ -9,29 +9,31 @@ import {
   Input,
   Form,
   Grid,
-  Dropdown,
-} from 'semantic-ui-react';
-import Spinner from 'react-spinkit';
+  Dropdown
+} from 'semantic-ui-react'
+import Spinner from 'react-spinkit'
 class Categories extends React.Component {
-  constructor(props) {
-    super(props);
-    this.category = React.createRef();
-    this.topic = React.createRef();
-    this.topicSelect = React.createRef();
+  constructor (props) {
+    super(props)
+    this.category = React.createRef()
+    this.topic = React.createRef()
+    this.topicSelect = React.createRef()
     this.state = {
       catError: '',
       topError: '',
-    };
-    this.handleCategory = this.handleCategory.bind(this);
-    this.handleTopic = this.handleTopic.bind(this);
+      toggleSubject: ''
+    }
+    this.handleCategory = this.handleCategory.bind(this)
+    this.handleTopic = this.handleTopic.bind(this)
+    this.onClickFilterSubject = this.onClickFilterSubject.bind(this)
   }
-  handleCategory(e) {
-    e.preventDefault();
-    let { emit } = this.props;
+  handleCategory (e) {
+    e.preventDefault()
+    let { emit } = this.props
     let c = {
       category: this.category.current.inputRef.value,
-      classes: document.querySelector('#classes').innerText,
-    };
+      classes: document.querySelector('#classes').innerText
+    }
 
     if (
       c.category.match(/[a-z]\w/gi) !== null &&
@@ -39,54 +41,60 @@ class Categories extends React.Component {
       c.classes !== 'Select Class' &&
       c.classes !== null
     ) {
-      this.props.loading('catSuccess');
-      emit('addCategory', c);
+      this.props.loading('catSuccess')
+      emit('addCategory', c)
     } else {
-      this.setState({ catError: 'Invalid Class/Subject Name' });
+      this.setState({ catError: 'Invalid Class/Subject Name' })
     }
   }
-  handleTopic(e) {
+
+  onClickFilterSubject (e) {
+    this.setState({ toggleSubject: e.target.querySelector('span').innerText })
+  }
+
+  handleTopic (e) {
     if (this.topicSelect.current.state.value > 0) {
-      let topic = this.topic.current.inputRef.value;
+      let topic = this.topic.current.inputRef.value
       if (topic.match(/[a-z]\w/gi) !== null && topic !== null) {
         this.props.emit('addTopic', {
           category: this.props.categories[
             this.topicSelect.current.state.value - 1
           ].name,
-          topic: topic,
-        });
-        this.props.loading('topSuccess');
+          topic: topic
+        })
+        this.props.loading('topSuccess')
       } else {
-        this.setState({ topError: 'Invalid Topic Name' });
+        this.setState({ topError: 'Invalid Topic Name' })
       }
     } else {
-      this.setState({ topError: 'Please Select a Category' });
+      this.setState({ topError: 'Please Select a Category' })
     }
   }
-  notify(c) {
-    this.props.emit('categoryNotify', c);
+  notify (c) {
+    this.props.emit('categoryNotify', c)
   }
-  removeTop(t) {
-    this.props.emit('removeTop', t);
+  removeTop (t) {
+    this.props.emit('removeTop', t)
   }
-  removeCat(t) {
-    this.props.emit('removeCat', t);
+  removeCat (t) {
+    this.props.emit('removeCat', t)
   }
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate (nextProps, nextState) {
     if (this.props.catError !== nextProps.catError) {
-      nextState.catError = nextProps.catError;
-      nextState.catSuccess = nextProps.catSuccess;
+      nextState.catError = nextProps.catError
+      nextState.catSuccess = nextProps.catSuccess
     } else {
     }
     if (this.props.topError !== nextProps.topError) {
-      nextState.topError = nextProps.topError;
+      nextState.topError = nextProps.topError
     } else {
     }
-    return true;
+    return true
   }
-  render() {
-    let { categories, catSuccess, topSuccess } = this.props;
-    let { catError, topError } = this.state;
+  render () {
+    let { categories, catSuccess, topSuccess } = this.props
+
+    let { catError, topError } = this.state
     const classes = [
       { key: 'c1', text: 'Class 1', value: 'Class 1' },
       { key: 'c2', text: 'Class 2', value: 'Class 2' },
@@ -99,9 +107,9 @@ class Categories extends React.Component {
       { key: 'c9', text: 'Class 9', value: 'Class 9' },
       { key: 'c10', text: 'Class 10', value: 'Class 10' },
       { key: 'c11', text: 'Class 11', value: 'Class 11' },
-      { key: 'c12', text: 'Class 12', value: 'Class 12' },
-    ];
-    console.log(this.props);
+      { key: 'c12', text: 'Class 12', value: 'Class 12' }
+    ]
+    console.log(this.props)
     return (
       <Grid.Column width={8}>
         <Segment inverted={this.props.dark}>
@@ -127,13 +135,13 @@ class Categories extends React.Component {
                     style={{
                       borderTopRightRadius: '0px',
                       borderBottomRightRadius: '0px',
-                      height: '50px',
+                      height: '50px'
                     }}
                   />
                   <input
                     style={{
                       borderTopRightRadius: '0px',
-                      borderBottomRightRadius: '0px',
+                      borderBottomRightRadius: '0px'
                     }}
                   />
                   <Form.Button
@@ -141,14 +149,14 @@ class Categories extends React.Component {
                     style={{
                       borderTopLeftRadius: '0px',
                       borderBottomLeftRadius: '0px',
-                      height: '50px',
+                      height: '50px'
                     }}
                   >
                     <Icon
                       name='add'
                       style={{
                         margin: '0',
-                        opacity: '1',
+                        opacity: '1'
                       }}
                     />
                   </Form.Button>
@@ -161,7 +169,7 @@ class Categories extends React.Component {
               className='ui'
               style={{
                 display: catSuccess == 'load' ? 'flex' : 'none',
-                justifyContent: 'center',
+                justifyContent: 'center'
               }}
             >
               <Spinner color='#798162' name='circle' />
@@ -173,7 +181,7 @@ class Categories extends React.Component {
               style={{
                 display: 'block',
                 border: 'none',
-                margin: '0 3.5%',
+                margin: '0 3.5%'
               }}
             >
               Subject Successfully Added!
@@ -184,7 +192,7 @@ class Categories extends React.Component {
             style={{
               display: catError == '' ? 'none' : 'block',
               border: 'none',
-              margin: '0 3.5%',
+              margin: '0 3.5%'
             }}
           >
             {catError}
@@ -207,12 +215,12 @@ class Categories extends React.Component {
                       <Table.Cell>{t.name}</Table.Cell>
                       <Table.Cell>{t.class}</Table.Cell>
                       <Table.Cell>
-                        <Button negative onClick={(e) => this.removeCat(t)}>
+                        <Button negative onClick={e => this.removeCat(t)}>
                           Remove
                         </Button>
                       </Table.Cell>
                     </Table.Row>
-                  );
+                  )
                 })}
               </Table.Body>
             </Table>
@@ -227,36 +235,56 @@ class Categories extends React.Component {
                   ref={this.topic}
                 >
                   <Dropdown
+                    placeholder='Select Class'
+                    selection
+                    id='classes'
+                    ref={this.topicSelect}
+                    options={classes}
+                    className='category-select'
+                    onChange={this.onClickFilterSubject}
+                    style={{
+                      borderTopRightRadius: '0px',
+                      borderBottomRightRadius: '0px',
+                      height: '50px'
+                    }}
+                  />
+                  <Dropdown
                     placeholder='Select Subject'
                     selection
                     ref={this.topicSelect}
                     className='category-select'
-                    options={_.map(categories, (k) => {
-                      return { text: k.name, value: k._id };
-                    })}
+                    disabled={this.state.toggleSubject == ''}
+                    onClick={this.handleIt}
+                    options={categories
+                      .filter(e => e.class == this.state.toggleSubject)
+                      .map(k => ({
+                        key: k.id,
+                        value: k.name,
+                        text: k.name
+                      }))}
                     style={{
                       borderTopRightRadius: '0px',
                       borderBottomRightRadius: '0px',
-                      height: '50px',
+                      height: '50px'
                     }}
                   />
                   <input
                     style={{
-                      borderRadius: '0px',
+                      borderRadius: '0px'
                     }}
                   />
                   <Button
                     primary
                     style={{
                       borderTopLeftRadius: '0px',
-                      borderBottomLeftRadius: '0px',
+                      borderBottomLeftRadius: '0px'
                     }}
                   >
                     <Icon
                       name='add'
                       style={{
                         margin: '0',
-                        opacity: '1',
+                        opacity: '1'
                       }}
                     />
                   </Button>
@@ -269,7 +297,7 @@ class Categories extends React.Component {
               className='ui'
               style={{
                 display: topSuccess == 'load' ? 'flex' : 'none',
-                justifyContent: 'center',
+                justifyContent: 'center'
               }}
             >
               <Spinner color='#798162' name='circle' />
@@ -281,7 +309,7 @@ class Categories extends React.Component {
               style={{
                 display: 'block',
                 border: 'none',
-                margin: '0 3.5%',
+                margin: '0 3.5%'
               }}
             >
               Topic Successfully Added!
@@ -292,7 +320,7 @@ class Categories extends React.Component {
             style={{
               display: topError == '' ? 'none' : 'block',
               border: 'none',
-              margin: '0 3.5%',
+              margin: '0 3.5%'
             }}
           >
             {topError}
@@ -320,27 +348,27 @@ class Categories extends React.Component {
                           <Button
                             style={{ height: '36px' }}
                             primary
-                            onClick={(e) => this.notify(t)}
+                            onClick={e => this.notify(t)}
                           >
                             Notify
                           </Button>
                         )}
                       </Table.Cell>
                       <Table.Cell>
-                        <Button negative onClick={(e) => this.removeTop(t)}>
+                        <Button negative onClick={e => this.removeTop(t)}>
                           Remove
                         </Button>
                       </Table.Cell>
                     </Table.Row>
-                  );
+                  )
                 })}
               </Table.Body>
             </Table>
           </Segment>
         </Segment>
       </Grid.Column>
-    );
+    )
   }
 }
 
-export default Categories;
+export default Categories
