@@ -71,6 +71,7 @@ class NewTest extends React.Component {
   }
   fetchQuestion() {
     let { q, i, cat, topic } = this.props;
+    console.log(this.props);
     let { props } = this;
     if (q[cat] !== undefined) {
       //Changes for running local
@@ -136,6 +137,7 @@ class NewTest extends React.Component {
     if (qa != undefined && q == undefined) {
       this.fetchQuestion();
     }
+
     return (
       <div>
         {qa != undefined ? (
@@ -375,14 +377,14 @@ class NewTest extends React.Component {
                       primary
                       fluid
                       onClick={(e) => {
-                        if (i < 99) {
+                        if (i < qa[topic].q.length - 1) {
                           this.reset();
                           history.push(
                             `/question/${ac}/${top}/${parseInt(i) + 1}`
                           );
                         }
                       }}
-                      disabled={!(i < 99)}
+                      disabled={!(i < qa[topic].q.length - 1)}
                     >
                       Next Question
                     </Button>

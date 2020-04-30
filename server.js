@@ -388,6 +388,7 @@ require('sticky-cluster')(
               name: {
                 $regex: new RegExp(`(${info.category})\\b`, 'gi'),
               },
+              class: info.class,
             },
             (err, cat) => {
               if (_.findIndex(cat.topics, { name: info.topic }) == -1) {
@@ -495,6 +496,12 @@ require('sticky-cluster')(
             cate.topics = _.reject(cate.topics, (top) => top.id == t.tid);
             cate.markModified('topics');
             cate.save((err) => {
+              Questions.deleteMany(
+                {
+                  topic: { _id: t.tid.toString(), name: t.name },
+                },
+                (e, r) => {}
+              );
               Category.find()
                 .sort({ $natural: 1 })
                 .exec((err, cats) => {
@@ -1040,6 +1047,7 @@ require('sticky-cluster')(
           q.a = at;
           q.c = cm;
           q.cor = correct;
+          q.total = questions[cat][topic].q.length;
           res.json(q);
         } catch (e) {
           res.json({ err: 'no student' });

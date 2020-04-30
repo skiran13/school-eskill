@@ -1,5 +1,5 @@
-import React from 'react'
-import _ from 'lodash'
+import React from 'react';
+import _ from 'lodash';
 import {
   Segment,
   Button,
@@ -9,31 +9,34 @@ import {
   Input,
   Form,
   Grid,
-  Dropdown
-} from 'semantic-ui-react'
-import Spinner from 'react-spinkit'
+  Dropdown,
+  Pagination,
+} from 'semantic-ui-react';
+import Spinner from 'react-spinkit';
 class Categories extends React.Component {
-  constructor (props) {
-    super(props)
-    this.category = React.createRef()
-    this.topic = React.createRef()
-    this.topicSelect = React.createRef()
+  constructor(props) {
+    super(props);
+    this.category = React.createRef();
+    this.topic = React.createRef();
+    this.topicSelect = React.createRef();
     this.state = {
       catError: '',
       topError: '',
-      toggleSubject: ''
-    }
-    this.handleCategory = this.handleCategory.bind(this)
-    this.handleTopic = this.handleTopic.bind(this)
-    this.onClickFilterSubject = this.onClickFilterSubject.bind(this)
+      toggleSubject: '',
+      activeCatPage: 1,
+      activeTopPage: 1,
+    };
+    this.handleCategory = this.handleCategory.bind(this);
+    this.handleTopic = this.handleTopic.bind(this);
+    this.onClickFilterSubject = this.onClickFilterSubject.bind(this);
   }
-  handleCategory (e) {
-    e.preventDefault()
-    let { emit } = this.props
+  handleCategory(e) {
+    e.preventDefault();
+    let { emit } = this.props;
     let c = {
       category: this.category.current.inputRef.value,
-      classes: document.querySelector('#classes').innerText
-    }
+      classes: document.querySelector('#classes').innerText,
+    };
 
     if (
       c.category.match(/[a-z]\w/gi) !== null &&
@@ -41,60 +44,70 @@ class Categories extends React.Component {
       c.classes !== 'Select Class' &&
       c.classes !== null
     ) {
-      this.props.loading('catSuccess')
-      emit('addCategory', c)
+      this.props.loading('catSuccess');
+      emit('addCategory', c);
     } else {
-      this.setState({ catError: 'Invalid Class/Subject Name' })
+      this.setState({ catError: 'Invalid Class/Subject Name' });
     }
   }
 
-  onClickFilterSubject (e) {
-    this.setState({ toggleSubject: e.target.querySelector('span').innerText })
+  onClickFilterSubject(e) {
+    this.setState({ toggleSubject: e.target.querySelector('span').innerText });
   }
 
-  handleTopic (e) {
+  handleTopic(e) {
     if (this.topicSelect.current.state.value > 0) {
-      let topic = this.topic.current.inputRef.value
+      let topic = this.topic.current.inputRef.value;
       if (topic.match(/[a-z]\w/gi) !== null && topic !== null) {
         this.props.emit('addTopic', {
           category: this.props.categories[
             this.topicSelect.current.state.value - 1
           ].name,
-          topic: topic
-        })
-        this.props.loading('topSuccess')
+          class: this.props.categories[this.topicSelect.current.state.value - 1]
+            .class,
+          topic: topic,
+        });
+        this.props.loading('topSuccess');
       } else {
-        this.setState({ topError: 'Invalid Topic Name' })
+        this.setState({ topError: 'Invalid Topic Name' });
       }
     } else {
-      this.setState({ topError: 'Please Select a Category' })
+      this.setState({ topError: 'Please Select a Subject' });
     }
   }
-  notify (c) {
-    this.props.emit('categoryNotify', c)
+  notify(c) {
+    this.props.emit('categoryNotify', c);
   }
-  removeTop (t) {
-    this.props.emit('removeTop', t)
+  removeTop(t) {
+    this.props.emit('removeTop', t);
   }
-  removeCat (t) {
-    this.props.emit('removeCat', t)
+  removeCat(t) {
+    this.props.emit('removeCat', t);
   }
-  componentWillUpdate (nextProps, nextState) {
+  handlePaginationChange = (e, data) => {
+    if (data['aria-label'] == 'cat-pagination') {
+      this.setState({ activeCatPage: data.activePage });
+    } else if (data['aria-label'] == 'top-pagination') {
+      this.setState({ activeTopPage: data.activePage });
+    }
+  };
+
+  componentWillUpdate(nextProps, nextState) {
     if (this.props.catError !== nextProps.catError) {
-      nextState.catError = nextProps.catError
-      nextState.catSuccess = nextProps.catSuccess
+      nextState.catError = nextProps.catError;
+      nextState.catSuccess = nextProps.catSuccess;
     } else {
     }
     if (this.props.topError !== nextProps.topError) {
-      nextState.topError = nextProps.topError
+      nextState.topError = nextProps.topError;
     } else {
     }
-    return true
+    return true;
   }
-  render () {
-    let { categories, catSuccess, topSuccess } = this.props
+  render() {
+    let { categories, catSuccess, topSuccess } = this.props;
 
-    let { catError, topError } = this.state
+    let { catError, topError } = this.state;
     const classes = [
       { key: 'c1', text: 'Class 1', value: 'Class 1' },
       { key: 'c2', text: 'Class 2', value: 'Class 2' },
@@ -107,9 +120,8 @@ class Categories extends React.Component {
       { key: 'c9', text: 'Class 9', value: 'Class 9' },
       { key: 'c10', text: 'Class 10', value: 'Class 10' },
       { key: 'c11', text: 'Class 11', value: 'Class 11' },
-      { key: 'c12', text: 'Class 12', value: 'Class 12' }
-    ]
-    console.log(this.props)
+      { key: 'c12', text: 'Class 12', value: 'Class 12' },
+    ];
     return (
       <Grid.Column width={8}>
         <Segment inverted={this.props.dark}>
@@ -135,28 +147,28 @@ class Categories extends React.Component {
                     style={{
                       borderTopRightRadius: '0px',
                       borderBottomRightRadius: '0px',
-                      height: '50px'
+                      height: '50px',
                     }}
                   />
                   <input
                     style={{
-                      borderTopRightRadius: '0px',
-                      borderBottomRightRadius: '0px'
+                      borderRadius: '0px',
                     }}
                   />
+
                   <Form.Button
                     primary
                     style={{
                       borderTopLeftRadius: '0px',
                       borderBottomLeftRadius: '0px',
-                      height: '50px'
+                      height: '50px',
                     }}
                   >
                     <Icon
                       name='add'
                       style={{
                         margin: '0',
-                        opacity: '1'
+                        opacity: '1',
                       }}
                     />
                   </Form.Button>
@@ -169,7 +181,7 @@ class Categories extends React.Component {
               className='ui'
               style={{
                 display: catSuccess == 'load' ? 'flex' : 'none',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               <Spinner color='#798162' name='circle' />
@@ -181,7 +193,7 @@ class Categories extends React.Component {
               style={{
                 display: 'block',
                 border: 'none',
-                margin: '0 3.5%'
+                margin: '0 3.5%',
               }}
             >
               Subject Successfully Added!
@@ -192,7 +204,7 @@ class Categories extends React.Component {
             style={{
               display: catError == '' ? 'none' : 'block',
               border: 'none',
-              margin: '0 3.5%'
+              margin: '0 3.5%',
             }}
           >
             {catError}
@@ -209,19 +221,45 @@ class Categories extends React.Component {
               </Table.Header>
               <Table.Body>
                 {this.props.categories.map((t, i) => {
-                  return (
-                    <Table.Row key={i}>
-                      <Table.Cell>{t._id}</Table.Cell>
-                      <Table.Cell>{t.name}</Table.Cell>
-                      <Table.Cell>{t.class}</Table.Cell>
-                      <Table.Cell>
-                        <Button negative onClick={e => this.removeCat(t)}>
-                          Remove
-                        </Button>
-                      </Table.Cell>
-                    </Table.Row>
-                  )
+                  if (
+                    i < this.state.activeCatPage * 5 &&
+                    i > this.state.activeCatPage * 5 - 6
+                  ) {
+                    return (
+                      <Table.Row key={i}>
+                        <Table.Cell>{t._id}</Table.Cell>
+                        <Table.Cell>{t.name}</Table.Cell>
+                        <Table.Cell>{t.class}</Table.Cell>
+                        <Table.Cell>
+                          <Button negative onClick={(e) => this.removeCat(t)}>
+                            Remove
+                          </Button>
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  }
                 })}
+                {this.props.categories != 0 ? (
+                  <Table.Row>
+                    <Table.Cell colspan='6' textAlign='center'>
+                      <Pagination
+                        activePage={this.state.activeCatPage}
+                        defaultActivePage={1}
+                        aria-label='cat-pagination'
+                        boundaryRange={1}
+                        onPageChange={this.handlePaginationChange}
+                        siblingRange={1}
+                        totalPages={
+                          this.props.categories.length != undefined
+                            ? parseInt(this.props.categories.length % 5) == 0
+                              ? parseInt(this.props.categories.length / 5)
+                              : parseInt(this.props.categories.length / 5) + 1
+                            : 0
+                        }
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                ) : null}
               </Table.Body>
             </Table>
           </Segment>
@@ -238,14 +276,13 @@ class Categories extends React.Component {
                     placeholder='Select Class'
                     selection
                     id='classes'
-                    ref={this.topicSelect}
                     options={classes}
                     className='category-select'
                     onChange={this.onClickFilterSubject}
                     style={{
                       borderTopRightRadius: '0px',
                       borderBottomRightRadius: '0px',
-                      height: '50px'
+                      height: '50px',
                     }}
                   />
                   <Dropdown
@@ -254,37 +291,34 @@ class Categories extends React.Component {
                     ref={this.topicSelect}
                     className='category-select'
                     disabled={this.state.toggleSubject == ''}
-                    onClick={this.handleIt}
                     options={categories
-                      .filter(e => e.class == this.state.toggleSubject)
-                      .map(k => ({
-                        key: k.id,
-                        value: k.name,
-                        text: k.name
+                      .filter((e) => e.class == this.state.toggleSubject)
+                      .map((k) => ({
+                        value: k._id,
+                        text: k.name,
                       }))}
                     style={{
-                      borderTopRightRadius: '0px',
-                      borderBottomRightRadius: '0px',
-                      height: '50px'
+                      borderRadius: '0px',
+                      height: '50px',
                     }}
                   />
                   <input
                     style={{
-                      borderRadius: '0px'
+                      borderRadius: '0px',
                     }}
                   />
                   <Button
                     primary
                     style={{
                       borderTopLeftRadius: '0px',
-                      borderBottomLeftRadius: '0px'
+                      borderBottomLeftRadius: '0px',
                     }}
                   >
                     <Icon
                       name='add'
                       style={{
                         margin: '0',
-                        opacity: '1'
+                        opacity: '1',
                       }}
                     />
                   </Button>
@@ -297,7 +331,7 @@ class Categories extends React.Component {
               className='ui'
               style={{
                 display: topSuccess == 'load' ? 'flex' : 'none',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               <Spinner color='#798162' name='circle' />
@@ -309,7 +343,7 @@ class Categories extends React.Component {
               style={{
                 display: 'block',
                 border: 'none',
-                margin: '0 3.5%'
+                margin: '0 3.5%',
               }}
             >
               Topic Successfully Added!
@@ -320,7 +354,7 @@ class Categories extends React.Component {
             style={{
               display: topError == '' ? 'none' : 'block',
               border: 'none',
-              margin: '0 3.5%'
+              margin: '0 3.5%',
             }}
           >
             {topError}
@@ -331,44 +365,72 @@ class Categories extends React.Component {
                 <Table.Row>
                   <Table.HeaderCell>Topic ID</Table.HeaderCell>
                   <Table.HeaderCell>Topic Name</Table.HeaderCell>
+                  <Table.HeaderCell>Class</Table.HeaderCell>
                   <Table.HeaderCell>Notify</Table.HeaderCell>
                   <Table.HeaderCell>Remove</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
                 {this.props.topics.map((t, i) => {
-                  return (
-                    <Table.Row key={i}>
-                      <Table.Cell>{t.tid}</Table.Cell>
-                      <Table.Cell>{t.name}</Table.Cell>
-                      <Table.Cell>
-                        {t.notified ? (
-                          'Notified'
-                        ) : (
-                          <Button
-                            style={{ height: '36px' }}
-                            primary
-                            onClick={e => this.notify(t)}
-                          >
-                            Notify
+                  if (
+                    i < this.state.activeTopPage * 5 &&
+                    i > this.state.activeTopPage * 5 - 6
+                  ) {
+                    return (
+                      <Table.Row key={i}>
+                        <Table.Cell>{t.tid}</Table.Cell>
+                        <Table.Cell>{t.name}</Table.Cell>
+                        <Table.Cell>{t.class}</Table.Cell>
+                        <Table.Cell>
+                          {t.notified ? (
+                            'Notified'
+                          ) : (
+                            <Button
+                              style={{ height: '36px', marginBottom: '0px' }}
+                              primary
+                              onClick={(e) => this.notify(t)}
+                            >
+                              Notify
+                            </Button>
+                          )}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Button negative onClick={(e) => this.removeTop(t)}>
+                            Remove
                           </Button>
-                        )}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Button negative onClick={e => this.removeTop(t)}>
-                          Remove
-                        </Button>
-                      </Table.Cell>
-                    </Table.Row>
-                  )
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  }
                 })}
+                {this.props.topics != 0 ? (
+                  <Table.Row>
+                    <Table.Cell colspan='6' textAlign='center'>
+                      <Pagination
+                        activePage={this.state.activeTopPage}
+                        defaultActivePage={1}
+                        aria-label='top-pagination'
+                        boundaryRange={1}
+                        onPageChange={this.handlePaginationChange}
+                        siblingRange={1}
+                        totalPages={
+                          this.props.topics.length != undefined
+                            ? parseInt(this.props.topics.length % 5) == 0
+                              ? parseInt(this.props.topics.length / 5)
+                              : parseInt(this.props.topics.length / 5) + 1
+                            : 0
+                        }
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                ) : null}
               </Table.Body>
             </Table>
           </Segment>
         </Segment>
       </Grid.Column>
-    )
+    );
   }
 }
 
-export default Categories
+export default Categories;

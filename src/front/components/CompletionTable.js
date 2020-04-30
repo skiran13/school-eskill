@@ -78,18 +78,20 @@ export default class CompletionTable extends React.Component {
                     <Table.Cell>{s.topic}</Table.Cell>
                     <Table.Cell>
                       <Progress
-                        percent={parseInt(s.c)}
+                        percent={parseInt((s.c / s.total) * 100)}
                         status='success'
                         theme={{
                           success: {
                             color: '#798162',
-                            symbol: s.c + '%',
+                            symbol: (s.c / s.total) * 100 + '%',
                             trailColor: this.props.dark ? '#fff' : '#efefef',
                           },
                         }}
                       />
                     </Table.Cell>
-                    <Table.Cell textAlign='center'>{s.cor}</Table.Cell>
+                    <Table.Cell textAlign='center'>
+                      {s.cor}/{s.total}
+                    </Table.Cell>
                   </Table.Row>
                 );
               }
