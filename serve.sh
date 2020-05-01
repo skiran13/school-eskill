@@ -1,1 +1,1 @@
-serve -s dist -l 1234
+http-server dist -a localhost -p 1234
