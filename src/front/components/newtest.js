@@ -190,7 +190,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.a.split(')').pop()}
+                              {q.options.a.slice(q.options.a.indexOf(')') + 1)}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -227,7 +227,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.b.split(')').pop()}
+                              {q.options.b.slice(q.options.b.indexOf(')') + 1)}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -266,7 +266,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.c.split(')').pop()}
+                              {q.options.c.slice(q.options.c.indexOf(')') + 1)}
                             </Segment>
                           </Grid.Column>
                         </Grid>
@@ -303,7 +303,7 @@ class NewTest extends React.Component {
                                   : null
                               }
                             >
-                              {q.options.d.split(')').pop()}
+                              {q.options.d.slice(q.options.d.indexOf(')') + 1)}
                             </Segment>
                           </Grid.Column>
                         </Grid>

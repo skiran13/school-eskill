@@ -90,7 +90,10 @@ require('sticky-cluster')(
         pass: password,
       },
     });
-    mongoose.connect(dburl, { useNewUrlParser: true });
+    mongoose.connect(dburl, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    });
 
     let db = mongoose.connection;
 

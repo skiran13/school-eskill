@@ -258,6 +258,7 @@ class Root extends React.Component {
             tid: parseInt(t.id),
             name: t.name,
             cid: c._id,
+            class: c.class,
             notified: t.notified,
           });
         });

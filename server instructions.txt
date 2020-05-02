@@ -16,6 +16,9 @@ run yarn build to build in dist folder which will be served using pm2
 inside eskill directory create serve.sh using vim (ie)
 vim serve.sh
 contents are : serve -s dist -l 1234
+if serve doesnt work, use npm package http-server
+
+contents: http-server dist -a localhost -p 1234
 
 pm2 start serve
 pm2 start server.js
