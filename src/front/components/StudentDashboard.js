@@ -150,9 +150,15 @@ class StudentDashboard extends React.Component {
                                   <Header as='h3'>Rejected</Header>
                                 ) : (
                                   <CircularProgressbar
-                                    percentage={(complete / qd.q.length) * 100}
+                                    percentage={
+                                      Math.round(
+                                        (complete / qd.q.length) * 10000
+                                      ) / 100
+                                    }
                                     text={`${
-                                      (complete / qd.q.length) * 100
+                                      Math.round(
+                                        (complete / qd.q.length) * 10000
+                                      ) / 100
                                     }% Complete`}
                                     styles={{
                                       path: { stroke: `#676d2d` },

@@ -94,7 +94,6 @@ class FacultyDashboard extends React.Component {
     let tl = _.toArray(topics).length;
     let { studentDetails } = this.state;
     let cl = _.toArray(categories).length;
-    console.log(this.state.studentDetails);
     return (
       <div>
         <Segment
