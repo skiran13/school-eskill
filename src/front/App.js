@@ -32,6 +32,8 @@ import {
   Icon,
   Header,
   Dropdown,
+  Grid,
+  Button,
 } from 'semantic-ui-react';
 import RequestCourse from './components/RequestCourse';
 class Root extends React.Component {
@@ -82,7 +84,7 @@ class Root extends React.Component {
     this.setLoading = this.setLoading.bind(this);
     this.stateSet = this.stateSet.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-
+    this.onButtonClick = this.onButtonClick.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
@@ -306,6 +308,12 @@ class Root extends React.Component {
     history.push(`/`);
     this.setState({ visible: false });
   }
+  onButtonClick(e) {
+    let { details } = this.state;
+    details.notifications = [];
+    socket.emit('updateNoti', details);
+    this.setState({ details: details });
+  }
   notificationSeen() {
     setTimeout(() => {
       let { details } = this.state;
@@ -420,8 +428,20 @@ class Root extends React.Component {
                               fontWeight: 'bold',
                               color: this.state.dark ? '#fff' : null,
                             }}
-                            content='Notifcations'
-                          />
+                          >
+                            <Grid columns={2}>
+                              <Grid.Row>
+                                <Grid.Column verticalAlign='middle'>
+                                  Notifications
+                                </Grid.Column>
+                                <Grid.Column textAlign='right'>
+                                  <Button small onClick={this.onButtonClick}>
+                                    Clear all
+                                  </Button>
+                                </Grid.Column>
+                              </Grid.Row>
+                            </Grid>
+                          </Dropdown.Header>
                           {[...this.state.details.notifications]
                             .reverse()
                             .map((n) => {

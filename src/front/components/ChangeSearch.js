@@ -42,7 +42,6 @@ export default class ChangeSearch extends React.Component {
   }
   render() {
     let { categories, topics } = this.props;
-    console.log(this.state);
     const classes = [
       { key: 'c1', label: 'Class 1', value: 'Class 1' },
       { key: 'c2', label: 'Class 2', value: 'Class 2' },

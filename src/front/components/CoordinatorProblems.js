@@ -1,6 +1,7 @@
 import { Table, Grid, Button, Input, Pagination } from 'semantic-ui-react';
 import React from 'react';
 import ChangeModal from './ChangeModal';
+import { server } from '../enpoint';
 export default class CoordinatorProblems extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,7 @@ export default class CoordinatorProblems extends React.Component {
     };
     this.resolve = this.resolve.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
   componentDidMount() {}
   updateSearch(e) {
@@ -24,6 +26,15 @@ export default class CoordinatorProblems extends React.Component {
     this.setState({ problem: p }, () => {
       this.resolve(false);
     });
+  }
+  handleButtonClick(e) {
+    let obj = this.props.details.details;
+    obj.problems = obj.problems.filter((e) => e.resolution == false);
+    fetch(server + '/api/clearallproblems', {
+      body: JSON.stringify(obj),
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    }).then(this.forceUpdate());
   }
   handleClick(e, n, cat, p, topic) {
     this.setState({
@@ -61,12 +72,23 @@ export default class CoordinatorProblems extends React.Component {
         {width > 768 ? (
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell colSpan='7'>
+              <Table.HeaderCell colSpan='5'>
                 <Input
                   fluid
                   placeholder='Search'
                   onChange={(e, syn) => this.updateSearch(syn)}
                 />
+              </Table.HeaderCell>
+              <Table.HeaderCell colSpan='2'>
+                {' '}
+                <Button
+                  onClick={this.handleButtonClick}
+                  style={{ height: '50px' }}
+                  color='google plus'
+                  fluid
+                >
+                  Clear all Resolved Problems
+                </Button>
               </Table.HeaderCell>
             </Table.Row>
             <Table.Row>

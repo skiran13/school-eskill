@@ -71,7 +71,6 @@ class NewTest extends React.Component {
   }
   fetchQuestion() {
     let { q, i, cat, topic } = this.props;
-    console.log(this.props);
     let { props } = this;
     if (q[cat] !== undefined) {
       //Changes for running local

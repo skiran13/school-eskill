@@ -987,6 +987,7 @@ require('sticky-cluster')(
           });
         }
       });
+
       socket.on('forgot', (details) => {
         let fid = '/reset/' + makeid();
         resetArray.push(fid);
@@ -1024,8 +1025,34 @@ require('sticky-cluster')(
           }
         });
       });
+      app.post('/api/clearallproblems', (req, res) => {
+        let { name, regNo, department, branch } = req.body;
+        try {
+          UserDetails.findOne(
+            {
+              'details.department': `${department}`,
+              'details.regNo': `${regNo}`,
+              'details.name': `${name}`,
+              'details.branch': `${branch}`,
+            },
+            (err, user) => {
+              if (user.level == 1) {
+                user.details = req.body;
+                user.save();
+              }
+              socket.emit('changeDetails', {
+                details: user.details,
+              });
+            }
+          );
+        } catch (e) {
+          console.log(e);
+          res.json({ err: true });
+        }
+      });
     });
     app.use('/reset', express.static(path.resolve(__dirname, 'forgot')));
+
     app.post('/api/student', (req, res) => {
       let { sid, cat, topic } = req.body;
       Users.findById(sid, (err, student) => {
