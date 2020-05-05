@@ -183,7 +183,7 @@ class ChangeQuestion extends React.Component {
               <Segment basic>
                 <Form.Group widths='equal'>
                   <Form.Field>
-                    <label>Category</label>
+                    <label>Subject</label>
                     <Input fluid value={this.state.selCat.name} disabled />
                   </Form.Field>
                   <Form.Field>
@@ -199,7 +199,7 @@ class ChangeQuestion extends React.Component {
                       border: 'none',
                     }}
                   >
-                    Please select a category
+                    Please select a subject
                   </div>
                 ) : null}
               </Segment>
@@ -372,7 +372,7 @@ class ChangeQuestion extends React.Component {
                   correct={value}
                   options={this.state.options}
                 />
-                <Segment basic>
+                {/* <Segment basic>
                   <Form.Group widths='equal'>
                     <Form.Field>
                       <Input fluid size='large'>
@@ -380,7 +380,7 @@ class ChangeQuestion extends React.Component {
                       </Input>
                     </Form.Field>
                   </Form.Group>
-                </Segment>
+                </Segment> */}
 
                 <Form.Field>
                   <label>Explanation</label>

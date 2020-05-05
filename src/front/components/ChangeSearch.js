@@ -36,7 +36,7 @@ export default class ChangeSearch extends React.Component {
         `/change/${selcat.label.replace(/ /g, '+')}/${seltop.label.replace(
           / /g,
           '+'
-        )}/${number - 1}`
+        )}/${number}`
       );
     }
   }

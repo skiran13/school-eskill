@@ -85,9 +85,15 @@ class StudentDashboard extends React.Component {
           }}
         >
           eSkill - Developed by{' '}
-          <a href='https://www.linkedin.com/in/skiran13'>Surya Kiran</a>,{' '}
-          <a href='https://www.linkedin.com/in/vonesix'>Vignesh Shankar</a> and{' '}
-          <a href='https://www.linkedin.com/in/abhishekchandar'>
+          <a href='https://github.com/skiran13' target='_blank'>
+            Surya Kiran
+          </a>
+          ,{' '}
+          <a href='https://github.com/v16s' target='_blank'>
+            Vignesh Shankar
+          </a>{' '}
+          and{' '}
+          <a href='https://github.com/abhishekchandar' target='_blank'>
             Abhishek Chandar
           </a>
         </Header>

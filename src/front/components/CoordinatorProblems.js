@@ -38,7 +38,7 @@ export default class CoordinatorProblems extends React.Component {
   }
   handleClick(e, n, cat, p, topic) {
     this.setState({
-      n: n || '',
+      n: n,
       cat: cat || '',
       topic: topic || '',
       visible: !this.state.visible,
