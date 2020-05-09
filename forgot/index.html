@@ -1,111 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>eSkill Password Reset</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Forgot Password</title>
+
+    <!-- Font Icon -->
+    <link
+      rel="stylesheet"
+      href="fonts/material-icon/css/material-design-iconic-font.min.css"
+    />
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Turret+Road:wght@500&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        height: 100vh;
-        width: 100vw;
-        box-sizing: border-box;
-        margin: 0;
-        display: flex;
-      }
-      .container-main {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-      }
-      .header {
-        color: #1456ff;
-        font-family: sans-serif;
-        font-size: 24px;
+      h3 {
+        letter-spacing: 1.5px;
+        font-size: xxx-large;
         font-weight: bold;
+        color: #444;
+        font-family: 'Turret Road', sans-serif;
+        text-align: center;
+        margin: 0px;
       }
-      .form-container {
-        width: 100%;
+      h2 {
+        text-align: center;
+        font-size: 30px;
+        color: #444;
       }
-      #form {
-        margin-top: 30px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+      .error{
+        text-align: center;
       }
-      .input-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-      }
-      #form input {
-        height: 40px;
-        border: 1px solid #aaa;
-        width: 40%;
-        padding: 10px;
-        border-radius: 4px;
-        margin: 10px;
-        font-size: 18px;
-      }
-      .submit {
-        margin-top: 30px;
-        width: 50%;
-        height: 40px;
-        align-self: center;
-        background-color: #1456ff;
-        color: #fff;
-        border-radius: 4px;
-        font-size: 18px;
+      .form-group.form-button{
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="container-main">
-      <div class="header">eSkill Password Reset</div>
-      <div class="form-container">
-        <form id="form">
-          <div class="input-container">
-            <input
-              class="input"
-              type="password"
-              placeholder="New Password"
-              id="password"
-            />
-            <input
-              class="input"
-              type="password"
-              placeholder="Confrim Password"
-              id="confirm"
-            />
+    <div class="main">
+      <!-- Sing in  Form -->
+      <section class="sign-in">
+        <div class="container">
+          <div class="signin-content">
+            <div class="signin-image">
+              <figure>
+                <img src="images/signin-image.jpg" alt="sing up image" />
+              </figure>
+            </div>
+
+            <div class="signin-form">
+              <h3 id="login-heading">eSkill</h3>
+              <h2 class="form-title">Forgot Password</h2>
+              <form method="POST" class="register-form" id="login-form">
+                <div class="form-group">
+                  <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                  <input
+                    type="password"
+                    name="your_pass"
+                    id="password"
+                    placeholder="Password"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="your_cpass"><i class="zmdi zmdi-lock"></i></label>
+                  <input
+                    type="password"
+                    name="your_cpass"
+                    id="confirm"
+                    placeholder="Confirm Password"
+                  />
+                </div>
+                <div class="form-group form-button">
+                  <input
+                    type="submit"
+                    name="signin"
+                    id="signin"
+                    class="form-submit"
+                    value="Reset Password"
+                  />
+                </div>
+                <div class="error"></div>
+              </form>
+            </div>
+            <script>
+              var f = document.getElementById("login-form");
+              f.onsubmit = e => {
+                e.preventDefault();
+                var p = document.getElementById("password").value;
+                var c = document.getElementById("confirm").value;
+               
+                if (p != c) { console.log(p,c)
+                  document.querySelector(".error").innerHTML =
+                    "Passwords don't Match";
+                } else if (p == undefined || p == "" || p == null) {
+                  document.querySelector(".error").innerHTML = "Password is empty";
+                } else {
+                  document.querySelector(".error").innerHTML = "";
+                  fetch(window.location.href, {
+                    body: JSON.stringify({ p: p }),
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                  });
+                  window.location.href = "/";
+                }
+              };
+            </script>
           </div>
-          <button class="submit">Submit</button>
-          <div class="error"></div>
-        </form>
-      </div>
-      <script>
-        var f = document.getElementById("form");
-        f.onsubmit = e => {
-          e.preventDefault();
-          var p = document.getElementById("password").value;
-          var c = document.getElementById("confirm").value;
-          if (p != c) {
-            document.querySelector(".error").innerHTML =
-              "Passwords don't Match";
-          } else if (p == undefined || p == "" || p == null) {
-            document.querySelector(".error").innerHTML = "Password is empty";
-          } else {
-            document.querySelector(".error").innerHTML = "";
-            fetch(window.location.href, {
-              body: JSON.stringify({ p: p }),
-              method: "POST",
-              headers: { "Content-Type": "application/json" }
-            });
-            window.location.href = "/eskill";
-          }
-        };
-      </script>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
+
+    <!-- JS -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="js/main.js"></script>
   </body>
+  <!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>
