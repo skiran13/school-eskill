@@ -76,7 +76,10 @@ class QuestionPage extends React.Component {
           ind: i,
         };
       });
-      if (data.filter((k) => k.state == 1 || k.state == 2).length == 100) {
+      if (
+        data.filter((k) => k.state == 1 || k.state == 2).length ==
+        qs[actualcat][actualtop].q.length
+      ) {
         allcomplete = true;
       }
     }

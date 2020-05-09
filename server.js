@@ -89,6 +89,9 @@ require('sticky-cluster')(
         user: emailid,
         pass: password,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
     mongoose.connect(dburl, {
       useUnifiedTopology: true,
@@ -584,8 +587,12 @@ require('sticky-cluster')(
                     )
                       q.push(r);
                   }
+                } else {
+                  while (q.length < acc.questions[cat][topic].q.length) {
+                    var r = Math.floor(Math.random() * count);
+                    if (q.indexOf(r) === -1) q.push(r);
+                  }
                 }
-
                 acc.questions[cat][topic].q = q.map((k) => {
                   return { n: k, a: 0 };
                 });
