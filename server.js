@@ -893,6 +893,21 @@ require('sticky-cluster')(
       //------------------------------- FACULTY END ------------------------------------------
 
       // ---------------------------- COMMON -------------------------------------------
+      socket.on('cps', (data) => {
+        Users.findOne({ _id: data._id }, (err, doc) => {
+          bcrypt.compare(data.oldpass, doc.password, (e, res) => {
+            if (res) {
+              bcrypt.hash(data.pass, 10, function (err, hash) {
+                doc.password = hash;
+                doc.save();
+              });
+              socket.emit('success', 'cpss');
+            } else {
+              socket.emit('success', 'cpsf');
+            }
+          });
+        });
+      });
       socket.on('reg', (r) => {
         if (canReg) {
           Users.find(

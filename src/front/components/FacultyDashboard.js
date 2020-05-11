@@ -5,6 +5,7 @@ import CompletionTable from './CompletionTable';
 import ReportProblem from './ReportProblem';
 import StudentTable from './StudentTable';
 import { server } from '../enpoint';
+import ChangePassword from './ChangePassword';
 class FacultyDashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -152,6 +153,19 @@ class FacultyDashboard extends React.Component {
                             width={this.props.width}
                             dark={this.props.dark}
                             studentDetails={studentDetails}
+                          />
+                        </Tab.Pane>
+                      ),
+                    },
+                    {
+                      menuItem: 'Change Password',
+                      render: () => (
+                        <Tab.Pane inverted={this.props.dark} attached={false}>
+                          <ChangePassword
+                            emit={this.emit}
+                            details={this.props.details}
+                            success={this.props.cpsSuccess}
+                            logout={this.props.logout}
                           />
                         </Tab.Pane>
                       ),

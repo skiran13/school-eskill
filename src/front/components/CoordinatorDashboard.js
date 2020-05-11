@@ -112,14 +112,15 @@ class CoordinatorDashboard extends React.Component {
                           tags={this.props.tags}
                           grouped={this.props.grouped}
                           emit={this.emit}
-                          topics={this.props}
+                          logout={this.props.logout}
+                          details={this.props.details}
                           error={this.props.addError}
-                          success={this.props.addSuccess}
+                          success={this.props.cpsSuccess}
                           dark={this.props.dark}
                         />
                       </Tab.Pane>
                     ),
-                  }
+                  },
                 ]}
               />
             </Grid.Column>

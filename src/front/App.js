@@ -15,10 +15,11 @@ import CoordinatorDashboard from './components/CoordinatorDashboard';
 import FacultyDashboard from './components/FacultyDashboard';
 import QuestionPage from './components/QuestionPage';
 import ChangeQuestion from './components/ChangeQuestion';
+import ChangePassword from './components/ChangePassword';
 import { server } from './enpoint';
 let socket = io.connect(
-  // window.location.origin, //changes for running local
-  server,
+  window.location.origin, //changes for running local
+  // server,
   {
     path: `/socket.io/`,
     rejectUnauthorized: false,
@@ -60,6 +61,7 @@ class Root extends React.Component {
       catSuccess: 'none',
       topSuccess: 'none',
       tagSuccess: 'none',
+      cpsSuccess: 'none',
       topics: [],
       chError: '',
       chSuccess: '',
@@ -139,8 +141,8 @@ class Root extends React.Component {
     const { cookies } = this.props;
     const { categories } = this.state;
     history.listen(function (location) {
-      window.ga('set', 'page', location.pathname + location.search);
-      window.ga('send', 'pageview');
+      // window.ga('set', 'page', location.pathname + location.search);
+      // window.ga('send', 'pageview');
     });
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
@@ -237,6 +239,8 @@ class Root extends React.Component {
       type == 'category' ? this.setState({ catSuccess: 'success' }) : null;
       type == 'topic' ? this.setState({ topSuccess: 'success' }) : null;
       type == 'tag' ? this.setState({ tagSuccess: 'success' }) : null;
+      type == 'cpss' ? this.setState({ cpsSuccess: 'pass' }) : null;
+      type == 'cpsf' ? this.setState({ cpsSuccess: 'fail' }) : null;
     });
     socket.on('addResponse', (res) => {
       if (res.fail) {
@@ -392,6 +396,16 @@ class Root extends React.Component {
                       }}
                     >
                       <Icon name='home' size='large' />
+                    </Menu.Item>
+                  ) : null}
+                  {this.state.details.level == 0 ? (
+                    <Menu.Item
+                      onClick={(e) => {
+                        e.preventDefault();
+                        history.push(`/resetpassword`);
+                      }}
+                    >
+                      <Icon name='edit' size='large' />
                     </Menu.Item>
                   ) : null}
                   {this.state.details.level == 0 ? (
@@ -598,6 +612,39 @@ class Root extends React.Component {
                         ) : null}
                         {this.state.level == 0 ? (
                           <Route
+                            path={`/resetpassword`}
+                            render={(props) => (
+                              <Segment
+                                style={{ margin: 'auto', maxWidth: '80vw' }}
+                              >
+                                <ChangePassword
+                                  logout={this.logout}
+                                  emit={this.emit}
+                                  success={this.state.cpsSuccess}
+                                  details={this.state.details}
+                                />
+                              </Segment>
+                            )}
+                          />
+                        ) : (
+                          <Route
+                            path={`/rp`}
+                            render={(props) => (
+                              <Segment
+                                style={{ margin: 'auto', maxWidth: '80vw' }}
+                              >
+                                <ChangePassword
+                                  logout={this.logout}
+                                  emit={this.emit}
+                                  success={this.state.cpsSuccess}
+                                  details={this.state.details}
+                                />
+                              </Segment>
+                            )}
+                          />
+                        )}
+                        {this.state.level == 0 ? (
+                          <Route
                             exact
                             path={`/question/:category/:topic`}
                             render={(props) => (
@@ -703,6 +750,7 @@ class Root extends React.Component {
                                 tagSuccess={this.state.tagSuccess}
                                 addSuccess={this.state.addSuccess}
                                 addError={this.state.addError}
+                                cpsSuccess={this.state.cpsSuccess}
                               />
                             ) : (
                               <StudentDashboard
