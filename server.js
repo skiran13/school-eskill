@@ -8,7 +8,7 @@ require('sticky-cluster')(
     server.setTimeout(180000);
     server.setMaxListeners(0);
     let config = require('./config.json');
-    let { dburl, email: emailid, password, reset: resetURL } = config;
+    let { dburl, email: emailid, reset: resetURL } = config;
     const path = require('path');
     const debug = process.env.NODE_ENV !== 'production';
     const io = require('socket.io')(server, {
@@ -87,7 +87,7 @@ require('sticky-cluster')(
       service: 'gmail',
       auth: {
         user: emailid,
-        pass: password,
+        pass: 'noreplyqwerty',
       },
       tls: {
         rejectUnauthorized: false,
