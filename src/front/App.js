@@ -17,8 +17,8 @@ import QuestionPage from './components/QuestionPage';
 import ChangeQuestion from './components/ChangeQuestion';
 import { server } from './enpoint';
 let socket = io.connect(
-  window.location.origin, //changes for running local
-  // server,
+  // window.location.origin, //changes for running local
+  server,
   {
     path: `/socket.io/`,
     rejectUnauthorized: false,

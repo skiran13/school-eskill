@@ -4,6 +4,7 @@ import { Grid, Tab } from 'semantic-ui-react';
 import CoordinatorProblems from './CoordinatorProblems';
 import ChangeSearch from './ChangeSearch';
 import AddQuestion from './AddQuestion';
+import ChangePassword from './ChangePassword';
 import _ from 'lodash';
 
 class CoordinatorDashboard extends React.Component {
@@ -102,6 +103,23 @@ class CoordinatorDashboard extends React.Component {
                       </Tab.Pane>
                     ),
                   },
+                  {
+                    menuItem: 'Change Password',
+                    render: () => (
+                      <Tab.Pane inverted={this.props.dark} attached={false}>
+                        <ChangePassword
+                          categories={this.props.categories}
+                          tags={this.props.tags}
+                          grouped={this.props.grouped}
+                          emit={this.emit}
+                          topics={this.props}
+                          error={this.props.addError}
+                          success={this.props.addSuccess}
+                          dark={this.props.dark}
+                        />
+                      </Tab.Pane>
+                    ),
+                  }
                 ]}
               />
             </Grid.Column>
